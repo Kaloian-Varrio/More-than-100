@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "db:seed": "node --env-file=.env.local supabase/seed-data/seed-sample-db-data.js",
+    "db:seed:validate": "node supabase/seed-data/seed-sample-db-data.js --validate",
     "preview": "vite preview"
   },
   "dependencies": {
