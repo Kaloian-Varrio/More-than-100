@@ -52,7 +52,7 @@ export function createHeader(activePath) {
     </header>`;
 }
 
-function renderAuthNavigation(user) {
+function renderAuthNavigation(user, activePath = window.location.pathname) {
   const container = document.querySelector('#auth-navigation');
   if (!container) return;
 
@@ -67,15 +67,15 @@ function renderAuthNavigation(user) {
 
   container.innerHTML = `
     <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
-      <a class="nav-link text-white" href="/dashboard">Dashboard</a>
-      <a class="nav-link text-white" href="/dashboard#account" title="${user.email}"><i class="bi bi-person-circle me-1" aria-hidden="true"></i>Account</a>
+      <a class="nav-link text-white${activePath === '/dashboard' ? ' active' : ''}" href="/dashboard"${activePath === '/dashboard' ? ' aria-current="page"' : ''}>Dashboard</a>
+      <a class="nav-link text-white" href="/dashboard#account"><i class="bi bi-person-circle me-1" aria-hidden="true"></i>Profile</a>
       <button class="btn btn-outline-light btn-sm px-3" id="logout-button" type="button"><i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>Logout</button>
     </div>`;
 
   document.querySelector('#logout-button').addEventListener('click', async (event) => {
     const button = event.currentTarget;
     button.disabled = true;
-    button.innerHTML = '<span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>Logging out…';
+    button.innerHTML = '<span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>Logging out...';
     try {
       await logoutUser();
       window.location.assign('/');
@@ -86,7 +86,7 @@ function renderAuthNavigation(user) {
   });
 }
 
-export async function initializeAuthHeader() {
-  renderAuthNavigation(await getCurrentUser());
-  onAuthStateChange(renderAuthNavigation);
+export async function initializeAuthHeader(activePath) {
+  onAuthStateChange((user) => renderAuthNavigation(user, activePath));
+  renderAuthNavigation(await getCurrentUser(), activePath);
 }

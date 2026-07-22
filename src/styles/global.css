@@ -77,6 +77,10 @@ button:focus-visible {
   padding: 0.4rem 0.65rem;
 }
 
+.auth-navigation {
+  min-height: 1.95rem;
+}
+
 .brand-mark {
   display: inline-grid;
   width: 2.25rem;
@@ -125,5 +129,12 @@ button:focus-visible {
   .site-navbar .navbar-collapse {
     padding-top: 1rem;
     padding-bottom: 0.5rem;
+  }
+
+  .auth-navigation .btn,
+  .auth-navigation .nav-link {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    text-align: left;
   }
 }

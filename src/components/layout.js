@@ -16,5 +16,5 @@ export function renderLayout({ activePath, content, mainClass = '' }) {
       ${createFooter()}
     </div>`;
 
-  initializeAuthHeader();
+  initializeAuthHeader(activePath);
 }
