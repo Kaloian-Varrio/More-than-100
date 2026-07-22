@@ -106,12 +106,11 @@ export async function createArticle(values) {
 }
 
 export async function updateArticle(articleId, values) {
-  const user = await requireUser();
+  await requireUser();
   const { data, error } = await supabase
     .from('articles')
     .update(toArticleRecord(values))
     .eq('id', articleId)
-    .eq('author_id', user.id)
     .select(articleFields)
     .maybeSingle();
 

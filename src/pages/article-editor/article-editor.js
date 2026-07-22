@@ -3,7 +3,8 @@ import '../../styles/global.css';
 import './article-editor.css';
 import { renderLayout } from '../../components/layout.js';
 import { requireAuthenticatedUser } from '../../services/auth-service.js';
-import { createArticle, getOwnedArticleBySlug, updateArticle } from '../../services/article-service.js';
+import { createArticle, getArticleBySlug, getOwnedArticleBySlug, updateArticle } from '../../services/article-service.js';
+import { isCurrentUserAdmin } from '../../services/role-service.js';
 import { getCategories } from '../../services/category-service.js';
 import { escapeHtml } from '../../utils/html.js';
 
@@ -16,9 +17,10 @@ const user = await requireAuthenticatedUser();
 
 if (user) {
   try {
+    const admin = isEdit ? await isCurrentUserAdmin() : false;
     const [categories, article] = await Promise.all([
       getCategories(),
-      isEdit ? getOwnedArticleBySlug(slug) : Promise.resolve(null),
+      isEdit ? (admin ? getArticleBySlug(slug) : getOwnedArticleBySlug(slug)) : Promise.resolve(null),
     ]);
 
     if (isEdit && !article) {

@@ -1,0 +1,13 @@
+.admin-page { background: #f7faf8; }
+.admin-hero { background: linear-gradient(135deg, #123c2d, #225f47); color: #fff; }
+.admin-stat, .admin-panel { border: 0; border-radius: 1rem; box-shadow: 0 0.75rem 2rem rgb(18 60 45 / 8%); }
+.admin-stat__icon { display: grid; width: 3rem; border-radius: 0.8rem; aspect-ratio: 1; place-items: center; background: rgb(25 122 80 / 10%); color: #197a50; font-size: 1.3rem; }
+.admin-avatar { display: inline-grid; width: 2.5rem; border-radius: 50%; aspect-ratio: 1; overflow: hidden; place-items: center; background: #e4f0e8; color: #197a50; font-weight: 800; }
+.admin-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.admin-avatar .profile-avatar__initials { display: none; }
+.admin-avatar.profile-avatar--broken img { display: none; }
+.admin-avatar.profile-avatar--broken .profile-avatar__initials { display: inline; }
+.admin-table { min-width: 720px; }
+.admin-comment { max-width: 26rem; white-space: normal; }
+.admin-section { scroll-margin-top: 1rem; }
+@media (max-width: 575.98px) { .admin-hero .btn, .admin-modal-actions .btn { width: 100%; } }
