@@ -1,16 +1,16 @@
+import { getCurrentUser, logoutUser, onAuthStateChange } from '../services/auth-service.js';
+
 const navigationItems = [
   { label: 'Home', href: '/' },
   { label: 'Explore', href: '/#content-areas' },
   { label: 'Featured', href: '/#featured-content' },
   { label: 'Why it matters', href: '/#why-it-matters' },
-  { label: 'Dashboard', href: '/dashboard' },
 ];
 
 export function createHeader(activePath) {
   const navigation = navigationItems
     .map(({ label, href }) => {
       const isActive = activePath === href;
-
       return `
         <li class="nav-item">
           <a class="nav-link${isActive ? ' active' : ''}" href="${href}"${isActive ? ' aria-current="page"' : ''}>
@@ -43,9 +43,50 @@ export function createHeader(activePath) {
             <ul class="navbar-nav ms-auto mb-3 mb-lg-0 align-items-lg-center">
               ${navigation}
             </ul>
-            <a class="btn btn-light btn-sm ms-lg-3 px-3" href="/#get-started">Get started</a>
+            <div class="auth-navigation ms-lg-3" id="auth-navigation" aria-live="polite">
+              <span class="spinner-border spinner-border-sm text-light" aria-label="Loading account navigation"></span>
+            </div>
           </div>
         </div>
       </nav>
     </header>`;
+}
+
+function renderAuthNavigation(user) {
+  const container = document.querySelector('#auth-navigation');
+  if (!container) return;
+
+  if (!user) {
+    container.innerHTML = `
+      <div class="d-flex flex-column flex-lg-row gap-2">
+        <a class="btn btn-outline-light btn-sm px-3" href="/login">Login</a>
+        <a class="btn btn-light btn-sm px-3" href="/register">Register</a>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
+      <a class="nav-link text-white" href="/dashboard">Dashboard</a>
+      <a class="nav-link text-white" href="/dashboard#account" title="${user.email}"><i class="bi bi-person-circle me-1" aria-hidden="true"></i>Account</a>
+      <button class="btn btn-outline-light btn-sm px-3" id="logout-button" type="button"><i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>Logout</button>
+    </div>`;
+
+  document.querySelector('#logout-button').addEventListener('click', async (event) => {
+    const button = event.currentTarget;
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>Logging out…';
+    try {
+      await logoutUser();
+      window.location.assign('/');
+    } catch {
+      button.disabled = false;
+      button.innerHTML = '<i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>Logout';
+    }
+  });
+}
+
+export async function initializeAuthHeader() {
+  renderAuthNavigation(await getCurrentUser());
+  onAuthStateChange(renderAuthNavigation);
 }

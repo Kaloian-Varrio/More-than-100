@@ -1,0 +1,82 @@
+.auth-page {
+  min-height: calc(100vh - 5rem);
+  background:
+    radial-gradient(circle at 10% 10%, rgb(183 217 85 / 20%), transparent 24rem),
+    linear-gradient(135deg, #f3faf5, #fbf7eb);
+}
+
+.auth-shell {
+  width: min(100%, 67rem);
+}
+
+.auth-intro {
+  max-width: 29rem;
+}
+
+.auth-eyebrow {
+  color: #197a50;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.auth-title {
+  color: #18352a;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  font-weight: 760;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.auth-benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: #4a6258;
+}
+
+.auth-benefit .bi {
+  color: #197a50;
+  font-size: 1.15rem;
+}
+
+.auth-card {
+  border-radius: 1.5rem;
+  box-shadow: 0 1.5rem 4rem rgb(18 60 45 / 12%);
+}
+
+.auth-card .form-control {
+  min-height: 3.25rem;
+  border-color: #cddbd2;
+  border-radius: 0.75rem;
+}
+
+.auth-card .form-control:focus {
+  border-color: #197a50;
+  box-shadow: 0 0 0 0.25rem rgb(25 122 80 / 12%);
+}
+
+.password-toggle {
+  border-color: #cddbd2;
+  border-radius: 0 0.75rem 0.75rem 0;
+  color: #486157;
+}
+
+.password-rules {
+  color: #60766d;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.auth-switch a {
+  color: #197a50;
+  font-weight: 700;
+}
+
+@media (max-width: 991.98px) {
+  .auth-intro {
+    max-width: 38rem;
+    text-align: center;
+  }
+}

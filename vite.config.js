@@ -8,6 +8,8 @@ export default defineConfig({
       input: {
         home: resolve(import.meta.dirname, 'index.html'),
         dashboard: resolve(import.meta.dirname, 'dashboard.html'),
+        login: resolve(import.meta.dirname, 'login.html'),
+        register: resolve(import.meta.dirname, 'register.html'),
       },
     },
   },

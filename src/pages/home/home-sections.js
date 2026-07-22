@@ -93,8 +93,8 @@ export function createHeroSection() {
               Discover everyday habits for better nutrition, joyful movement, mindful living and stronger social connection—designed to help you invest in a healthier future, one choice at a time.
             </p>
             <div class="d-flex flex-column flex-sm-row flex-wrap gap-3" aria-label="Get started">
-              <a class="btn btn-primary btn-lg px-4" href="#get-started"><i class="bi bi-person-plus me-2" aria-hidden="true"></i>Register</a>
-              <a class="btn btn-outline-primary btn-lg px-4" href="#get-started"><i class="bi bi-box-arrow-in-right me-2" aria-hidden="true"></i>Login</a>
+              <a class="btn btn-primary btn-lg px-4" href="/register"><i class="bi bi-person-plus me-2" aria-hidden="true"></i>Register</a>
+              <a class="btn btn-outline-primary btn-lg px-4" href="/login"><i class="bi bi-box-arrow-in-right me-2" aria-hidden="true"></i>Login</a>
               <a class="btn btn-link btn-lg hero-assessment-link px-2" href="#assessment">
                 Personal Assessment <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
               </a>
@@ -185,8 +185,8 @@ export function createValueSection() {
         <div class="get-started__panel text-center" id="assessment">
           <span class="get-started__icon" aria-hidden="true"><i class="bi bi-compass"></i></span>
           <h2 class="h1 mt-4 mb-3" id="get-started-title">Ready for your next small step?</h2>
-          <p class="text-body-secondary mx-auto mb-4">Registration, login and the personal lifestyle assessment are coming in the next stage of the application.</p>
-          <a class="btn btn-primary btn-lg px-4" href="#content-areas">Explore healthy ideas now</a>
+          <p class="text-body-secondary mx-auto mb-4">Create your account to open your personal dashboard. The lifestyle assessment will be added in the next stage.</p>
+          <a class="btn btn-primary btn-lg px-4" href="/register">Create your account</a>
         </div>
       </div>
     </section>`;

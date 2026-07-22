@@ -72,6 +72,11 @@ button:focus-visible {
   box-shadow: 0 0.4rem 1.8rem rgb(18 60 45 / 16%);
 }
 
+.auth-navigation .nav-link {
+  border-radius: 0.375rem;
+  padding: 0.4rem 0.65rem;
+}
+
 .brand-mark {
   display: inline-grid;
   width: 2.25rem;
