@@ -34,10 +34,23 @@
 
 .home-hero {
   position: relative;
+  isolation: isolate;
   background:
     radial-gradient(circle at 92% 15%, rgb(183 217 85 / 25%), transparent 30rem),
     linear-gradient(135deg, #f8fbf3 0%, #edf7ef 50%, #f8f5e9 100%);
 }
+
+.home-hero::before {
+  position: absolute;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, #f8fbf3 0%, rgb(248 251 243 / 92%) 38%, rgb(237 247 239 / 52%) 68%, rgb(18 60 45 / 18%) 100%),
+    url('../../assets/home/assessment-hero-lifestyle.jpg') center / cover no-repeat;
+  content: '';
+  inset: 0;
+}
+
+.home-hero > .container { z-index: 1; }
 
 .home-hero::after {
   position: absolute;
@@ -94,14 +107,9 @@
   line-height: 1.75;
 }
 
-.hero-assessment-link {
-  color: var(--home-forest);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.hero-assessment-link:hover,
-.hero-assessment-link:focus-visible { color: var(--home-green); transform: translateX(2px); }
+.hero-access-note { color: #3d5d4f; font-size: 0.92rem; font-weight: 650; }
+.hero-login-link { color: var(--home-forest); font-weight: 750; text-underline-offset: 0.22rem; }
+.hero-login-link:hover { color: var(--home-green); }
 .hero-note { color: #567066; font-size: 0.92rem; font-weight: 600; }
 .hero-note .bi { color: var(--home-green); }
 
@@ -130,6 +138,9 @@
   content: '';
 }
 
+.hero-orbit--outer { animation: hero-orbit 46s linear infinite; }
+.hero-orbit--inner { animation: hero-orbit 34s linear infinite reverse; }
+
 .hero-orbit--outer::before { top: 12%; right: 15%; }
 .hero-orbit--inner { border-style: dashed; inset: 20%; }
 
@@ -154,6 +165,7 @@
   color: white;
   flex-direction: column;
   inset: 25%;
+  animation: hero-center-glow 5s ease-in-out infinite;
 }
 
 .hero-visual__number {
@@ -188,14 +200,36 @@
   color: var(--home-forest);
   font-size: 0.88rem;
   font-weight: 750;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
 }
 
 .hero-pill .bi { color: var(--home-green); font-size: 1.15rem; }
-.hero-pill--move { top: 9%; left: 3%; }
-.hero-pill--nourish { top: 20%; right: -1%; }
-.hero-pill--connect { right: 2%; bottom: 13%; }
-.hero-pill--restore { bottom: 8%; left: 1%; }
+.hero-orbiting { position: absolute; inset: 5%; animation: hero-orbit 46s linear infinite; }
+.hero-orbiting--connect { animation-delay: -23s; }
+.hero-orbiting--nourish,
+.hero-orbiting--restore { inset: 15%; animation-duration: 34s; }
+.hero-orbiting--nourish { animation-delay: -8.5s; }
+.hero-orbiting--restore { animation-delay: -25.5s; }
+.hero-orbiting--move .hero-pill,
+.hero-orbiting--connect .hero-pill { animation: hero-counter-orbit 46s linear infinite; }
+.hero-orbiting--connect .hero-pill { animation-delay: -23s; }
+.hero-orbiting--nourish .hero-pill,
+.hero-orbiting--restore .hero-pill { animation: hero-counter-orbit 34s linear infinite; }
+.hero-orbiting--nourish .hero-pill { animation-delay: -8.5s; }
+.hero-orbiting--restore .hero-pill { animation-delay: -25.5s; }
+
+@keyframes hero-orbit { to { transform: rotate(360deg); } }
+@keyframes hero-counter-orbit { to { transform: translate(-50%, -50%) rotate(-360deg); } }
+@keyframes hero-center-glow { 50% { box-shadow: 0 1.5rem 4.5rem rgb(18 60 45 / 32%), 0 0 0 0.4rem rgb(183 217 85 / 10%); } }
 .content-areas { background: #fff; }
+
+.assessment-promo { background: #fff; }
+.assessment-promo__panel { padding: clamp(2rem, 6vw, 4.5rem); border: 1px solid #dbe8df; border-radius: clamp(1.5rem, 4vw, 2.5rem); background: linear-gradient(135deg, #eef8f1, #fbf7e9); box-shadow: 0 1.25rem 3.5rem rgb(18 60 45 / 9%); }
+.assessment-benefit { padding: 1.4rem; border: 1px solid rgb(25 122 80 / 12%); border-radius: 1rem; background: rgb(255 255 255 / 76%); }
+.assessment-benefit > span { display: grid; width: 2.8rem; border-radius: 0.8rem; aspect-ratio: 1; place-items: center; background: var(--home-green-light); color: var(--home-green); font-size: 1.25rem; }
+.assessment-benefit p { font-size: 0.9rem; line-height: 1.6; }
 
 .area-card,
 .article-card {
@@ -300,11 +334,10 @@
 }
 
 @media (max-width: 767.98px) {
+  .home-hero::before { background-position: 68% center; opacity: 0.65; }
   .hero-headline { font-size: clamp(2.8rem, 14vw, 4.35rem); }
   .hero-visual { width: min(100%, 23rem); }
   .hero-pill { min-width: auto; padding: 0.6rem 0.75rem; }
-  .hero-pill--nourish,
-  .hero-pill--connect { right: 0; }
 }
 
 @media (max-width: 399.98px) {
@@ -318,5 +351,8 @@
   .article-card,
   .article-card__image,
   .btn,
-  .hero-assessment-link { transition: none; }
+  .hero-orbit,
+  .hero-orbiting,
+  .hero-orbiting .hero-pill,
+  .hero-visual__center { animation: none; }
 }

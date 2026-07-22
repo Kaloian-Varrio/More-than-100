@@ -34,11 +34,12 @@ export function createHeroSection() {
           <div class="col-lg-7">
             <p class="hero-kicker mb-3"><i class="bi bi-stars me-2" aria-hidden="true"></i>Healthy living, made practical</p>
             <h1 class="hero-headline mb-4" id="hero-title"><span class="hero-headline__small">Small</span> choices. <span class="hero-headline__smart">Smart</span> actions. A <span class="hero-headline__life">longer, healthier life.</span></h1>
-            <p class="hero-copy mb-4">Discover everyday habits for better nutrition, joyful movement, mindful living and stronger social connection—designed to help you invest in a healthier future, one choice at a time.</p>
-            <div class="d-flex flex-column flex-sm-row flex-wrap gap-3" aria-label="Get started">
-              <a class="btn btn-primary btn-lg px-4" href="/register"><i class="bi bi-person-plus me-2" aria-hidden="true"></i>Register</a>
-              <a class="btn btn-outline-primary btn-lg px-4" href="/login"><i class="bi bi-box-arrow-in-right me-2" aria-hidden="true"></i>Login</a>
-              <a class="btn btn-link btn-lg hero-assessment-link px-2" href="#assessment">Personal Assessment <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i></a>
+            <p class="hero-copy mb-3">Understand your stress, sedentary lifestyle and social connection risks&mdash;then receive visual scores, a personalized analysis and relevant articles for your next steps.</p>
+            <p class="hero-access-note mb-4" data-assessment-access><i class="bi bi-lock me-2" aria-hidden="true"></i>Login or register to take the assessment and save your results.</p>
+            <div class="d-flex flex-column flex-sm-row flex-wrap align-items-sm-center gap-3" aria-label="Get started">
+              <a class="btn btn-primary btn-lg px-4" href="/login" data-assessment-cta><i class="bi bi-clipboard2-pulse me-2" aria-hidden="true"></i><span>Take Your Personal Assessment</span></a>
+              <a class="btn btn-outline-primary btn-lg px-4" href="/register" data-guest-only><i class="bi bi-person-plus me-2" aria-hidden="true"></i>Register</a>
+              <a class="hero-login-link" href="/login" data-guest-only>Already a member? Login</a>
             </div>
             <p class="hero-note mt-4 mb-0"><i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>Practical ideas. No pressure. Progress at your pace.</p>
           </div>
@@ -46,15 +47,21 @@ export function createHeroSection() {
             <div class="hero-visual" aria-label="A balanced approach to everyday wellbeing">
               <div class="hero-orbit hero-orbit--outer"></div><div class="hero-orbit hero-orbit--inner"></div>
               <div class="hero-visual__center"><span class="hero-visual__number">100<span>+</span></span><span class="hero-visual__label">reasons to begin</span></div>
-              <div class="hero-pill hero-pill--move"><i class="bi bi-activity"></i><span>Move</span></div>
-              <div class="hero-pill hero-pill--nourish"><i class="bi bi-basket2"></i><span>Nourish</span></div>
-              <div class="hero-pill hero-pill--connect"><i class="bi bi-people"></i><span>Connect</span></div>
-              <div class="hero-pill hero-pill--restore"><i class="bi bi-moon-stars"></i><span>Restore</span></div>
+              ${[['move', 'activity', 'Move'], ['nourish', 'basket2', 'Nourish'], ['connect', 'people', 'Connect'], ['restore', 'moon-stars', 'Restore']].map(([key, icon, label]) => `<div class="hero-orbiting hero-orbiting--${key}"><div class="hero-pill"><i class="bi bi-${icon}"></i><span>${label}</span></div></div>`).join('')}
             </div>
           </div>
         </div>
       </div>
     </section>`;
+}
+
+export function createAssessmentPromotionSection() {
+  const benefits = [
+    ['list-check', '20 focused questions', 'Reflect on stress, movement and social connection in only a few minutes.'],
+    ['speedometer2', 'Three visual scores', 'See clear risk levels with responsive gauges and a personalized analysis.'],
+    ['journal-heart', 'Five relevant articles', 'Receive practical reading selected from real More Than 100 content.'],
+  ];
+  return `<section class="assessment-promo section-space" id="assessment" aria-labelledby="assessment-promo-title"><div class="container"><div class="assessment-promo__panel"><div class="row align-items-center g-5"><div class="col-lg-5"><p class="section-eyebrow mb-2">Know where to begin</p><h2 class="section-title mb-3" id="assessment-promo-title">A personal snapshot of your everyday wellbeing.</h2><p class="text-body-secondary mb-4">Complete a short lifestyle self-assessment and turn reflection into realistic next steps. It supports general awareness and is not a medical or psychological diagnosis.</p><a class="btn btn-primary btn-lg" href="/login" data-assessment-cta><i class="bi bi-clipboard2-pulse me-2"></i><span>Take Your Personal Assessment</span></a><p class="small text-body-secondary mt-3 mb-0" data-assessment-access>Login or create an account to begin and save your results.</p></div><div class="col-lg-7"><div class="row g-3">${benefits.map(([icon, title, description]) => `<div class="col-md-4"><article class="assessment-benefit h-100"><span><i class="bi bi-${icon}"></i></span><h3 class="h5 mt-3">${title}</h3><p class="text-body-secondary mb-0">${description}</p></article></div>`).join('')}</div></div></div></div></div></section>`;
 }
 
 export function createContentAreasSection() {
@@ -76,5 +83,5 @@ export function createValueSection() {
   ];
   return `
     <section class="value-section section-space" id="why-it-matters" aria-labelledby="value-title"><div class="container"><div class="value-panel"><div class="row align-items-center g-5"><div class="col-lg-5"><p class="section-eyebrow section-eyebrow--light mb-2">Why More Than 100</p><h2 class="section-title text-white mb-3" id="value-title">Healthier years are built in everyday moments.</h2><p class="value-copy mb-0">You do not need to transform everything overnight. Start with one practical habit, learn what works for you and keep moving forward.</p></div><div class="col-lg-7"><div class="row g-3">${values.map(([icon, title, description]) => `<div class="col-md-4"><div class="value-item h-100"><i class="bi bi-${icon}" aria-hidden="true"></i><h3 class="h6 mt-3 mb-2">${title}</h3><p class="mb-0">${description}</p></div></div>`).join('')}</div></div></div></div></div></section>
-    <section class="get-started pb-5 pb-lg-6" id="get-started" aria-labelledby="get-started-title"><div class="container"><div class="get-started__panel text-center" id="assessment"><span class="get-started__icon" aria-hidden="true"><i class="bi bi-compass"></i></span><h2 class="h1 mt-4 mb-3" id="get-started-title">Ready for your next small step?</h2><p class="text-body-secondary mx-auto mb-4">Create your account to open your personal dashboard. The lifestyle assessment will be added in the next stage.</p><a class="btn btn-primary btn-lg px-4" href="/register">Create your account</a></div></div></section>`;
+    <section class="get-started pb-5 pb-lg-6" id="get-started" aria-labelledby="get-started-title"><div class="container"><div class="get-started__panel text-center"><span class="get-started__icon" aria-hidden="true"><i class="bi bi-compass"></i></span><h2 class="h1 mt-4 mb-3" id="get-started-title">Your next small step can start with insight.</h2><p class="text-body-secondary mx-auto mb-4">Take a few minutes to understand your current patterns, then choose one practical action that fits your life.</p><a class="btn btn-outline-primary" href="/login" data-assessment-cta><span>Explore the Personal Assessment</span><i class="bi bi-arrow-right ms-2"></i></a></div></div></section>`;
 }

@@ -7,23 +7,33 @@ import { initializeArticleImages } from '../../components/article-card.js';
 import { createEmptyState, createErrorState } from '../../components/content-state.js';
 import { getFeaturedArticles } from '../../services/article-service.js';
 import { buildCategoryTree, getCategories } from '../../services/category-service.js';
+import { getCurrentUser } from '../../services/auth-service.js';
 import {
   createCategoryGrid,
   createContentAreasSection,
   createFeaturedGrid,
   createFeaturedContentSection,
   createHeroSection,
+  createAssessmentPromotionSection,
   createValueSection,
 } from './home-sections.js';
 
 const homeContent = [
   createHeroSection(),
+  createAssessmentPromotionSection(),
   createContentAreasSection(),
   createFeaturedContentSection(),
   createValueSection(),
 ].join('');
 
 renderLayout({ activePath: '/', content: homeContent, mainClass: 'home-page' });
+
+const currentUser = await getCurrentUser();
+if (currentUser) {
+  document.querySelectorAll('[data-assessment-cta]').forEach((link) => { link.href = '/assessment'; });
+  document.querySelectorAll('[data-assessment-access]').forEach((note) => { note.innerHTML = '<i class="bi bi-check-circle me-2" aria-hidden="true"></i>Your assessment is ready whenever you are.'; });
+  document.querySelectorAll('[data-guest-only]').forEach((element) => element.remove());
+}
 
 const categoryGrid = document.querySelector('#category-grid');
 const featuredGrid = document.querySelector('#featured-grid');
