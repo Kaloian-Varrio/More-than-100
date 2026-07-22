@@ -1,6 +1,7 @@
 import mindfulImage from '../assets/home/mindful-breathing.jpg';
 import movementImage from '../assets/home/morning-walk.jpg';
 import nutritionImage from '../assets/home/nourishing-breakfast.jpg';
+import sleepImage from '../assets/articles/sleep-rhythm.jpg';
 import { escapeHtml, safeImageUrl } from '../utils/html.js';
 
 const articleVisuals = {
@@ -19,6 +20,7 @@ const articleVisuals = {
 };
 
 const relevantLocalImages = {
+  'build-regular-sleep-rhythm': sleepImage,
   'short-morning-walk-start-day': movementImage,
   'simple-breathing-pause-busy-moments': mindfulImage,
   'colorful-bowl-everyday-vegetables': nutritionImage,
