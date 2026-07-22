@@ -1,7 +1,96 @@
+.dashboard-loading {
+  background: #f7faf8;
+  place-items: center;
+}
+
+.dashboard-hero {
+  background:
+    radial-gradient(circle at 85% 20%, rgb(183 217 85 / 22%), transparent 24rem),
+    linear-gradient(135deg, #123c2d, #197a50);
+  color: #fff;
+}
+
+.dashboard-hero .lead { color: rgb(255 255 255 / 78%); }
+
+.dashboard-eyebrow {
+  color: #d8ec9c;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .dashboard-card {
-  transition: transform 150ms ease, box-shadow 150ms ease;
+  box-shadow: 0 0.75rem 2rem rgb(18 60 45 / 8%);
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .dashboard-card:hover {
-  transform: translateY(-2px);
+  box-shadow: 0 1rem 2.5rem rgb(18 60 45 / 14%);
+  transform: translateY(-4px);
+}
+
+.dashboard-icon,
+.account-avatar {
+  display: inline-grid;
+  place-items: center;
+  border-radius: 1rem;
+}
+
+.dashboard-icon {
+  width: 3rem;
+  height: 3rem;
+  background: rgb(25 122 80 / 10%);
+  color: #197a50;
+  font-size: 1.35rem;
+}
+
+.dashboard-status {
+  border-radius: 999px;
+  background: #eef3f0;
+  color: #52665b;
+  font-size: 0.78rem;
+  font-weight: 750;
+  padding: 0.45rem 0.75rem;
+}
+
+#account { scroll-margin-top: 1.5rem; }
+
+#account:focus { outline: none; }
+
+#account:focus-visible .account-card {
+  outline: 3px solid rgb(25 122 80 / 45%);
+  outline-offset: 4px;
+}
+
+.account-card { box-shadow: 0 1rem 3rem rgb(18 60 45 / 10%); }
+
+.account-summary {
+  background: #123c2d;
+  color: #fff;
+}
+
+.account-summary p:last-child { color: rgb(255 255 255 / 70%); }
+
+.account-avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  background: #f7f4e9;
+  color: #197a50;
+  font-size: 1.6rem;
+}
+
+.account-details dt {
+  color: #52665b;
+  font-weight: 650;
+}
+
+.account-details dd { font-weight: 700; }
+
+@media (max-width: 575.98px) {
+  .dashboard-hero .btn { width: 100%; }
+
+  .account-details dd:not(:last-child) {
+    margin-bottom: 1rem;
+  }
 }

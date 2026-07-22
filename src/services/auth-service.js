@@ -53,3 +53,14 @@ export async function requireAuthenticatedUser() {
   }
   return user;
 }
+
+export async function redirectAuthenticatedUser() {
+  if (!(await getCurrentUser())) return false;
+
+  navigateToDashboard({ replace: true });
+  return true;
+}
+
+export function navigateToDashboard({ replace = false } = {}) {
+  window.location[replace ? 'replace' : 'assign']('/dashboard');
+}

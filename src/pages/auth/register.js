@@ -2,7 +2,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../../styles/global.css';
 import './auth.css';
 import { renderLayout } from '../../components/layout.js';
-import { getCurrentUser, registerUser } from '../../services/auth-service.js';
+import { navigateToDashboard, redirectAuthenticatedUser, registerUser } from '../../services/auth-service.js';
 import {
   initializePasswordToggles,
   setFormMessage,
@@ -10,9 +10,7 @@ import {
   validatePassword,
 } from '../../utils/auth-form.js';
 
-if (await getCurrentUser()) {
-  window.location.replace('/dashboard');
-} else {
+if (!(await redirectAuthenticatedUser())) {
   const content = `
     <section class="auth-page d-flex align-items-lg-center py-5">
       <div class="container auth-shell">
@@ -105,7 +103,7 @@ if (await getCurrentUser()) {
       });
       if (session) {
         setFormMessage(message, 'Account created. Opening your dashboard…', 'success');
-        window.location.assign('/dashboard');
+        navigateToDashboard();
       } else {
         setFormMessage(message, 'Account created. Confirm your email before logging in.', 'success');
         form.reset();

@@ -2,12 +2,10 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../../styles/global.css';
 import './auth.css';
 import { renderLayout } from '../../components/layout.js';
-import { getCurrentUser, loginUser } from '../../services/auth-service.js';
+import { loginUser, navigateToDashboard, redirectAuthenticatedUser } from '../../services/auth-service.js';
 import { initializePasswordToggles, setFormMessage, setSubmitting } from '../../utils/auth-form.js';
 
-if (await getCurrentUser()) {
-  window.location.replace('/dashboard');
-} else {
+if (!(await redirectAuthenticatedUser())) {
   const content = `
     <section class="auth-page d-flex align-items-lg-center py-5">
       <div class="container auth-shell">
@@ -73,7 +71,7 @@ if (await getCurrentUser()) {
         password: form.elements.password.value,
       });
       setFormMessage(message, 'Login successful. Opening your dashboard…', 'success');
-      window.location.assign('/dashboard');
+      navigateToDashboard();
     } catch {
       setFormMessage(message, 'Unable to log in. Check your email and password and try again.');
     } finally {
