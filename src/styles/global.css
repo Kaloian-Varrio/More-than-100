@@ -3,18 +3,40 @@
 
 :root {
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  color: #243229;
-  background-color: #f7faf8;
-  --bs-primary: #197a50;
+  color: #18352a;
+  background-color: #f6faf8;
+  --mt-forest: #103b2d;
+  --mt-green: #197a50;
+  --mt-green-strong: #125f3d;
+  --mt-teal: #168b86;
+  --mt-teal-dark: #0d6866;
+  --mt-teal-soft: #ddf4f1;
+  --mt-lime: #b7d955;
+  --mt-warm: #c9794f;
+  --mt-cream: #f7f4e9;
+  --mt-surface: #fff;
+  --mt-background: #f6faf8;
+  --mt-ink: #18352a;
+  --mt-text: #425c51;
+  --mt-muted: #64796f;
+  --mt-border: #d9e7df;
+  --mt-radius-sm: 0.75rem;
+  --mt-radius: 1rem;
+  --mt-radius-lg: 1.5rem;
+  --mt-shadow-sm: 0 0.5rem 1.75rem rgb(16 59 45 / 8%);
+  --mt-shadow: 0 1.15rem 3rem rgb(16 59 45 / 13%);
+  --mt-gradient-wellbeing: linear-gradient(135deg, #edf8f2 0%, #e7f7f4 50%, #faf5e7 100%);
+  --bs-primary: var(--mt-green);
   --bs-primary-rgb: 25, 122, 80;
-  --bs-link-color: #197a50;
-  --bs-link-hover-color: #125f3d;
+  --bs-link-color: var(--mt-green);
+  --bs-link-hover-color: var(--mt-green-strong);
 }
 
 body {
   min-width: 320px;
   margin: 0;
-  background-color: #f7faf8;
+  background-color: var(--mt-background);
+  color: var(--mt-ink);
 }
 
 .navbar-brand {
@@ -22,7 +44,7 @@ body {
 }
 
 .btn {
-  border-radius: 0.75rem;
+  border-radius: var(--mt-radius-sm);
   font-weight: 700;
   transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
@@ -68,7 +90,7 @@ button:focus-visible {
 }
 
 .site-navbar {
-  background: #123c2d;
+  background: linear-gradient(105deg, var(--mt-forest), #124a42);
   box-shadow: 0 0.4rem 1.8rem rgb(18 60 45 / 16%);
 }
 
@@ -86,15 +108,15 @@ button:focus-visible {
   width: 2.25rem;
   border-radius: 50%;
   aspect-ratio: 1;
-  background: #f7f4e9;
-  color: #123c2d;
+  background: var(--mt-cream);
+  color: var(--mt-forest);
   font-size: 0.72rem;
   font-weight: 850;
   letter-spacing: -0.06em;
   place-items: center;
 }
 
-.brand-mark span { color: #197a50; }
+.brand-mark span { color: var(--mt-teal); }
 
 .site-footer {
   background: #0e2e23;
