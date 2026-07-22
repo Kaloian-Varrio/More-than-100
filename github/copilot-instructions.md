@@ -626,3 +626,14 @@ Do not use excessive motion, distracting animations or heavy visual effects.
 Interactive effects should improve usability and clearly indicate that an element can be clicked or interacted with.
 
 Maintain consistent interaction behavior throughout the application.
+
+## Responsive and Adaptive Design
+
+- Design the entire application as fully responsive and mobile-friendly.
+- Use a mobile-first approach where appropriate.
+- Ensure layouts adapt intelligently to different screen sizes, not only by shrinking elements.
+- Optimize navigation, spacing, typography, forms, cards, images and interactive elements for desktop, tablet and mobile devices.
+- Avoid horizontal scrolling and broken layouts on small screens.
+- Test all major pages and components at common desktop, tablet and mobile viewport sizes.
+- Use Bootstrap responsive grid, breakpoints and utilities consistently.
+- When a desktop interaction does not translate well to mobile, implement an appropriate mobile-specific layout or interaction pattern.
