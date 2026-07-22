@@ -1,5 +1,6 @@
 .assessment-page { background: linear-gradient(180deg, #edf7ef 0, #f7faf8 22rem); }
 .assessment-shell { max-width: 52rem; }
+.assessment-shell--results { max-width: 76rem; }
 .assessment-disclaimer { border-left: 4px solid #197a50; background: rgb(255 255 255 / 80%); }
 .assessment-card { border-radius: 1.25rem; box-shadow: 0 1rem 3rem rgb(18 60 45 / 10%); }
 .assessment-progress { height: 0.55rem; background: #dce9df; }
@@ -9,7 +10,24 @@
 .assessment-option:has(.form-check-input:checked) { border-color: #197a50; background: #eaf6ee; box-shadow: 0 0 0 2px rgb(25 122 80 / 12%); }
 .assessment-option .form-check-input { flex: 0 0 auto; width: 1.25rem; height: 1.25rem; margin: 0 0.85rem 0 0; }
 .assessment-option .form-check-label { width: 100%; cursor: pointer; font-weight: 600; }
-.assessment-result { border: 1px solid #dce9df; border-radius: 0.85rem; background: #f8fbf9; }
-.assessment-result strong { color: #123c2d; }
+.assessment-results-header { max-width: 48rem; }
+.assessment-gauge { height: 100%; border: 1px solid #dce9df; border-radius: 1.1rem; background: #fff; padding: 1.25rem; box-shadow: 0 0.75rem 2rem rgb(18 60 45 / 8%); text-align: center; }
+.assessment-gauge__title { min-height: 3rem; color: #243229; font-weight: 750; }
+.assessment-gauge__visual { display: block; width: min(100%, 18rem); height: auto; margin: 0 auto; overflow: visible; }
+.assessment-gauge__track { fill: none; stroke: #e5ece7; stroke-width: 18; stroke-linecap: round; }
+.assessment-gauge__scale { fill: none; stroke-width: 12; stroke-linecap: round; }
+.assessment-gauge__needle line { stroke: #123c2d; stroke-width: 4; stroke-linecap: round; }
+.assessment-gauge__needle circle { fill: #123c2d; }
+.assessment-gauge__edge { fill: #66776d; font-size: 10px; font-weight: 700; }
+.assessment-gauge__reading { display: flex; align-items: baseline; justify-content: center; gap: 0.55rem; margin-top: -0.25rem; }
+.assessment-gauge__reading strong { color: #123c2d; font-size: 2rem; line-height: 1; }
+.assessment-gauge__reading span { border-radius: 999px; padding: 0.25rem 0.6rem; font-size: 0.78rem; font-weight: 800; }
+.assessment-gauge--low .assessment-gauge__reading span { background: #e4f3e9; color: #256642; }
+.assessment-gauge--mild .assessment-gauge__reading span { background: #f0f3d7; color: #64721f; }
+.assessment-gauge--elevated .assessment-gauge__reading span { background: #fff0d8; color: #8a5617; }
+.assessment-gauge--high .assessment-gauge__reading span { background: #fbe4df; color: #914237; }
+.assessment-analysis p { color: #52665b; line-height: 1.75; }
+.assessment-analysis p:last-of-type { margin-bottom: 0; }
 @media (max-width: 575.98px) { .assessment-actions .btn { flex: 1 1 100%; } .assessment-card .card-body { padding: 1.25rem; } }
+@media (max-width: 575.98px) { .assessment-result-actions .btn { width: 100%; } .assessment-gauge { padding-inline: 0.75rem; } }
 @media (prefers-reduced-motion: reduce) { .assessment-progress .progress-bar, .assessment-option { transition: none; } }

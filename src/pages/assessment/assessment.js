@@ -7,6 +7,8 @@ import { saveAssessmentResult } from '../../services/assessment-service.js';
 import { escapeHtml } from '../../utils/html.js';
 import { assessmentDimensions, assessmentQuestions } from './assessment-questions.js';
 import { calculateAssessmentScores } from './assessment-scoring.js';
+import { generateAssessmentAnalysis } from './assessment-analysis.js';
+import { createAssessmentGauge } from './assessment-gauge.js';
 
 document.querySelector('#app').innerHTML = '<main class="d-grid min-vh-100" style="place-items:center"><span class="spinner-border text-success" aria-label="Loading assessment"></span></main>';
 const user = await requireAuthenticatedUser();
@@ -59,15 +61,16 @@ async function handleNext(event, state) {
   button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
   try {
     const scores = calculateAssessmentScores(state.answers);
+    const analysis = generateAssessmentAnalysis(scores);
     renderCompletionLoading();
-    await Promise.all([saveAssessmentResult(scores), delay(850)]);
-    renderResults(scores);
+    await Promise.all([saveAssessmentResult(scores, analysis), delay(850)]);
+    renderResults(scores, analysis);
   } catch (error) {
     console.error('Assessment could not be saved.', error);
     state.submitting = false;
     renderQuestion(state);
     const form = document.querySelector('#question-form');
-    form.insertAdjacentHTML('afterbegin', `<div class="alert alert-danger">${escapeHtml(error.message || 'Your assessment could not be saved. Please try again.')}</div>`);
+    form.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger">Your assessment could not be saved. Please check your connection and try again.</div>');
   }
 }
 
@@ -79,12 +82,17 @@ function saveVisibleAnswer(state) {
 }
 
 function renderCompletionLoading() {
-  document.querySelector('#assessment-content').innerHTML = `<div class="card assessment-card border-0 text-center"><div class="card-body p-5" aria-live="polite"><i class="bi bi-check-circle-fill text-success display-5"></i><h2 class="h3 mt-3">You have successfully completed the assessment.</h2><div class="spinner-border spinner-border-sm text-success mt-3" aria-hidden="true"></div><p class="text-body-secondary mt-2 mb-0">Generating your results…</p></div></div>`;
+  document.querySelector('#assessment-content').innerHTML = `<div class="card assessment-card border-0 text-center"><div class="card-body p-5" aria-live="polite"><i class="bi bi-check-circle-fill text-success display-5"></i><h2 class="h3 mt-3">You have successfully completed the assessment.</h2><div class="spinner-border spinner-border-sm text-success mt-3" aria-hidden="true"></div><p class="text-body-secondary mt-2 mb-0">Generating your results&hellip;</p></div></div>`;
 }
 
-function renderResults(scores) {
+function renderResults(scores, analysis) {
   const rows = [['stress', 'Stress Level'], ['sedentary', 'Sedentary Lifestyle Risk'], ['social', 'Social Disconnection Risk']];
-  document.querySelector('#assessment-content').innerHTML = `<article class="card assessment-card border-0"><div class="card-body p-4 p-sm-5"><p class="text-success fw-bold text-uppercase small mb-2">Assessment complete</p><h2 class="h2 mb-2">Your results summary</h2><p class="text-body-secondary mb-4">Higher percentages indicate a higher lifestyle risk in that area.</p><div class="d-grid gap-3">${rows.map(([key, label]) => `<div class="assessment-result d-flex flex-column flex-sm-row justify-content-between gap-1 p-3"><span>${label}</span><strong>${scores[key].score}% — ${scores[key].label}</strong></div>`).join('')}</div><div class="d-flex flex-column flex-sm-row gap-2 mt-4"><a class="btn btn-primary" href="/assessment">Take assessment again</a><a class="btn btn-outline-secondary" href="/dashboard">Return to Dashboard</a></div></div></article>`;
+  document.querySelector('.assessment-shell').classList.add('assessment-shell--results');
+  document.querySelector('#assessment-content').innerHTML = `<section aria-labelledby="results-title">
+    <header class="text-center mx-auto assessment-results-header mb-4"><p class="text-success fw-bold text-uppercase small mb-2">Assessment complete</p><h2 class="display-6 fw-bold mb-3" id="results-title">Your Lifestyle &amp; Wellbeing Results</h2><p class="text-body-secondary mb-0">These results highlight lifestyle patterns and possible areas for improvement. Higher percentages indicate higher risk in that area.</p></header>
+    <div class="row g-4 justify-content-center mb-4">${rows.map(([key, name]) => `<div class="col-12 col-md-6 col-xl-4">${createAssessmentGauge({ name, key, ...scores[key] })}</div>`).join('')}</div>
+    <article class="card assessment-card assessment-analysis border-0"><div class="card-body p-4 p-sm-5"><h3 class="h2 mb-3"><i class="bi bi-compass text-success me-2" aria-hidden="true"></i>Your personalized lifestyle analysis</h3>${analysis.split(/\n+/).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}<aside class="assessment-disclaimer rounded-3 p-3 mt-4 small"><i class="bi bi-info-circle me-2 text-success" aria-hidden="true"></i>This assessment supports general awareness. It is not a medical or psychological diagnosis and does not replace professional advice.</aside><div class="assessment-result-actions d-flex flex-column flex-sm-row gap-2 mt-4"><a class="btn btn-primary" href="/dashboard"><i class="bi bi-grid me-2" aria-hidden="true"></i>Back to Dashboard</a><a class="btn btn-outline-primary" href="/assessment"><i class="bi bi-arrow-repeat me-2" aria-hidden="true"></i>Take Assessment Again</a></div></div></article>
+  </section>`;
 }
 
 function delay(milliseconds) { return new Promise((resolve) => window.setTimeout(resolve, milliseconds)); }
