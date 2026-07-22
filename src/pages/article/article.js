@@ -1,11 +1,13 @@
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../../styles/global.css';
 import '../../styles/content.css';
+import './comments.css';
 import { createEmptyState, createErrorState, createLoadingState } from '../../components/content-state.js';
 import { initializeArticleImages } from '../../components/article-card.js';
 import { renderLayout } from '../../components/layout.js';
 import { getArticleBySlug } from '../../services/article-service.js';
 import { escapeHtml, safeImageUrl } from '../../utils/html.js';
+import { initializeComments } from './comments.js';
 
 const slug = decodeURIComponent(window.location.pathname.split('/').filter(Boolean).at(-1) || '');
 renderLayout({ activePath: '/articles', content: `<section class="container py-5" id="article-content">${createLoadingState('Loading article...')}</section>`, mainClass: 'content-page' });
@@ -35,8 +37,15 @@ try {
         </header>
         ${imageUrl ? `<div class="article-cover-wrap mx-auto mb-5"><img class="article-cover d-block" data-content-image src="${escapeHtml(imageUrl)}" alt="Cover for ${title}" width="1600" height="900" /><div class="article-card__fallback article-cover-fallback" data-image-fallback hidden><i class="bi bi-image" aria-hidden="true"></i><span>Image unavailable</span></div></div>` : ''}
         <div class="article-body mx-auto">${paragraphs}</div>
-      </article>`;
+      </article>
+      <section class="comments-shell mx-auto py-5 border-top" id="comments-section" aria-labelledby="comments-title">
+        <h2 class="h3 mb-4" id="comments-title"><i class="bi bi-chat-square-text me-2 text-success" aria-hidden="true"></i>Comments</h2>
+        <div class="d-none" id="comment-feedback" role="status" aria-live="polite"></div>
+        <div class="mb-4" id="comment-composer"></div>
+        <div id="comment-list">${createLoadingState('Loading comments...')}</div>
+      </section>`;
     initializeArticleImages(container);
+    await initializeComments(article.id);
   }
 } catch (error) {
   console.error('Article could not be loaded.', error);

@@ -1,0 +1,23 @@
+.comments-shell { max-width: 48rem; }
+
+.comment-form,
+.comment-guest,
+.comment-card {
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.75rem rgb(18 60 45 / 8%);
+}
+
+.comment-card {
+  padding: 1.25rem;
+  background: #fff;
+  transition: box-shadow 180ms ease;
+}
+
+.comment-card + .comment-card { margin-top: 1rem; }
+.comment-card:hover { box-shadow: 0 0.75rem 2rem rgb(18 60 45 / 12%); }
+.comment-author { color: #123c2d; font-weight: 750; }
+.comment-text { line-height: 1.7; overflow-wrap: anywhere; white-space: pre-wrap; }
+
+@media (max-width: 575.98px) {
+  .comment-actions .btn { min-height: 2.5rem; }
+}
