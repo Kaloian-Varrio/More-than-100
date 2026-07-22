@@ -41,17 +41,6 @@
 .article-card__category { color: #197a50; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
 .article-card__link { color: #197a50; font-weight: 750; }
 
-.article-card__fallback {
-  display: grid;
-  height: 100%;
-  place-content: center;
-  color: #52665b;
-  gap: 0.5rem;
-  text-align: center;
-}
-
-.article-card__fallback .bi { font-size: 2rem; }
-
 .subcategory-list a {
   display: inline-flex;
   padding: 0.5rem 0.8rem;
@@ -71,7 +60,6 @@
 }
 
 .article-cover-wrap { max-width: 71rem; aspect-ratio: 16 / 9; }
-.article-cover-fallback { border-radius: 1.25rem; background: #dce9df; }
 
 .article-body { max-width: 48rem; font-size: 1.08rem; line-height: 1.85; }
 
