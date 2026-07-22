@@ -1,0 +1,13 @@
+.home-hero {
+  background: linear-gradient(135deg, #f2fbf5 0%, #e5f4ea 100%);
+}
+
+.home-hero .lead {
+  max-width: 44rem;
+}
+
+@media (min-width: 992px) {
+  .py-lg-6 {
+    padding-block: 5rem !important;
+  }
+}

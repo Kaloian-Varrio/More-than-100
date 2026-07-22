@@ -1,0 +1,29 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #243229;
+  background-color: #f7faf8;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background-color: #f7faf8;
+}
+
+.navbar-brand {
+  letter-spacing: 0.02em;
+}
+
+.navbar .nav-link {
+  border-radius: 0.375rem;
+  padding-inline: 0.75rem;
+  transition: background-color 150ms ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus-visible,
+.navbar .nav-link.active {
+  background-color: rgb(255 255 255 / 15%);
+}
