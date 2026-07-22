@@ -1,5 +1,6 @@
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../../styles/global.css';
+import '../../styles/content.css';
 import './assessment.css';
 import { renderLayout } from '../../components/layout.js';
 import { requireAuthenticatedUser } from '../../services/auth-service.js';
@@ -9,6 +10,8 @@ import { assessmentDimensions, assessmentQuestions } from './assessment-question
 import { calculateAssessmentScores } from './assessment-scoring.js';
 import { generateAssessmentAnalysis } from './assessment-analysis.js';
 import { createAssessmentGauge } from './assessment-gauge.js';
+import { getAssessmentRecommendations } from '../../services/recommendation-service.js';
+import { createArticleCard, initializeArticleImages } from '../../components/article-card.js';
 
 document.querySelector('#app').innerHTML = '<main class="d-grid min-vh-100" style="place-items:center"><span class="spinner-border text-success" aria-label="Loading assessment"></span></main>';
 const user = await requireAuthenticatedUser();
@@ -64,7 +67,13 @@ async function handleNext(event, state) {
     const analysis = generateAssessmentAnalysis(scores);
     renderCompletionLoading();
     await Promise.all([saveAssessmentResult(scores, analysis), delay(850)]);
-    renderResults(scores, analysis);
+    let recommendations = [];
+    try {
+      recommendations = await getAssessmentRecommendations(scores);
+    } catch (recommendationError) {
+      console.warn('Assessment recommendations could not be loaded.', recommendationError);
+    }
+    renderResults(scores, analysis, recommendations);
   } catch (error) {
     console.error('Assessment could not be saved.', error);
     state.submitting = false;
@@ -85,14 +94,24 @@ function renderCompletionLoading() {
   document.querySelector('#assessment-content').innerHTML = `<div class="card assessment-card border-0 text-center"><div class="card-body p-5" aria-live="polite"><i class="bi bi-check-circle-fill text-success display-5"></i><h2 class="h3 mt-3">You have successfully completed the assessment.</h2><div class="spinner-border spinner-border-sm text-success mt-3" aria-hidden="true"></div><p class="text-body-secondary mt-2 mb-0">Generating your results&hellip;</p></div></div>`;
 }
 
-function renderResults(scores, analysis) {
+function renderResults(scores, analysis, recommendations) {
   const rows = [['stress', 'Stress Level'], ['sedentary', 'Sedentary Lifestyle Risk'], ['social', 'Social Disconnection Risk']];
   document.querySelector('.assessment-shell').classList.add('assessment-shell--results');
   document.querySelector('#assessment-content').innerHTML = `<section aria-labelledby="results-title">
     <header class="text-center mx-auto assessment-results-header mb-4"><p class="text-success fw-bold text-uppercase small mb-2">Assessment complete</p><h2 class="display-6 fw-bold mb-3" id="results-title">Your Lifestyle &amp; Wellbeing Results</h2><p class="text-body-secondary mb-0">These results highlight lifestyle patterns and possible areas for improvement. Higher percentages indicate higher risk in that area.</p></header>
     <div class="row g-4 justify-content-center mb-4">${rows.map(([key, name]) => `<div class="col-12 col-md-6 col-xl-4">${createAssessmentGauge({ name, key, ...scores[key] })}</div>`).join('')}</div>
-    <article class="card assessment-card assessment-analysis border-0"><div class="card-body p-4 p-sm-5"><h3 class="h2 mb-3"><i class="bi bi-compass text-success me-2" aria-hidden="true"></i>Your personalized lifestyle analysis</h3>${analysis.split(/\n+/).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}<aside class="assessment-disclaimer rounded-3 p-3 mt-4 small"><i class="bi bi-info-circle me-2 text-success" aria-hidden="true"></i>This assessment supports general awareness. It is not a medical or psychological diagnosis and does not replace professional advice.</aside><div class="assessment-result-actions d-flex flex-column flex-sm-row gap-2 mt-4"><a class="btn btn-primary" href="/dashboard"><i class="bi bi-grid me-2" aria-hidden="true"></i>Back to Dashboard</a><a class="btn btn-outline-primary" href="/assessment"><i class="bi bi-arrow-repeat me-2" aria-hidden="true"></i>Take Assessment Again</a></div></div></article>
+    <article class="card assessment-card assessment-analysis border-0 mb-5"><div class="card-body p-4 p-sm-5"><h3 class="h2 mb-3"><i class="bi bi-compass text-success me-2" aria-hidden="true"></i>Your personalized lifestyle analysis</h3>${analysis.split(/\n+/).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}<aside class="assessment-disclaimer rounded-3 p-3 mt-4 small"><i class="bi bi-info-circle me-2 text-success" aria-hidden="true"></i>This assessment supports general awareness. It is not a medical or psychological diagnosis and does not replace professional advice.</aside></div></article>
+    ${createRecommendationsSection(recommendations)}
+    <div class="assessment-result-actions d-flex flex-column flex-sm-row justify-content-center gap-2 mt-5"><a class="btn btn-primary" href="/dashboard"><i class="bi bi-grid me-2" aria-hidden="true"></i>Back to Dashboard</a><a class="btn btn-outline-primary" href="/assessment"><i class="bi bi-arrow-repeat me-2" aria-hidden="true"></i>Take Assessment Again</a></div>
   </section>`;
+  initializeArticleImages(document.querySelector('#assessment-recommendations'));
+}
+
+function createRecommendationsSection(recommendations) {
+  if (!recommendations.length) {
+    return '<section class="assessment-recommendations text-center" id="assessment-recommendations" aria-labelledby="recommendations-title"><h3 class="h2" id="recommendations-title">Recommended for You</h3><p class="text-body-secondary mb-0">Recommendations are temporarily unavailable. You can still explore all wellbeing topics from the home page.</p></section>';
+  }
+  return `<section class="assessment-recommendations" id="assessment-recommendations" aria-labelledby="recommendations-title"><header class="text-center mx-auto assessment-results-header mb-4"><p class="text-success fw-bold text-uppercase small mb-2"><i class="bi bi-journal-heart me-2" aria-hidden="true"></i>Your next steps</p><h3 class="h2 mb-2" id="recommendations-title">Recommended for You</h3><p class="text-body-secondary mb-0">Selected from More Than 100 based on the lifestyle patterns in your assessment.</p></header><div class="row g-4">${recommendations.map(createArticleCard).join('')}</div></section>`;
 }
 
 function delay(milliseconds) { return new Promise((resolve) => window.setTimeout(resolve, milliseconds)); }

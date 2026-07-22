@@ -18,6 +18,16 @@ export async function getFeaturedArticles(limit = 3) {
   return data;
 }
 
+export async function getAllArticles() {
+  const { data, error } = await supabase
+    .from('articles')
+    .select(articleFields)
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+  return data;
+}
+
 export async function getArticleBySlug(slug) {
   const { data: article, error } = await supabase
     .from('articles')

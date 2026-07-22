@@ -28,6 +28,8 @@
 .assessment-gauge--high .assessment-gauge__reading span { background: #fbe4df; color: #914237; }
 .assessment-analysis p { color: #52665b; line-height: 1.75; }
 .assessment-analysis p:last-of-type { margin-bottom: 0; }
+.assessment-recommendations .article-card { background: #fff; }
+.assessment-recommendations .article-card__image-wrap { aspect-ratio: 16 / 9; }
 @media (max-width: 575.98px) { .assessment-actions .btn { flex: 1 1 100%; } .assessment-card .card-body { padding: 1.25rem; } }
 @media (max-width: 575.98px) { .assessment-result-actions .btn { width: 100%; } .assessment-gauge { padding-inline: 0.75rem; } }
 @media (prefers-reduced-motion: reduce) { .assessment-progress .progress-bar, .assessment-option { transition: none; } }
