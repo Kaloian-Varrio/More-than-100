@@ -17,6 +17,8 @@ const dashboardSections = [
     icon: 'bi-clipboard2-pulse',
     title: 'Personal Assessment',
     description: 'Explore your daily habits across movement, stress and social wellbeing.',
+    href: '/assessment',
+    action: 'Start assessment',
   },
   {
     icon: 'bi-graph-up-arrow',

@@ -1,0 +1,15 @@
+.assessment-page { background: linear-gradient(180deg, #edf7ef 0, #f7faf8 22rem); }
+.assessment-shell { max-width: 52rem; }
+.assessment-disclaimer { border-left: 4px solid #197a50; background: rgb(255 255 255 / 80%); }
+.assessment-card { border-radius: 1.25rem; box-shadow: 0 1rem 3rem rgb(18 60 45 / 10%); }
+.assessment-progress { height: 0.55rem; background: #dce9df; }
+.assessment-progress .progress-bar { background: #197a50; transition: width 240ms ease; }
+.assessment-option { display: flex; align-items: center; min-height: 4rem; border: 1px solid #c9dacf; border-radius: 0.85rem; padding: 0.9rem 1rem; cursor: pointer; transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease; }
+.assessment-option:hover { border-color: #197a50; background: #f4faf6; }
+.assessment-option:has(.form-check-input:checked) { border-color: #197a50; background: #eaf6ee; box-shadow: 0 0 0 2px rgb(25 122 80 / 12%); }
+.assessment-option .form-check-input { flex: 0 0 auto; width: 1.25rem; height: 1.25rem; margin: 0 0.85rem 0 0; }
+.assessment-option .form-check-label { width: 100%; cursor: pointer; font-weight: 600; }
+.assessment-result { border: 1px solid #dce9df; border-radius: 0.85rem; background: #f8fbf9; }
+.assessment-result strong { color: #123c2d; }
+@media (max-width: 575.98px) { .assessment-actions .btn { flex: 1 1 100%; } .assessment-card .card-body { padding: 1.25rem; } }
+@media (prefers-reduced-motion: reduce) { .assessment-progress .progress-bar, .assessment-option { transition: none; } }
