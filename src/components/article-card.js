@@ -10,10 +10,20 @@ function getFallbackImage(article) {
   return movementImage;
 }
 
+function isPlaceholderImageUrl(imageUrl) {
+  if (!imageUrl) return false;
+  try {
+    return ['placehold.co', 'placehold.it', 'via.placeholder.com'].includes(new URL(imageUrl).hostname);
+  } catch {
+    return false;
+  }
+}
+
 export function createArticleImage(article, { className = 'article-card__image', loading = 'lazy' } = {}) {
   const title = escapeHtml(article.title);
   const fallbackUrl = getFallbackImage(article);
-  const imageUrl = safeImageUrl(article.cover_image_url) || fallbackUrl;
+  const safeCoverUrl = safeImageUrl(article.cover_image_url);
+  const imageUrl = safeCoverUrl && !isPlaceholderImageUrl(safeCoverUrl) ? safeCoverUrl : fallbackUrl;
   return `<img class="${className}" data-content-image data-fallback-src="${escapeHtml(fallbackUrl)}" src="${escapeHtml(imageUrl)}" alt="Cover for ${title}" loading="${loading}" width="1600" height="900" />`;
 }
 
