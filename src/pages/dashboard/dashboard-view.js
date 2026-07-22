@@ -1,3 +1,5 @@
+import { createArticleImage } from '../../components/article-card.js';
+
 const dashboardSections = [
   {
     icon: 'bi-person-circle',
@@ -5,11 +7,6 @@ const dashboardSections = [
     description: 'View your account details and prepare for future profile customization.',
     href: '#account',
     action: 'View account',
-  },
-  {
-    icon: 'bi-journal-text',
-    title: 'My Articles',
-    description: 'Your published and draft healthy-living articles will be organized here.',
   },
   {
     icon: 'bi-chat-square-text',
@@ -64,7 +61,7 @@ function createSectionCard({ icon, title, description, href, action }) {
     </div>`;
 }
 
-export function createDashboardContent(user, profile) {
+export function createDashboardContent(user, profile, articles = [], articlesError = false) {
   const displayName = escapeHtml(getDisplayName(user, profile));
   const firstName = escapeHtml(profile?.first_name || 'Not provided');
   const lastName = escapeHtml(profile?.last_name || 'Not provided');
@@ -98,6 +95,16 @@ export function createDashboardContent(user, profile) {
       </div>
     </section>
 
+    <section class="container pb-5" id="my-articles" aria-labelledby="my-articles-title">
+      <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mb-4">
+        <div><p class="text-success fw-semibold mb-2">Your contributions</p><h2 class="h3 mb-0" id="my-articles-title">My Articles</h2></div>
+        <a class="btn btn-primary" href="/articles/create"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Create Article</a>
+      </div>
+      <div class="my-articles-card" id="my-articles-list">
+        ${createArticlesMarkup(articles, articlesError)}
+      </div>
+    </section>
+
     <section class="container pb-5" id="account" aria-labelledby="account-title" tabindex="-1">
       <article class="account-card card border-0 overflow-hidden">
         <div class="row g-0">
@@ -119,4 +126,32 @@ export function createDashboardContent(user, profile) {
         </div>
       </article>
     </section>`;
+}
+
+function createArticlesMarkup(articles, hasError) {
+  if (hasError) return '<div class="article-empty text-center p-5"><i class="bi bi-exclamation-circle d-block mb-3" aria-hidden="true"></i><h3 class="h5">Articles could not be loaded</h3><p class="text-body-secondary mb-0">Refresh the page to try again.</p></div>';
+  if (!articles.length) return '<div class="article-empty text-center p-5"><i class="bi bi-journal-plus d-block mb-3" aria-hidden="true"></i><h3 class="h5">No articles yet</h3><p class="text-body-secondary mb-3">Create your first article and share it with the community.</p><a class="btn btn-primary" href="/articles/create">Create Article</a></div>';
+
+  return articles.map((article) => `
+    <article class="dashboard-article d-flex flex-column flex-md-row gap-3 p-3 p-lg-4" data-article-row>
+      <div class="dashboard-article__image">${createDashboardImage(article)}</div>
+      <div class="flex-grow-1 min-w-0">
+        <p class="article-card__category mb-1">${escapeHtml(article.category?.name || 'Wellbeing')}</p>
+        <h3 class="h5 mb-2 text-break">${escapeHtml(article.title)}</h3>
+        <p class="small text-body-secondary mb-3"><i class="bi bi-calendar3 me-1" aria-hidden="true"></i>${formatDate(article.created_at)}</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-sm btn-outline-primary" href="/articles/${encodeURIComponent(article.slug)}">View</a>
+          <a class="btn btn-sm btn-outline-secondary" href="/articles/${encodeURIComponent(article.slug)}/edit">Edit</a>
+          <button class="btn btn-sm btn-outline-danger" type="button" data-delete-article="${escapeHtml(article.id)}">Delete</button>
+        </div>
+      </div>
+    </article>`).join('');
+}
+
+function createDashboardImage(article) {
+  return createArticleImage(article, { className: 'dashboard-article__cover' });
+}
+
+function formatDate(value) {
+  return new Intl.DateTimeFormat('en', { dateStyle: 'medium' }).format(new Date(value));
 }

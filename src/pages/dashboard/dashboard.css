@@ -87,10 +87,22 @@
 
 .account-details dd { font-weight: 700; }
 
+#my-articles { scroll-margin-top: 1.5rem; }
+.my-articles-card { overflow: hidden; border-radius: 1.25rem; background: #fff; box-shadow: 0 1rem 3rem rgb(18 60 45 / 8%); }
+.dashboard-article + .dashboard-article { border-top: 1px solid #e2ebe5; }
+.dashboard-article__image { flex: 0 0 12rem; overflow: hidden; border-radius: 0.85rem; aspect-ratio: 16 / 9; background: #dce9df; }
+.dashboard-article__image img { width: 100%; height: 100%; object-fit: cover; }
+.dashboard-article__fallback { display: grid; width: 100%; height: 100%; place-items: center; background: linear-gradient(145deg, #75a96f, #245c45); color: #fff; font-size: 2rem; }
+.article-empty > .bi { color: #197a50; font-size: 2.2rem; }
+.min-w-0 { min-width: 0; }
+
 @media (max-width: 575.98px) {
   .dashboard-hero .btn { width: 100%; }
 
   .account-details dd:not(:last-child) {
     margin-bottom: 1rem;
   }
+
+  #my-articles > div:first-child .btn { width: 100%; }
+  .dashboard-article__image { width: 100%; flex-basis: auto; }
 }

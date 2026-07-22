@@ -1,0 +1,10 @@
+.article-editor-page { background: #f7faf8; }
+.article-editor-shell { max-width: 58rem; }
+.article-editor-card { border-radius: 1.25rem; box-shadow: 0 1rem 3rem rgb(18 60 45 / 10%); }
+.article-editor-card .form-control,
+.article-editor-card .form-select { border-color: #c9dacf; border-radius: 0.75rem; }
+.article-editor-card textarea[name="content"] { min-height: 18rem; resize: vertical; }
+.article-editor-card textarea[name="shortDescription"] { min-height: 6rem; resize: vertical; }
+.article-editor-card .form-control:focus,
+.article-editor-card .form-select:focus { border-color: #197a50; box-shadow: 0 0 0 0.25rem rgb(25 122 80 / 15%); }
+@media (max-width: 575.98px) { .article-editor-actions .btn { width: 100%; } }

@@ -1,7 +1,7 @@
 export function escapeHtml(value = '') {
   const element = document.createElement('span');
   element.textContent = String(value);
-  return element.innerHTML;
+  return element.innerHTML.replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 }
 
 export function safeImageUrl(value) {
