@@ -132,6 +132,12 @@ alter table public.articles enable row level security;
 alter table public.comments enable row level security;
 alter table public.assessment_results enable row level security;
 
+-- Supabase grants broad table privileges to API roles by default. Reset them so
+-- access is limited to the operations explicitly protected by policies below.
+revoke all on public.profiles, public.user_roles, public.categories,
+  public.articles, public.comments, public.assessment_results
+  from anon, authenticated;
+
 grant select on public.profiles, public.categories, public.articles, public.comments
   to anon, authenticated;
 grant insert, update, delete on public.profiles, public.user_roles,
