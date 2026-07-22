@@ -2,6 +2,18 @@
   background: linear-gradient(135deg, #f2fbf5 0%, #e5f4ea 100%);
 }
 
+.hero-headline {
+  max-width: 48rem;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.hero-headline__accent {
+  color: #198754;
+  font-weight: 750;
+}
+
 .home-hero .lead {
   max-width: 44rem;
 }

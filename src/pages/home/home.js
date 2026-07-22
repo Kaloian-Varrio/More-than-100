@@ -9,7 +9,11 @@ const homeContent = `
       <div class="row align-items-center g-4">
         <div class="col-lg-8">
           <span class="badge text-bg-success-subtle text-success-emphasis mb-3">Healthy living, made practical</span>
-          <h1 class="display-4 fw-bold mb-3">Small choices for a longer, healthier life.</h1>
+          <h1 class="display-4 hero-headline mb-3">
+            <span class="hero-headline__accent">Small</span> choices.
+            <span class="hero-headline__accent">Smart</span> actions.
+            A <span class="hero-headline__accent">longer, healthier life.</span>
+          </h1>
           <p class="lead text-body-secondary mb-4">
             More Than 100 brings together simple ideas for wellbeing, movement, mindful living and everyday energy.
           </p>
