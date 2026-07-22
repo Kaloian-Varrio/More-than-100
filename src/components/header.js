@@ -68,7 +68,7 @@ function renderAuthNavigation(user, activePath = window.location.pathname) {
   container.innerHTML = `
     <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
       <a class="nav-link text-white${activePath === '/dashboard' ? ' active' : ''}" href="/dashboard"${activePath === '/dashboard' ? ' aria-current="page"' : ''}>Dashboard</a>
-      <a class="nav-link text-white" href="/dashboard#account"><i class="bi bi-person-circle me-1" aria-hidden="true"></i>Profile</a>
+      <a class="nav-link text-white${activePath === '/profile' ? ' active' : ''}" href="/profile"${activePath === '/profile' ? ' aria-current="page"' : ''}><i class="bi bi-person-circle me-1" aria-hidden="true"></i>Profile</a>
       <button class="btn btn-outline-light btn-sm px-3" id="logout-button" type="button"><i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>Logout</button>
     </div>`;
 

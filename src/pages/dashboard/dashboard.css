@@ -78,7 +78,14 @@
   background: #f7f4e9;
   color: #197a50;
   font-size: 1.6rem;
+  overflow: hidden;
 }
+.account-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.account-avatar__initials,
+.account-avatar .profile-avatar__initials { display: none; }
+.account-avatar.profile-avatar--fallback,
+.account-avatar.profile-avatar--broken .profile-avatar__initials { display: inline-grid; }
+.account-avatar.profile-avatar--broken img { display: none; }
 
 .account-details dt {
   color: #52665b;

@@ -1,0 +1,12 @@
+.profile-page { background: linear-gradient(180deg, #edf7ef 0, #f7faf8 23rem); }
+.profile-shell { max-width: 68rem; }
+.profile-card { overflow: hidden; border-radius: 1.25rem; box-shadow: 0 1rem 3rem rgb(18 60 45 / 10%); }
+.profile-sidebar { background: #123c2d; color: #fff; }
+.profile-avatar-preview { position: relative; width: 10rem; margin-inline: auto; border: 4px solid rgb(255 255 255 / 30%); border-radius: 50%; aspect-ratio: 1; overflow: hidden; background: #e7f1ea; }
+.profile-avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
+.profile-avatar-preview__fallback { display: grid; width: 100%; height: 100%; place-items: center; color: #197a50; font-size: 3rem; font-weight: 800; }
+.profile-upload-note { color: rgb(255 255 255 / 70%); }
+.profile-form .form-control { border-color: #c9dacf; border-radius: 0.75rem; }
+.profile-form textarea { min-height: 8rem; resize: vertical; }
+.profile-form .form-control:focus { border-color: #197a50; box-shadow: 0 0 0 0.25rem rgb(25 122 80 / 15%); }
+@media (max-width: 767.98px) { .profile-avatar-preview { width: 8rem; } .profile-actions .btn { width: 100%; } }

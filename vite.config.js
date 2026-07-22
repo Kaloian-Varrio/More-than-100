@@ -18,6 +18,7 @@ export default defineConfig({
       input: {
         home: resolve(import.meta.dirname, 'index.html'),
         dashboard: resolve(import.meta.dirname, 'dashboard.html'),
+        profile: resolve(import.meta.dirname, 'profile.html'),
         assessment: resolve(import.meta.dirname, 'assessment.html'),
         login: resolve(import.meta.dirname, 'login.html'),
         register: resolve(import.meta.dirname, 'register.html'),

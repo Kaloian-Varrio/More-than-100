@@ -1,12 +1,13 @@
 import { createArticleImage } from '../../components/article-card.js';
+import { createProfileAvatar } from '../../components/profile-avatar.js';
 
 const dashboardSections = [
   {
     icon: 'bi-person-circle',
     title: 'My Profile',
-    description: 'View your account details and prepare for future profile customization.',
-    href: '#account',
-    action: 'View account',
+    description: 'Update your profile details, social links and profile image.',
+    href: '/profile',
+    action: 'Manage profile',
   },
   {
     icon: 'bi-chat-square-text',
@@ -111,7 +112,7 @@ export function createDashboardContent(user, profile, articles = [], articlesErr
       <article class="account-card card border-0 overflow-hidden">
         <div class="row g-0">
           <div class="col-lg-4 account-summary p-4 p-sm-5">
-            <span class="account-avatar mb-3" aria-hidden="true"><i class="bi bi-person"></i></span>
+            ${createProfileAvatar(profile, user, 'account-avatar mb-3')}
             <p class="text-uppercase fw-semibold small mb-2">My Profile</p>
             <h2 class="h3 mb-2" id="account-title">Account details</h2>
             <p class="mb-0">Basic information connected to your secure account.</p>
@@ -123,7 +124,7 @@ export function createDashboardContent(user, profile, articles = [], articlesErr
               <dt class="col-sm-4">Last name</dt><dd class="col-sm-8">${lastName}</dd>
               <dt class="col-sm-4">Email</dt><dd class="col-sm-8 mb-0 text-break">${email}</dd>
             </dl>
-            <p class="small text-body-secondary mt-4 mb-0"><i class="bi bi-shield-lock me-1" aria-hidden="true"></i>Profile editing and image uploads will be available in a future update.</p>
+            <a class="btn btn-primary mt-4" href="/profile"><i class="bi bi-pencil-square me-2" aria-hidden="true"></i>Edit Profile</a>
           </div>
         </div>
       </article>

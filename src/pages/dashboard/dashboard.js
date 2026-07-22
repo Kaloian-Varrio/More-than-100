@@ -7,6 +7,7 @@ import { getProfile } from '../../services/profile-service.js';
 import { createDashboardContent } from './dashboard-view.js';
 import { deleteArticle, getCurrentUserArticles } from '../../services/article-service.js';
 import { initializeArticleImages } from '../../components/article-card.js';
+import { initializeProfileAvatars } from '../../components/profile-avatar.js';
 
 document.querySelector('#app').innerHTML = `
   <main class="dashboard-loading d-grid min-vh-100" aria-live="polite">
@@ -33,6 +34,7 @@ if (user) {
 
   renderLayout({ activePath: '/dashboard', content: createDashboardContent(user, profile, articles, articlesError) });
   initializeArticleImages(document.querySelector('#my-articles'));
+  initializeProfileAvatars(document.querySelector('#account'));
   document.querySelector('#my-articles')?.addEventListener('click', async (event) => {
     const button = event.target.closest('[data-delete-article]');
     if (!button) return;
