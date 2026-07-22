@@ -30,6 +30,12 @@ npm run db:seed
 
 Run the same command a second time to check rerun behavior. Users are reused by email. Profiles and roles are upserted by their unique user identifiers, categories and articles by unique slugs, and comments and assessment results by deterministic identifiers.
 
+To seed only application content while requiring all four sample Auth users to already exist:
+
+```bash
+node --env-file=.env.local supabase/seed-data/seed-sample-db-data.js --content-only
+```
+
 Article image URLs intentionally use clearly labeled temporary placeholders. Replace them later with generated or properly licensed project images stored in Supabase Storage.
 
 The script stops on the first critical API error and prints progress for each major step. A successful run finishes with record counts for profiles, roles, categories, articles, comments and assessment results.

@@ -10,6 +10,7 @@ const REQUIRED_ENV = [
 ];
 const validationOnly = process.argv.includes('--validate');
 const usersOnly = process.argv.includes('--users-only');
+const contentOnly = process.argv.includes('--content-only');
 
 const missingEnvironmentVariables = REQUIRED_ENV.filter((name) => !process.env[name]);
 
@@ -242,6 +243,13 @@ const comments = [
   ['gentle-ten-minute-yoga-reset', 'john@gmail.com', 'Ten minutes feels approachable even on a busy morning.'],
   ['gentle-ten-minute-yoga-reset', 'kaloianh@gmail.com', 'Adapting the movement to the day is an important reminder.'],
 ];
+const omittedCommentIndexes = new Set([4, 13, 14]);
+
+function activeComments() {
+  return comments
+    .map((comment, index) => ({ comment, index }))
+    .filter(({ index }) => !omittedCommentIndexes.has(index));
+}
 
 const assessmentResults = [
   ['john@gmail.com', 5, 7, 3, 'Moderate sitting time; regular movement breaks and social routines may support a more balanced week.'],
@@ -373,6 +381,23 @@ async function ensureAuthUsers() {
   return result;
 }
 
+async function loadExistingSeedUsers() {
+  console.log('1/6 Loading existing sample Auth users...');
+  const existingUsers = await listAuthUsers();
+  const usersByEmail = new Map();
+
+  for (const seedUser of authUsers) {
+    const user = existingUsers.find((candidate) => candidate.email?.toLowerCase() === seedUser.email);
+    if (!user) {
+      throw new Error(`Required existing Auth user not found: ${seedUser.email}. No Auth users were created.`);
+    }
+    usersByEmail.set(seedUser.email, { ...seedUser, id: user.id });
+    console.log(`  found ${seedUser.email}`);
+  }
+
+  return usersByEmail;
+}
+
 async function seedProfilesAndRoles(usersByEmail) {
   console.log('2/7 Upserting profiles and roles...');
   const users = [...usersByEmail.values()];
@@ -451,7 +476,16 @@ async function seedArticles(usersByEmail, categoriesBySlug) {
 
 async function seedComments(usersByEmail, articlesBySlug) {
   console.log('5/7 Upserting sample comments...');
-  const payload = comments.map(([articleSlug, authorEmail, content], index) => ({
+  const obsoleteIds = [...omittedCommentIndexes].map((index) => {
+    const [articleSlug, authorEmail] = comments[index];
+    return stableUuid(`comment:${index}:${articleSlug}:${authorEmail}`);
+  });
+  await request(`/rest/v1/comments?id=in.(${obsoleteIds.join(',')})`, {
+    method: 'DELETE',
+    headers: { Prefer: 'return=minimal' },
+  });
+
+  const payload = activeComments().map(({ comment: [articleSlug, authorEmail, content], index }) => ({
     id: stableUuid(`comment:${index}:${articleSlug}:${authorEmail}`),
     article_id: articlesBySlug.get(articleSlug).id,
     author_id: usersByEmail.get(authorEmail).id,
@@ -484,7 +518,7 @@ async function verifySeed(usersByEmail) {
     request(`/rest/v1/user_roles?select=user_id,role&user_id=in.${encodedIds}`),
     request('/rest/v1/categories?select=id,slug'),
     request(`/rest/v1/articles?select=id,slug&slug=in.(${articles.map(({ slug }) => `\"${slug}\"`).join(',')})`),
-    request(`/rest/v1/comments?select=id&id=in.(${comments.map((entry, index) => stableUuid(`comment:${index}:${entry[0]}:${entry[1]}`)).join(',')})`),
+    request(`/rest/v1/comments?select=id&id=in.(${activeComments().map(({ comment: entry, index }) => stableUuid(`comment:${index}:${entry[0]}:${entry[1]}`)).join(',')})`),
     request(`/rest/v1/assessment_results?select=id&id=in.(${assessmentResults.map((entry, index) => stableUuid(`assessment:${index}:${entry[0]}`)).join(',')})`),
   ]);
 
@@ -496,7 +530,7 @@ async function verifySeed(usersByEmail) {
     roles: [roles.length, authUsers.length],
     categories: [categories.filter(({ slug }) => Object.keys(categoryTree).some((name) => slug === slugify(name)) || Object.values(categoryTree).flat().some((name) => slug === slugify(name))).length, expectedCategoryCount],
     articles: [savedArticles.length, articles.length],
-    comments: [savedComments.length, comments.length],
+    comments: [savedComments.length, activeComments().length],
     assessments: [assessments.length, assessmentResults.length],
   };
 
@@ -540,8 +574,8 @@ async function verifyUsers(usersByEmail) {
 
 async function main() {
   console.log('Seeding More Than 100 sample data...');
-  const usersByEmail = await ensureAuthUsers();
-  await seedProfilesAndRoles(usersByEmail);
+  const usersByEmail = contentOnly ? await loadExistingSeedUsers() : await ensureAuthUsers();
+  if (!contentOnly) await seedProfilesAndRoles(usersByEmail);
   if (usersOnly) {
     await verifyUsers(usersByEmail);
     console.log('Sample user seed completed successfully.');
@@ -569,8 +603,8 @@ function validateSeedDefinition() {
     [expectedCategoryCount === 41, 'six main categories and 35 subcategories'],
     [articles.length === 15 && uniqueArticleSlugs.size === articles.length, '15 uniquely slugged articles'],
     [articles.every(({ author, category }) => userEmails.has(author) && categoryNames.has(category)), 'valid article references'],
-    [comments.length >= 20 && comments.length <= 25, '20-25 comments'],
-    [comments.every(([slug, email]) => uniqueArticleSlugs.has(slug) && userEmails.has(email)), 'valid comment references'],
+    [activeComments().length >= 20 && activeComments().length <= 25, '20-25 comments'],
+    [activeComments().every(({ comment: [slug, email] }) => uniqueArticleSlugs.has(slug) && userEmails.has(email)), 'valid comment references'],
     [assessmentResults.every(([email]) => email !== 'kaloianh@gmail.com' && userEmails.has(email)), 'normal-user assessment results only'],
   ];
   const failed = checks.filter(([passed]) => !passed).map(([, label]) => label);
