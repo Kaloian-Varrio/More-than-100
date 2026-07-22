@@ -240,6 +240,8 @@
 .article-card:hover .article-card__link .bi,
 .view-all-link:hover .bi { transform: translateX(3px); }
 
+.area-card__children { color: #60776c; font-size: 0.82rem; line-height: 1.6; }
+
 .featured-content { background: var(--home-cream); }
 .article-card { overflow: hidden; }
 

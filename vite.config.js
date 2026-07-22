@@ -3,6 +3,16 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   appType: 'mpa',
+  plugins: [{
+    name: 'clean-content-routes',
+    configureServer(server) {
+      server.middlewares.use((request, _response, next) => {
+        if (request.url?.startsWith('/articles/')) request.url = '/article.html';
+        if (request.url?.startsWith('/categories/')) request.url = '/category.html';
+        next();
+      });
+    },
+  }],
   build: {
     rollupOptions: {
       input: {
@@ -10,6 +20,8 @@ export default defineConfig({
         dashboard: resolve(import.meta.dirname, 'dashboard.html'),
         login: resolve(import.meta.dirname, 'login.html'),
         register: resolve(import.meta.dirname, 'register.html'),
+        article: resolve(import.meta.dirname, 'article.html'),
+        category: resolve(import.meta.dirname, 'category.html'),
       },
     },
   },

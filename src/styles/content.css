@@ -1,0 +1,81 @@
+.content-page { background: #f7faf8; }
+
+.content-page-hero {
+  background: linear-gradient(135deg, #edf7ef, #f8f5e9);
+}
+
+.content-state {
+  width: 100%;
+  border: 1px dashed #c9dacf;
+  border-radius: 1rem;
+  background: #fff;
+  padding-inline: 1.25rem;
+}
+
+.content-state > .bi { color: #197a50; font-size: 2rem; }
+
+.article-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  box-shadow: 0 0.5rem 2rem rgb(18 60 45 / 8%);
+  transition: box-shadow 220ms ease, transform 220ms ease;
+}
+
+.article-card:hover,
+.article-card:focus-within {
+  box-shadow: 0 1rem 2.6rem rgb(18 60 45 / 15%);
+  transform: translateY(-5px);
+}
+
+.article-card__image-wrap {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: #dce9df;
+}
+
+.article-card__image { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms ease; }
+.article-card:hover .article-card__image { transform: scale(1.04); }
+.article-card .stretched-link { color: inherit; text-decoration: none; }
+.article-card__category { color: #197a50; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.article-card__link { color: #197a50; font-weight: 750; }
+
+.article-card__fallback {
+  display: grid;
+  height: 100%;
+  place-content: center;
+  color: #52665b;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.article-card__fallback .bi { font-size: 2rem; }
+
+.subcategory-list a {
+  display: inline-flex;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #cfe0d5;
+  border-radius: 999px;
+  background: #fff;
+  color: #125f3d;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.article-cover {
+  width: 100%;
+  max-height: 34rem;
+  border-radius: 1.25rem;
+  object-fit: cover;
+}
+
+.article-cover-wrap { max-width: 71rem; aspect-ratio: 16 / 9; }
+.article-cover-fallback { border-radius: 1.25rem; background: #dce9df; }
+
+.article-body { max-width: 48rem; font-size: 1.08rem; line-height: 1.85; }
+
+@media (prefers-reduced-motion: reduce) {
+  .article-card,
+  .article-card__image { transition: none; }
+}
