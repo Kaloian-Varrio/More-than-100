@@ -5,6 +5,11 @@
 .article-editor-card .form-select { border-color: #c9dacf; border-radius: 0.75rem; }
 .article-editor-card textarea[name="content"] { min-height: 18rem; resize: vertical; }
 .article-editor-card textarea[name="shortDescription"] { min-height: 6rem; resize: vertical; }
+.article-media { border: 1px solid #d7e4db; border-radius: 1rem; background: #f8fbf9; }
+.article-media__preview { display: grid; overflow: hidden; border-radius: 0.85rem; aspect-ratio: 16 / 9; place-items: center; background: #dce9df; color: #197a50; }
+.article-media__preview img { width: 100%; height: 100%; object-fit: cover; }
+.article-media__preview .bi { font-size: 2.5rem; }
+.article-media__controls .btn { min-height: 2.75rem; }
 .article-editor-card .form-control:focus,
 .article-editor-card .form-select:focus { border-color: #197a50; box-shadow: 0 0 0 0.25rem rgb(25 122 80 / 15%); }
 @media (max-width: 575.98px) { .article-editor-actions .btn { width: 100%; } }
