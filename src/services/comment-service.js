@@ -2,7 +2,7 @@ import { supabase } from './supabase-client.js';
 import { getCurrentUser } from './auth-service.js';
 import { getCurrentUserPermissions } from './role-service.js';
 
-const commentFields = 'id, article_id, author_id, content, created_at, updated_at';
+const commentFields = 'id, article_id, author_id, content, admin_order, owner_order, created_at, updated_at';
 
 export async function getCommentsForArticle(articleId) {
   const { data: comments, error } = await supabase
@@ -33,6 +33,7 @@ export async function getCurrentUserComments() {
     .from('comments')
     .select(commentFields)
     .eq('author_id', user.id)
+    .order('owner_order')
     .order('created_at', { ascending: false });
 
   if (error) throw error;

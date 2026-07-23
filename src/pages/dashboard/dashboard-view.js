@@ -1,6 +1,7 @@
 import { createArticleImage, createCompactArticleCard } from '../../components/article-card.js';
 import { createProfileAvatar } from '../../components/profile-avatar.js';
 import { getRiskLabel } from '../assessment/assessment-scoring.js';
+import { createReorderControls } from '../../components/reorderable-list.js';
 
 const dashboardSections = [
   {
@@ -165,9 +166,12 @@ function createCommentsMarkup(comments, hasError, permissions) {
   return comments.map((comment) => `
     <article class="dashboard-comment p-3 p-lg-4" data-comment-row="${escapeHtml(comment.id)}">
       <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
-        <div class="min-w-0">
-          <p class="small text-body-secondary mb-2"><i class="bi bi-journal-text me-1" aria-hidden="true"></i>${escapeHtml(comment.article?.title || 'Article unavailable')} &middot; <time datetime="${comment.created_at}">${formatDate(comment.created_at)}</time></p>
-          <p class="dashboard-comment__text mb-0">${escapeHtml(comment.content)}</p>
+        <div class="d-flex align-items-start gap-2 min-w-0">
+          ${permissions.canComment ? createReorderControls(`comment on ${comment.article?.title || 'article'}`) : ''}
+          <div class="min-w-0">
+            <p class="small text-body-secondary mb-2"><i class="bi bi-journal-text me-1" aria-hidden="true"></i>${escapeHtml(comment.article?.title || 'Article unavailable')} &middot; <time datetime="${comment.created_at}">${formatDate(comment.created_at)}</time></p>
+            <p class="dashboard-comment__text mb-0">${escapeHtml(comment.content)}</p>
+          </div>
         </div>
         <div class="d-flex flex-wrap align-self-md-start gap-2">
           ${comment.article?.slug ? `<a class="btn btn-sm btn-outline-primary" href="/articles/${encodeURIComponent(comment.article.slug)}">View Article</a>` : ''}
@@ -205,7 +209,8 @@ function createArticlesMarkup(articles, hasError, permissions) {
   if (!articles.length) return `<div class="article-empty text-center p-5"><i class="bi bi-journal-plus d-block mb-3" aria-hidden="true"></i><h3 class="h5">No articles yet</h3><p class="text-body-secondary mb-${permissions.canCreateContent ? '3' : '0'}">${permissions.canCreateContent ? 'Create your first article and share it with the community.' : 'Reader accounts can explore published articles from the public library.'}</p>${permissions.canCreateContent ? '<a class="btn btn-primary" href="/articles/create">Create Article</a>' : ''}</div>`;
 
   return articles.map((article) => `
-    <article class="dashboard-article d-flex flex-column flex-md-row gap-3 p-3 p-lg-4" data-article-row>
+    <article class="dashboard-article d-flex flex-column flex-md-row gap-3 p-3 p-lg-4" data-article-row="${escapeHtml(article.id)}">
+      ${permissions.canCreateContent ? createReorderControls(`article ${article.title}`) : ''}
       <div class="dashboard-article__image">${createDashboardImage(article)}</div>
       <div class="flex-grow-1 min-w-0">
         <div class="d-flex flex-wrap align-items-center gap-2 mb-1">

@@ -14,6 +14,7 @@ import { getAssessmentRecommendations } from '../../services/recommendation-serv
 import { getRiskLabel } from '../assessment/assessment-scoring.js';
 import { escapeHtml } from '../../utils/html.js';
 import { getCurrentUserPermissions } from '../../services/role-service.js';
+import { initializeReorderableList } from '../../components/reorderable-list.js';
 
 document.querySelector('#app').innerHTML = `
   <main class="dashboard-loading d-grid min-vh-100" aria-live="polite">
@@ -79,6 +80,20 @@ if (user) {
   initializeArticleImages(document.querySelector('#my-articles'));
   initializeArticleImages(document.querySelector('#dashboard-recommendations'));
   initializeProfileAvatars(document.querySelector('#account'));
+  if (permissions.canCreateContent) initializeReorderableList({
+    container: document.querySelector('#my-articles-list'),
+    itemSelector: '[data-article-row]',
+    idAttribute: 'articleRow',
+    scope: 'owner_articles',
+    successMessage: 'Your article order was saved.',
+  });
+  if (permissions.canComment) initializeReorderableList({
+    container: document.querySelector('#my-comments-list'),
+    itemSelector: '[data-comment-row]',
+    idAttribute: 'commentRow',
+    scope: 'owner_comments',
+    successMessage: 'Your comment order was saved.',
+  });
   if (permissions.canCreateContent) document.querySelector('#my-articles')?.addEventListener('click', async (event) => {
     const button = event.target.closest('[data-delete-article]');
     if (!button) return;

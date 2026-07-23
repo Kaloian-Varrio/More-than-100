@@ -19,6 +19,7 @@ import {
 import { initializeBrandLogos, uploadBrandLogo, validateBrandLogo } from '../../services/brand-logo-service.js';
 import { escapeHtml } from '../../utils/html.js';
 import { deleteStory, setStoryPublished } from '../../services/story-service.js';
+import { createReorderControls, initializeReorderableList } from '../../components/reorderable-list.js';
 
 document.querySelector('#app').innerHTML = '<main class="d-grid min-vh-100" style="place-items:center"><span class="spinner-border text-success" aria-label="Loading admin panel"></span></main>';
 const currentAdmin = await requireAdminUser();
@@ -79,6 +80,7 @@ function renderAdmin(data) {
   initializeProfileAvatars(document.querySelector('#users'));
   initializeArticleImages(document.querySelector('#articles'));
   initializeActions(data);
+  initializeAdminOrdering();
   initializeBranding();
 }
 
@@ -91,10 +93,11 @@ function usersSection(profiles) {
   const body = profiles.length ? `
     <div class="table-responsive">
       <table class="table table-hover align-middle admin-table mb-0">
-        <thead><tr><th>User</th><th>Email</th><th>Nickname</th><th>Role</th><th class="text-end">Actions</th></tr></thead>
-        <tbody>
+        <thead><tr><th class="reorder-column">Order</th><th>User</th><th>Email</th><th>Nickname</th><th>Role</th><th class="text-end">Actions</th></tr></thead>
+        <tbody data-reorder-list="admin-users">
           ${profiles.map((profile) => `
             <tr data-profile-id="${profile.id}">
+              <td>${createReorderControls(`user ${fullName(profile)}`)}</td>
               <td><div class="d-flex align-items-center gap-2">${createProfileAvatar(profile, null, 'admin-avatar')}<span>${escapeHtml(fullName(profile))}</span></div></td>
               <td><span class="text-break">${escapeHtml(profile.email || 'Unavailable')}</span></td>
               <td>${escapeHtml(profile.nickname || '—')}</td>
@@ -137,10 +140,11 @@ function articlesSection(articles) {
   const body = articles.length ? `
     <div class="table-responsive">
       <table class="table table-hover align-middle admin-table mb-0">
-        <thead><tr><th>Article</th><th>Author</th><th>Visibility</th><th>Created</th><th class="text-end">Actions</th></tr></thead>
-        <tbody>
+        <thead><tr><th class="reorder-column">Order</th><th>Article</th><th>Author</th><th>Visibility</th><th>Created</th><th class="text-end">Actions</th></tr></thead>
+        <tbody data-reorder-list="admin-articles">
           ${articles.map((article) => `
             <tr data-article-id="${article.id}">
+              <td>${createReorderControls(`article ${article.title}`)}</td>
               <td><div class="d-flex align-items-center gap-3"><div class="admin-article-thumb">${createArticleImage(article, { className: 'admin-article-thumb__image' })}</div><span class="fw-semibold">${escapeHtml(article.title)}</span></div></td>
               <td>${escapeHtml(displayName(article.author))}</td>
               <td><span class="badge ${article.is_published ? 'text-bg-success' : 'text-bg-secondary'}" data-visibility-badge>${article.is_published ? 'Published' : 'Unpublished'}</span></td>
@@ -161,8 +165,8 @@ function articlesSection(articles) {
 function storiesSection(stories) {
   const body = stories.length ? `
     <div class="p-4 border-bottom text-end"><a class="btn btn-primary" href="/admin/stories/create"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Create story</a></div>
-    <div class="table-responsive"><table class="table table-hover align-middle admin-table mb-0"><thead><tr><th>Story</th><th>Person</th><th>Visibility</th><th>Created</th><th class="text-end">Actions</th></tr></thead><tbody>
-    ${stories.map((story) => `<tr data-story-id="${story.id}"><td><div class="d-flex align-items-center gap-3"><img class="admin-story-thumb" src="${escapeHtml(story.image_url)}" alt="" width="96" height="54"><span class="fw-semibold">${escapeHtml(story.title)}</span></div></td><td>${escapeHtml(story.person_name)}</td><td><span class="badge ${story.is_published ? 'text-bg-success' : 'text-bg-secondary'}">${story.is_published ? 'Published' : 'Unpublished'}</span></td><td>${date(story.created_at)}</td><td><div class="d-flex flex-wrap justify-content-end gap-2"><a class="btn btn-sm btn-outline-primary" href="/stories/${encodeURIComponent(story.slug)}">View</a><a class="btn btn-sm btn-outline-secondary" href="/admin/stories/${encodeURIComponent(story.slug)}/edit">Edit</a><button class="btn btn-sm btn-outline-warning" data-toggle-story data-published="${story.is_published}">${story.is_published ? 'Unpublish' : 'Publish'}</button><button class="btn btn-sm btn-outline-danger" data-delete-story>Delete</button></div></td></tr>`).join('')}
+    <div class="table-responsive"><table class="table table-hover align-middle admin-table mb-0"><thead><tr><th class="reorder-column">Order</th><th>Story</th><th>Person</th><th>Visibility</th><th>Created</th><th class="text-end">Actions</th></tr></thead><tbody data-reorder-list="admin-stories">
+    ${stories.map((story) => `<tr data-story-id="${story.id}"><td>${createReorderControls(`story ${story.title}`)}</td><td><div class="d-flex align-items-center gap-3"><img class="admin-story-thumb" src="${escapeHtml(story.image_url)}" alt="" width="96" height="54"><span class="fw-semibold">${escapeHtml(story.title)}</span></div></td><td>${escapeHtml(story.person_name)}</td><td><span class="badge ${story.is_published ? 'text-bg-success' : 'text-bg-secondary'}">${story.is_published ? 'Published' : 'Unpublished'}</span></td><td>${date(story.created_at)}</td><td><div class="d-flex flex-wrap justify-content-end gap-2"><a class="btn btn-sm btn-outline-primary" href="/stories/${encodeURIComponent(story.slug)}">View</a><a class="btn btn-sm btn-outline-secondary" href="/admin/stories/${encodeURIComponent(story.slug)}/edit">Edit</a><button class="btn btn-sm btn-outline-warning" data-toggle-story data-published="${story.is_published}">${story.is_published ? 'Unpublish' : 'Publish'}</button><button class="btn btn-sm btn-outline-danger" data-delete-story>Delete</button></div></td></tr>`).join('')}
     </tbody></table></div>` : `<div class="p-4 border-bottom text-end"><a class="btn btn-primary" href="/admin/stories/create">Create story</a></div>${empty('No stories found.')}`;
   return panel('stories', 'Stories', body, 'Create, edit and control publication of story content.');
 }
@@ -171,10 +175,11 @@ function commentsSection(comments) {
   const body = comments.length ? `
     <div class="table-responsive">
       <table class="table table-hover align-middle admin-table mb-0">
-        <thead><tr><th>Author</th><th>Article</th><th>Comment</th><th>Created</th><th class="text-end">Actions</th></tr></thead>
-        <tbody>
+        <thead><tr><th class="reorder-column">Order</th><th>Author</th><th>Article</th><th>Comment</th><th>Created</th><th class="text-end">Actions</th></tr></thead>
+        <tbody data-reorder-list="admin-comments">
           ${comments.map((comment) => `
             <tr data-comment-id="${comment.id}">
+              <td>${createReorderControls(`comment by ${displayName(comment.author)}`)}</td>
               <td>${escapeHtml(displayName(comment.author))}</td>
               <td>${escapeHtml(comment.article?.title || 'Deleted article')}</td>
               <td class="admin-comment" data-comment-content>${escapeHtml(comment.content)}</td>
@@ -243,6 +248,23 @@ function initializeActions(data) {
   initializeArticleActions();
   initializeStoryActions();
   initializeCommentActions(data);
+}
+
+function initializeAdminOrdering() {
+  [
+    ['admin-users', 'tr[data-profile-id]', 'profileId', 'admin_users', 'User order saved.'],
+    ['admin-articles', 'tr[data-article-id]', 'articleId', 'admin_articles', 'Article order saved.'],
+    ['admin-stories', 'tr[data-story-id]', 'storyId', 'admin_stories', 'Story order saved.'],
+    ['admin-comments', 'tr[data-comment-id]', 'commentId', 'admin_comments', 'Comment order saved.'],
+  ].forEach(([list, itemSelector, idAttribute, scope, successMessage]) => {
+    initializeReorderableList({
+      container: document.querySelector(`[data-reorder-list="${list}"]`),
+      itemSelector,
+      idAttribute,
+      scope,
+      successMessage,
+    });
+  });
 }
 
 function initializeRoleActions(data) {

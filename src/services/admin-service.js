@@ -2,15 +2,15 @@ import { supabase } from './supabase-client.js';
 import { getAllArticles } from './article-service.js';
 import { getAllStoriesForAdmin } from './story-service.js';
 
-const profileFields = 'id, first_name, last_name, nickname, bio, avatar_url, website_url, instagram_url, facebook_url, created_at, updated_at';
+const profileFields = 'id, first_name, last_name, nickname, bio, avatar_url, website_url, instagram_url, facebook_url, admin_order, created_at, updated_at';
 
 export async function getAdminOverviewData() {
   const [profilesResult, rolesResult, articles, stories, commentsResult, authUsers] = await Promise.all([
-    supabase.from('profiles').select(profileFields).order('created_at'),
+    supabase.from('profiles').select(profileFields).order('admin_order').order('created_at'),
     supabase.from('user_roles').select('user_id, role').order('created_at'),
     getAllArticles(),
     getAllStoriesForAdmin(),
-    supabase.from('comments').select('id, article_id, author_id, content, created_at, updated_at').order('created_at', { ascending: false }),
+    supabase.from('comments').select('id, article_id, author_id, content, admin_order, owner_order, created_at, updated_at').order('admin_order').order('created_at', { ascending: false }),
     invokeAdminUsers({ action: 'list' }).then(({ users }) => users),
   ]);
   const error = profilesResult.error || rolesResult.error || commentsResult.error;

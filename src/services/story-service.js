@@ -1,13 +1,13 @@
 import { supabase } from './supabase-client.js';
 
-const storyFields = 'id, title, slug, person_name, intro, content, image_url, themes, is_published, created_at, updated_at';
+const storyFields = 'id, title, slug, person_name, intro, content, image_url, themes, is_published, display_order, created_at, updated_at';
 
 function throwIfError(error) {
   if (error) throw error;
 }
 
 export async function getPublishedStories(limit) {
-  let query = supabase.from('stories').select(storyFields).eq('is_published', true).order('created_at', { ascending: false });
+  let query = supabase.from('stories').select(storyFields).eq('is_published', true).order('display_order').order('created_at', { ascending: false });
   if (limit) query = query.limit(limit);
   const { data, error } = await query;
   throwIfError(error);
@@ -15,7 +15,7 @@ export async function getPublishedStories(limit) {
 }
 
 export async function getAllStoriesForAdmin() {
-  const { data, error } = await supabase.from('stories').select(storyFields).order('created_at', { ascending: false });
+  const { data, error } = await supabase.from('stories').select(storyFields).order('display_order').order('created_at', { ascending: false });
   throwIfError(error);
   return data;
 }

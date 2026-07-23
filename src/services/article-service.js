@@ -4,7 +4,7 @@ import { getCurrentUserPermissions, isCurrentUserAdmin } from './role-service.js
 
 const articleFields = `
   id, author_id, category_id, title, slug, short_description,
-  content, cover_image_url, is_published, created_at, updated_at,
+  content, cover_image_url, is_published, display_order, owner_order, created_at, updated_at,
   category:categories!articles_category_id_fkey(name, slug)
 `;
 
@@ -20,6 +20,17 @@ export async function getFeaturedArticles(limit = 3) {
 }
 
 export async function getAllArticles() {
+  const { data, error } = await supabase
+    .from('articles')
+    .select(articleFields)
+    .order('display_order')
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+  return data;
+}
+
+export async function getArticlesForRecommendations() {
   const { data, error } = await supabase
     .from('articles')
     .select(articleFields)
@@ -56,6 +67,7 @@ export async function getArticlesByCategoryIds(categoryIds) {
     .from('articles')
     .select(articleFields)
     .in('category_id', categoryIds)
+    .order('display_order')
     .order('created_at', { ascending: false });
 
   if (error) throw error;
@@ -68,6 +80,7 @@ export async function getCurrentUserArticles() {
     .from('articles')
     .select(articleFields)
     .eq('author_id', user.id)
+    .order('owner_order')
     .order('created_at', { ascending: false });
 
   if (error) throw error;

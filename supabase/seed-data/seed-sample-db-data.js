@@ -821,7 +821,7 @@ async function loadExistingSeedUsers() {
 async function seedProfilesAndRoles(usersByEmail) {
   console.log('2/8 Upserting profiles and roles...');
   const users = [...usersByEmail.values()];
-  const profiles = users.map(({ id, profile }) => ({
+  const profiles = users.map(({ id, profile }, adminOrder) => ({
     id,
     first_name: profile.first_name || null,
     last_name: profile.last_name || null,
@@ -831,6 +831,7 @@ async function seedProfilesAndRoles(usersByEmail) {
     website_url: profile.website_url || null,
     instagram_url: profile.instagram_url || null,
     facebook_url: profile.facebook_url || null,
+    admin_order: adminOrder,
   }));
   const roles = users.map(({ id, email, role }) => ({
     id: stableUuid(`role:${email}`),
@@ -879,7 +880,11 @@ async function seedArticles(usersByEmail, categoriesBySlug) {
   console.log('4/8 Upserting sample articles...');
   const existing = await request('/rest/v1/articles?select=id,slug');
   const existingBySlug = new Map(existing.map((article) => [article.slug, article]));
-  const payload = articles.map((article) => ({
+  const ownerPositions = new Map();
+  const payload = articles.map((article, displayOrder) => {
+    const ownerOrder = ownerPositions.get(article.author) || 0;
+    ownerPositions.set(article.author, ownerOrder + 1);
+    return {
     id: existingBySlug.get(article.slug)?.id || stableUuid(`article:${article.slug}`),
     author_id: usersByEmail.get(article.author).id,
     category_id: categoriesBySlug.get(slugify(article.category)).id,
@@ -888,7 +893,10 @@ async function seedArticles(usersByEmail, categoriesBySlug) {
     short_description: article.short_description,
     content: article.content,
     cover_image_url: article.cover_image_url,
-  }));
+    display_order: displayOrder,
+    owner_order: ownerOrder,
+  };
+  });
   const saved = await upsert('articles', payload, 'slug');
   console.log(`  ${saved.length} articles ready`);
   return new Map(saved.map((article) => [article.slug, article]));
@@ -898,10 +906,11 @@ async function seedStories() {
   console.log('5/8 Upserting inspirational demo stories...');
   const existing = await request('/rest/v1/stories?select=id,slug');
   const existingBySlug = new Map(existing.map((story) => [story.slug, story]));
-  const payload = stories.map((story) => ({
+  const payload = stories.map((story, displayOrder) => ({
     id: existingBySlug.get(story.slug)?.id || stableUuid(`story:${story.slug}`),
     ...story,
     is_published: true,
+    display_order: displayOrder,
   }));
   const saved = await upsert('stories', payload, 'slug');
   console.log(`  ${saved.length} stories ready`);
@@ -918,12 +927,19 @@ async function seedComments(usersByEmail, articlesBySlug) {
     headers: { Prefer: 'return=minimal' },
   });
 
-  const payload = activeComments().map(({ comment: [articleSlug, authorEmail, content], index }) => ({
+  const ownerPositions = new Map();
+  const payload = activeComments().map(({ comment: [articleSlug, authorEmail, content], index }, adminOrder) => {
+    const ownerOrder = ownerPositions.get(authorEmail) || 0;
+    ownerPositions.set(authorEmail, ownerOrder + 1);
+    return {
     id: stableUuid(`comment:${index}:${articleSlug}:${authorEmail}`),
     article_id: articlesBySlug.get(articleSlug).id,
     author_id: usersByEmail.get(authorEmail).id,
     content,
-  }));
+    admin_order: adminOrder,
+    owner_order: ownerOrder,
+  };
+  });
   const saved = await upsert('comments', payload, 'id');
   console.log(`  ${saved.length} comments ready`);
 }

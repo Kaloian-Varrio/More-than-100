@@ -11,6 +11,7 @@
     "test:stories:rls": "node --env-file=.env.local scripts/verify-stories-rls.mjs",
     "test:roles:security": "node --env-file=.env.local scripts/verify-role-management.mjs",
     "test:ai-images:security": "node --env-file=.env.local scripts/verify-ai-image-security.mjs",
+    "test:ordering:security": "node --env-file=.env.local scripts/verify-ordering-security.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
