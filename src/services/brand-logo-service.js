@@ -77,7 +77,9 @@ export async function uploadBrandLogo(file) {
 function showFallback(image) {
   image.hidden = true;
   image.removeAttribute('src');
-  image.closest('[data-brand-identity]')?.querySelector('[data-brand-fallback]')?.removeAttribute('hidden');
+  const identity = image.closest('[data-brand-identity]');
+  identity?.querySelector('[data-brand-fallback]')?.removeAttribute('hidden');
+  identity?.querySelector('[data-brand-label]')?.removeAttribute('hidden');
 }
 
 export async function initializeBrandLogos(root = document, { refresh = false } = {}) {
@@ -98,7 +100,9 @@ export async function initializeBrandLogos(root = document, { refresh = false } 
     }
     image.onload = () => {
       image.hidden = false;
-      image.closest('[data-brand-identity]')?.querySelector('[data-brand-fallback]')?.setAttribute('hidden', '');
+      const identity = image.closest('[data-brand-identity]');
+      identity?.querySelector('[data-brand-fallback]')?.setAttribute('hidden', '');
+      identity?.querySelector('[data-brand-label]')?.setAttribute('hidden', '');
     };
     image.onerror = () => showFallback(image);
     image.src = logo.publicUrl;

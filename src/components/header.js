@@ -28,7 +28,7 @@ export function createHeader(activePath) {
           <a class="navbar-brand d-inline-flex align-items-center gap-2 fw-semibold" href="/" aria-label="More Than 100 home" data-brand-identity>
             <span class="brand-mark" aria-hidden="true" data-brand-fallback>100<span>+</span></span>
             <img class="brand-logo brand-logo--header" alt="" data-brand-logo hidden>
-            <span>More Than 100</span>
+            <span data-brand-label>More Than 100</span>
           </a>
           <button
             class="navbar-toggler"
@@ -42,7 +42,7 @@ export function createHeader(activePath) {
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="mainNavigation">
-            <ul class="navbar-nav ms-auto mb-3 mb-lg-0 align-items-lg-center">
+            <ul class="navbar-nav site-navigation ms-auto mb-3 mb-lg-0 align-items-lg-center">
               ${navigation}
             </ul>
             <div class="auth-navigation ms-lg-3" id="auth-navigation" aria-live="polite">
@@ -69,9 +69,9 @@ function renderAuthNavigation(user, activePath = window.location.pathname, isAdm
 
   container.innerHTML = `
     <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
-      <a class="nav-link text-white${activePath === '/dashboard' ? ' active' : ''}" href="/dashboard"${activePath === '/dashboard' ? ' aria-current="page"' : ''}>Dashboard</a>
-      <a class="nav-link text-white${activePath === '/profile' ? ' active' : ''}" href="/profile"${activePath === '/profile' ? ' aria-current="page"' : ''}><i class="bi bi-person-circle me-1" aria-hidden="true"></i>Profile</a>
-      ${isAdmin ? `<a class="nav-link text-white${activePath === '/admin' ? ' active' : ''}" href="/admin"${activePath === '/admin' ? ' aria-current="page"' : ''}><i class="bi bi-shield-lock me-1" aria-hidden="true"></i>Admin</a>` : ''}
+      <a class="nav-link${activePath === '/dashboard' ? ' active' : ''}" href="/dashboard"${activePath === '/dashboard' ? ' aria-current="page"' : ''}>Dashboard</a>
+      <a class="nav-link${activePath === '/profile' ? ' active' : ''}" href="/profile"${activePath === '/profile' ? ' aria-current="page"' : ''}><i class="bi bi-person-circle me-1" aria-hidden="true"></i>Profile</a>
+      ${isAdmin ? `<a class="nav-link${activePath === '/admin' ? ' active' : ''}" href="/admin"${activePath === '/admin' ? ' aria-current="page"' : ''}><i class="bi bi-shield-lock me-1" aria-hidden="true"></i>Admin</a>` : ''}
       <button class="btn btn-outline-light btn-sm px-3" id="logout-button" type="button"><i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>Logout</button>
     </div>`;
 

@@ -77,21 +77,63 @@ button:focus-visible {
   outline-offset: 3px;
 }
 
-.navbar .nav-link {
-  border-radius: 0.375rem;
+.site-navbar .nav-link {
+  border: 1px solid transparent;
+  border-radius: 999px;
   padding-inline: 0.75rem;
-  transition: background-color 150ms ease;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
 }
 
-.navbar .nav-link:hover,
-.navbar .nav-link:focus-visible,
-.navbar .nav-link.active {
-  background-color: rgb(255 255 255 / 15%);
+.site-navbar .nav-link:hover,
+.site-navbar .nav-link:focus-visible,
+.site-navbar .nav-link.active {
+  border-color: rgb(255 255 255 / 22%);
+  background-color: rgb(255 255 255 / 14%);
 }
 
 .site-navbar {
-  background: linear-gradient(105deg, var(--mt-forest), #124a42);
-  box-shadow: 0 0.4rem 1.8rem rgb(18 60 45 / 16%);
+  min-height: 5rem;
+  background: linear-gradient(90deg, #f9fdff 0%, #eafafa 14%, #c8f1ee 27%, #67c9c3 43%, #238f91 58%, #126b72 73%, #0a4855 88%, #073943 100%);
+  box-shadow: 0 0.4rem 1.8rem rgb(8 63 73 / 18%);
+}
+
+.site-navbar .container {
+  gap: 1rem;
+}
+
+.site-navbar .navbar-brand {
+  flex: 0 1 auto;
+  color: #073c50;
+}
+
+.site-navbar .navbar-brand:hover,
+.site-navbar .navbar-brand:focus-visible {
+  color: #062f40;
+}
+
+.site-navigation .nav-link {
+  color: #f8ffff;
+  font-weight: 600;
+}
+
+.site-navigation .nav-item:first-child .nav-link {
+  color: #073f51;
+}
+
+.site-navigation .nav-item:first-child .nav-link:hover,
+.site-navigation .nav-item:first-child .nav-link:focus-visible,
+.site-navigation .nav-item:first-child .nav-link.active {
+  border-color: rgb(5 68 80 / 16%);
+  background-color: rgb(255 255 255 / 24%);
+}
+
+.auth-navigation .nav-link {
+  color: #fff;
+}
+
+.site-navbar .btn-outline-light:hover,
+.site-navbar .btn-outline-light:focus-visible {
+  color: #073943;
 }
 
 .auth-navigation .nav-link {
@@ -125,8 +167,8 @@ button:focus-visible {
 }
 
 .brand-logo--header {
-  max-width: 7rem;
-  height: 2.25rem;
+  max-width: 11rem;
+  height: 3.5rem;
 }
 
 .site-footer {
@@ -283,9 +325,33 @@ button:focus-visible {
 }
 
 @media (max-width: 991.98px) {
+  .site-navbar {
+    min-height: 4.5rem;
+    background: linear-gradient(90deg, #f9fdff 0%, #dff7f5 38%, #58bbb8 68%, #0a4a56 100%);
+  }
+
   .site-navbar .navbar-collapse {
-    padding-top: 1rem;
-    padding-bottom: 0.5rem;
+    margin-top: 0.75rem;
+    padding: 1rem;
+    border: 1px solid rgb(255 255 255 / 14%);
+    border-radius: 1rem;
+    background: rgb(6 61 72 / 94%);
+    box-shadow: 0 0.8rem 1.8rem rgb(4 43 51 / 18%);
+  }
+
+  .site-navbar .navbar-collapse .nav-link,
+  .site-navigation .nav-item:first-child .nav-link {
+    color: #fff;
+  }
+
+  .site-navbar .navbar-collapse .nav-link:hover,
+  .site-navbar .navbar-collapse .nav-link:focus-visible,
+  .site-navbar .navbar-collapse .nav-link.active,
+  .site-navigation .nav-item:first-child .nav-link:hover,
+  .site-navigation .nav-item:first-child .nav-link:focus-visible,
+  .site-navigation .nav-item:first-child .nav-link.active {
+    border-color: rgb(255 255 255 / 18%);
+    background: rgb(255 255 255 / 12%);
   }
 
   .auth-navigation .btn,
@@ -297,6 +363,14 @@ button:focus-visible {
 }
 
 @media (max-width: 575.98px) {
+  .site-navbar .navbar-brand {
+    max-width: calc(100% - 4.25rem);
+    font-size: 1rem;
+  }
+  .brand-logo--header {
+    max-width: min(9rem, 50vw);
+    height: 3rem;
+  }
   .newsletter-controls { flex-direction: column; }
   .newsletter-controls .btn { width: 100%; }
   .footer-links--legal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
