@@ -76,6 +76,10 @@ export async function deleteUserAsAdmin(targetUserId) {
   return invokeAdminUsers({ action: 'delete', targetUserId });
 }
 
+export async function setUserRoleAsAdmin(targetUserId, role) {
+  return invokeAdminUsers({ action: 'set-role', targetUserId, role });
+}
+
 async function invokeAdminUsers(body) {
   const { data, error } = await supabase.functions.invoke('admin-users', { body });
   if (error) {

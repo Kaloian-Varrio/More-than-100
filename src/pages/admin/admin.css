@@ -44,3 +44,4 @@
 .admin-logo-preview { min-height: 10rem; }
 @media (max-width: 575.98px) { .admin-hero .btn, .admin-modal-actions .btn { width: 100%; } }
 .admin-story-thumb { width: 6rem; aspect-ratio: 16 / 9; object-fit: cover; border-radius: .5rem; background: #e8f2f0; }
+.admin-role-control { min-width: 14rem; }

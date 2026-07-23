@@ -13,6 +13,7 @@ import { getCurrentUserAssessmentResults } from '../../services/assessment-servi
 import { getAssessmentRecommendations } from '../../services/recommendation-service.js';
 import { getRiskLabel } from '../assessment/assessment-scoring.js';
 import { escapeHtml } from '../../utils/html.js';
+import { getCurrentUserPermissions } from '../../services/role-service.js';
 
 document.querySelector('#app').innerHTML = `
   <main class="dashboard-loading d-grid min-vh-100" aria-live="polite">
@@ -25,6 +26,7 @@ document.querySelector('#app').innerHTML = `
 const user = await requireAuthenticatedUser();
 
 if (user) {
+  const permissions = await getCurrentUserPermissions();
   let profile = null;
   let articles = [];
   let comments = [];
@@ -72,12 +74,12 @@ if (user) {
 
   renderLayout({
     activePath: '/dashboard',
-    content: createDashboardContent(user, profile, { articles, comments, assessmentResults, recommendations, ...errors }),
+    content: createDashboardContent(user, profile, { articles, comments, assessmentResults, recommendations, permissions, ...errors }),
   });
   initializeArticleImages(document.querySelector('#my-articles'));
   initializeArticleImages(document.querySelector('#dashboard-recommendations'));
   initializeProfileAvatars(document.querySelector('#account'));
-  document.querySelector('#my-articles')?.addEventListener('click', async (event) => {
+  if (permissions.canCreateContent) document.querySelector('#my-articles')?.addEventListener('click', async (event) => {
     const button = event.target.closest('[data-delete-article]');
     if (!button) return;
     const title = button.closest('[data-article-row]')?.querySelector('h3')?.textContent || 'this article';
@@ -96,7 +98,7 @@ if (user) {
       button.disabled = false;
     }
   });
-  initializeDashboardComments(user, comments);
+  if (permissions.canComment) initializeDashboardComments(user, comments);
 
   if (window.location.hash === '#account') {
     requestAnimationFrame(() => {

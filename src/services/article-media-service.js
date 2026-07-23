@@ -1,5 +1,6 @@
 import { supabase } from './supabase-client.js';
 import { getCurrentUser } from './auth-service.js';
+import { getCurrentUserPermissions } from './role-service.js';
 
 export const articleImageRules = { maxBytes: 1024 * 1024, allowedTypes: ['image/jpeg', 'image/png', 'image/webp'] };
 
@@ -15,6 +16,7 @@ export async function uploadArticleImage(file, slugHint = 'article') {
   validateArticleImage(file);
   const user = await getCurrentUser();
   if (!user) throw new Error('You must be logged in to upload article images.');
+  if (!(await getCurrentUserPermissions()).canCreateContent) throw new Error('Reader accounts cannot upload article images.');
   const extension = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }[file.type];
   const safeSlug = slugHint.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 70) || 'article';
   const path = `${user.id}/${safeSlug}/cover-${Date.now()}.${extension}`;

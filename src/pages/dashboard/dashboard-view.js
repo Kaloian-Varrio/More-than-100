@@ -72,6 +72,7 @@ function createSectionCard({ icon, title, description, href, action }) {
 export function createDashboardContent(user, profile, data = {}) {
   const {
     articles = [], comments = [], assessmentResults = [], recommendations = [],
+    permissions = { canCreateContent: true, canComment: true, isReadOnly: false },
     articlesError = false, commentsError = false, assessmentError = false, recommendationsError = false,
   } = data;
   const displayName = escapeHtml(getDisplayName(user, profile));
@@ -110,16 +111,17 @@ export function createDashboardContent(user, profile, data = {}) {
     <section class="container pb-5" id="my-articles" aria-labelledby="my-articles-title">
       <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mb-4">
         <div><p class="text-success fw-semibold mb-2">Your contributions</p><h2 class="h3 mb-0" id="my-articles-title">My Articles</h2></div>
-        <div class="d-flex flex-column flex-sm-row gap-2"><a class="btn btn-outline-primary" href="/articles"><i class="bi bi-journals me-2" aria-hidden="true"></i>Explore All Articles</a><a class="btn btn-primary" href="/articles/create"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Create Article</a></div>
+        <div class="d-flex flex-column flex-sm-row gap-2"><a class="btn btn-outline-primary" href="/articles"><i class="bi bi-journals me-2" aria-hidden="true"></i>Explore All Articles</a>${permissions.canCreateContent ? '<a class="btn btn-primary" href="/articles/create"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Create Article</a>' : ''}</div>
       </div>
+      ${permissions.isReadOnly ? '<div class="alert alert-info"><i class="bi bi-eye me-2" aria-hidden="true"></i>Your Reader account has read-only access to community content.</div>' : ''}
       <div class="my-articles-card" id="my-articles-list">
-        ${createArticlesMarkup(articles, articlesError)}
+        ${createArticlesMarkup(articles, articlesError, permissions)}
       </div>
     </section>
 
     <section class="container pb-5 dashboard-section" id="my-comments" aria-labelledby="my-comments-title">
       <div class="mb-4"><p class="text-success fw-semibold mb-2">Your conversations</p><h2 class="h3 mb-0" id="my-comments-title">My Comments</h2></div>
-      <div class="dashboard-list-card" id="my-comments-list">${createCommentsMarkup(comments, commentsError)}</div>
+      <div class="dashboard-list-card" id="my-comments-list">${createCommentsMarkup(comments, commentsError, permissions)}</div>
       <div class="alert d-none mt-3" id="comments-feedback" role="status" aria-live="polite"></div>
     </section>
 
@@ -156,7 +158,7 @@ export function createDashboardContent(user, profile, data = {}) {
     </section>`;
 }
 
-function createCommentsMarkup(comments, hasError) {
+function createCommentsMarkup(comments, hasError, permissions) {
   if (hasError) return createDashboardEmpty('exclamation-circle', 'Comments could not be loaded', 'Refresh the page to try again.');
   if (!comments.length) return createDashboardEmpty('chat-square-text', 'No comments yet', 'Comments you add to articles will appear here.');
 
@@ -169,8 +171,7 @@ function createCommentsMarkup(comments, hasError) {
         </div>
         <div class="d-flex flex-wrap align-self-md-start gap-2">
           ${comment.article?.slug ? `<a class="btn btn-sm btn-outline-primary" href="/articles/${encodeURIComponent(comment.article.slug)}">View Article</a>` : ''}
-          <button class="btn btn-sm btn-outline-secondary" type="button" data-edit-comment>Edit</button>
-          <button class="btn btn-sm btn-outline-danger" type="button" data-delete-comment>Delete</button>
+          ${permissions.canComment ? '<button class="btn btn-sm btn-outline-secondary" type="button" data-edit-comment>Edit</button><button class="btn btn-sm btn-outline-danger" type="button" data-delete-comment>Delete</button>' : ''}
         </div>
       </div>
     </article>`).join('');
@@ -199,9 +200,9 @@ function createDashboardEmpty(icon, title, description) {
   return `<div class="article-empty text-center p-5"><i class="bi bi-${icon} d-block mb-3" aria-hidden="true"></i><h3 class="h5">${title}</h3><p class="text-body-secondary mb-0">${description}</p></div>`;
 }
 
-function createArticlesMarkup(articles, hasError) {
+function createArticlesMarkup(articles, hasError, permissions) {
   if (hasError) return '<div class="article-empty text-center p-5"><i class="bi bi-exclamation-circle d-block mb-3" aria-hidden="true"></i><h3 class="h5">Articles could not be loaded</h3><p class="text-body-secondary mb-0">Refresh the page to try again.</p></div>';
-  if (!articles.length) return '<div class="article-empty text-center p-5"><i class="bi bi-journal-plus d-block mb-3" aria-hidden="true"></i><h3 class="h5">No articles yet</h3><p class="text-body-secondary mb-3">Create your first article and share it with the community.</p><a class="btn btn-primary" href="/articles/create">Create Article</a></div>';
+  if (!articles.length) return `<div class="article-empty text-center p-5"><i class="bi bi-journal-plus d-block mb-3" aria-hidden="true"></i><h3 class="h5">No articles yet</h3><p class="text-body-secondary mb-${permissions.canCreateContent ? '3' : '0'}">${permissions.canCreateContent ? 'Create your first article and share it with the community.' : 'Reader accounts can explore published articles from the public library.'}</p>${permissions.canCreateContent ? '<a class="btn btn-primary" href="/articles/create">Create Article</a>' : ''}</div>`;
 
   return articles.map((article) => `
     <article class="dashboard-article d-flex flex-column flex-md-row gap-3 p-3 p-lg-4" data-article-row>
@@ -215,8 +216,7 @@ function createArticlesMarkup(articles, hasError) {
         <p class="small text-body-secondary mb-3"><i class="bi bi-calendar3 me-1" aria-hidden="true"></i>${formatDate(article.created_at)}</p>
         <div class="d-flex flex-wrap gap-2">
           <a class="btn btn-sm btn-outline-primary" href="/articles/${encodeURIComponent(article.slug)}">View</a>
-          <a class="btn btn-sm btn-outline-secondary" href="/articles/${encodeURIComponent(article.slug)}/edit">Edit</a>
-          <button class="btn btn-sm btn-outline-danger" type="button" data-delete-article="${escapeHtml(article.id)}">Delete</button>
+          ${permissions.canCreateContent ? `<a class="btn btn-sm btn-outline-secondary" href="/articles/${encodeURIComponent(article.slug)}/edit">Edit</a><button class="btn btn-sm btn-outline-danger" type="button" data-delete-article="${escapeHtml(article.id)}">Delete</button>` : ''}
         </div>
       </div>
     </article>`).join('');

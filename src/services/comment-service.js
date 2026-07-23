@@ -1,5 +1,6 @@
 import { supabase } from './supabase-client.js';
 import { getCurrentUser } from './auth-service.js';
+import { getCurrentUserPermissions } from './role-service.js';
 
 const commentFields = 'id, article_id, author_id, content, created_at, updated_at';
 
@@ -49,6 +50,7 @@ export async function getCurrentUserComments() {
 }
 
 export async function createComment({ articleId, authorId, content }) {
+  await requireCommentPermission();
   const { data, error } = await supabase
     .from('comments')
     .insert({ article_id: articleId, author_id: authorId, content: content.trim() })
@@ -60,6 +62,7 @@ export async function createComment({ articleId, authorId, content }) {
 }
 
 export async function updateComment({ commentId, authorId, content }) {
+  await requireCommentPermission();
   const { data, error } = await supabase
     .from('comments')
     .update({ content: content.trim() })
@@ -74,6 +77,7 @@ export async function updateComment({ commentId, authorId, content }) {
 }
 
 export async function deleteComment({ commentId, authorId }) {
+  await requireCommentPermission();
   const { data, error } = await supabase
     .from('comments')
     .delete()
@@ -84,4 +88,8 @@ export async function deleteComment({ commentId, authorId }) {
 
   if (error) throw error;
   if (!data) throw new Error('Comment deletion was not authorized.');
+}
+
+async function requireCommentPermission() {
+  if (!(await getCurrentUserPermissions()).canComment) throw new Error('Reader accounts cannot manage comments.');
 }

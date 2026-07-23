@@ -4,12 +4,14 @@ import './article-editor.css';
 import { renderLayout } from '../../components/layout.js';
 import { requireAuthenticatedUser } from '../../services/auth-service.js';
 import { createArticle, getArticleBySlug, getOwnedArticleBySlug, updateArticle } from '../../services/article-service.js';
-import { isCurrentUserAdmin } from '../../services/role-service.js';
+import { getCurrentUserPermissions, isCurrentUserAdmin } from '../../services/role-service.js';
 import { getCategories } from '../../services/category-service.js';
 import { escapeHtml } from '../../utils/html.js';
 import { safeImageUrl } from '../../utils/html.js';
 import { removeArticleImage, uploadArticleImage, validateArticleImage } from '../../services/article-media-service.js';
 import { generateArticleImage, ImageGenerationUnavailableError } from '../../services/article-image-generation-service.js';
+
+class ReaderAccessHandledError extends Error {}
 
 let selectedImageFile = null;
 let localPreviewUrl = null;
@@ -24,6 +26,11 @@ const user = await requireAuthenticatedUser();
 
 if (user) {
   try {
+    const permissions = await getCurrentUserPermissions();
+    if (!permissions.canCreateContent) {
+      renderLayout({ activePath: '/dashboard', mainClass: 'article-editor-page', content: errorMarkup('Reader accounts cannot create or edit articles.') });
+      throw new ReaderAccessHandledError();
+    }
     const admin = isEdit ? await isCurrentUserAdmin() : false;
     const [categories, article] = await Promise.all([
       getCategories(),
@@ -36,8 +43,12 @@ if (user) {
       renderEditor(categories, article);
     }
   } catch (error) {
+    if (error instanceof ReaderAccessHandledError) {
+      // The role-aware read-only state is already rendered.
+    } else {
     console.error('Article editor could not be loaded.', error);
     renderLayout({ activePath: '/dashboard', mainClass: 'article-editor-page', content: errorMarkup('The article editor could not be loaded. Please try again.') });
+    }
   }
 }
 

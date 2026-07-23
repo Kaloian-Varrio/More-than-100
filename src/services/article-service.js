@@ -1,6 +1,6 @@
 import { supabase } from './supabase-client.js';
 import { getCurrentUser } from './auth-service.js';
-import { isCurrentUserAdmin } from './role-service.js';
+import { getCurrentUserPermissions, isCurrentUserAdmin } from './role-service.js';
 
 const articleFields = `
   id, author_id, category_id, title, slug, short_description,
@@ -88,7 +88,7 @@ export async function getOwnedArticleBySlug(slug) {
 }
 
 export async function createArticle(values) {
-  const user = await requireUser();
+  const user = await requireContributor();
   const baseSlug = slugify(values.title) || 'article';
 
   for (let attempt = 0; attempt < 20; attempt += 1) {
@@ -107,7 +107,7 @@ export async function createArticle(values) {
 }
 
 export async function updateArticle(articleId, values) {
-  await requireUser();
+  await requireContributor();
   const { data, error } = await supabase
     .from('articles')
     .update(toArticleRecord(values))
@@ -121,7 +121,7 @@ export async function updateArticle(articleId, values) {
 }
 
 export async function deleteArticle(articleId) {
-  const user = await requireUser();
+  const user = await requireContributor();
   const { data, error } = await supabase
     .from('articles')
     .delete()
@@ -161,5 +161,11 @@ function toArticleRecord(values, authorId, slug) {
 async function requireUser() {
   const user = await getCurrentUser();
   if (!user) throw new Error('You must be logged in to manage articles.');
+  return user;
+}
+
+async function requireContributor() {
+  const user = await requireUser();
+  if (!(await getCurrentUserPermissions()).canCreateContent) throw new Error('Reader accounts cannot manage articles.');
   return user;
 }

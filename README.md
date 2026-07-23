@@ -8,6 +8,15 @@ More Than 100 is a multi-page longevity and healthy lifestyle web application. T
 - HTML and CSS
 - Bootstrap
 - Vite
+- Supabase Auth, PostgreSQL, Storage and Edge Functions
+
+## User roles
+
+- `reader` — authenticated read-only access to published content, Dashboard and Profile; cannot manage articles, comments, Stories or article media.
+- `user` — standard contributor access, including own article and comment management.
+- `admin` — full administration, publication controls and secure user/role management.
+
+New registrations receive the `user` role. Administrators assign roles through the Admin Panel; direct browser role mutations are revoked, and the privileged `admin-users` Edge Function enforces allowed values and last-admin protection.
 
 ## Pages
 
@@ -27,6 +36,12 @@ Create a production build with:
 
 ```bash
 npm run build
+```
+
+Run the reversible role/RLS security verification with configured local Supabase test credentials:
+
+```bash
+npm run test:roles:security
 ```
 
 ## Project structure

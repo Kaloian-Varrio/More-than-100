@@ -1,5 +1,6 @@
 import { createEmptyState, createErrorState, createLoadingState } from '../../components/content-state.js';
 import { getCurrentUser } from '../../services/auth-service.js';
+import { getCurrentUserPermissions } from '../../services/role-service.js';
 import { createComment, deleteComment, getCommentsForArticle, updateComment } from '../../services/comment-service.js';
 import { escapeHtml } from '../../utils/html.js';
 
@@ -16,8 +17,8 @@ function setFeedback(container, message = '', type = 'success') {
   container.textContent = message;
 }
 
-function createCommentMarkup(comment, user) {
-  const ownsComment = user?.id === comment.author_id;
+function createCommentMarkup(comment, user, permissions) {
+  const ownsComment = permissions?.canComment && user?.id === comment.author_id;
   return `
     <article class="comment-card" data-comment-id="${comment.id}">
       <div class="d-flex flex-column flex-sm-row justify-content-between gap-2 mb-3">
@@ -36,15 +37,17 @@ export async function initializeComments(articleId) {
   const list = section.querySelector('#comment-list');
   const feedback = section.querySelector('#comment-feedback');
   let user = null;
+  let permissions = null;
   let comments = [];
 
   try {
     user = await getCurrentUser();
+    if (user) permissions = await getCurrentUserPermissions();
   } catch (error) {
     console.error('Comment authentication state could not be loaded.', error);
   }
 
-  if (user) {
+  if (user && permissions.canComment) {
     composer.innerHTML = `
       <form class="comment-form card border-0 p-3 p-sm-4" id="comment-form" novalidate>
         <label class="form-label fw-semibold" for="comment-content">Join the conversation</label>
@@ -52,6 +55,8 @@ export async function initializeComments(articleId) {
         <div class="invalid-feedback">Write a comment before submitting.</div>
         <div class="d-flex justify-content-end mt-3"><button class="btn btn-primary" type="submit"><i class="bi bi-send me-2" aria-hidden="true"></i>Post comment</button></div>
       </form>`;
+  } else if (user) {
+    composer.innerHTML = '<div class="comment-guest card border-0 p-4"><p class="mb-0"><i class="bi bi-eye me-2" aria-hidden="true"></i>Your Reader account can follow the conversation but cannot post or manage comments.</p></div>';
   } else {
     composer.innerHTML = '<div class="comment-guest card border-0 p-4"><p class="mb-3"><i class="bi bi-chat-heart me-2" aria-hidden="true"></i>Join the conversation by signing in or creating an account.</p><div class="d-flex flex-column flex-sm-row gap-2"><a class="btn btn-primary" href="/login">Login</a><a class="btn btn-outline-primary" href="/register">Register</a></div></div>';
   }
@@ -61,7 +66,7 @@ export async function initializeComments(articleId) {
     try {
       comments = await getCommentsForArticle(articleId);
       list.innerHTML = comments.length
-        ? comments.map((comment) => createCommentMarkup(comment, user)).join('')
+        ? comments.map((comment) => createCommentMarkup(comment, user, permissions)).join('')
         : createEmptyState('No comments yet', 'Be the first to share a thoughtful response.');
     } catch (error) {
       console.error('Comments could not be loaded.', error);
@@ -95,7 +100,7 @@ export async function initializeComments(articleId) {
 
   list.addEventListener('click', async (event) => {
     const card = event.target.closest('[data-comment-id]');
-    if (!card || !user) return;
+    if (!card || !user || !permissions?.canComment) return;
     const comment = comments.find(({ id }) => id === card.dataset.commentId);
     if (!comment || comment.author_id !== user.id) return;
 
@@ -123,12 +128,12 @@ export async function initializeComments(articleId) {
       }
     }
 
-    if (event.target.closest('[data-comment-cancel]')) card.outerHTML = createCommentMarkup(comment, user);
+    if (event.target.closest('[data-comment-cancel]')) card.outerHTML = createCommentMarkup(comment, user, permissions);
   });
 
   list.addEventListener('submit', async (event) => {
     const form = event.target.closest('[data-comment-edit-form]');
-    if (!form || !user) return;
+    if (!form || !user || !permissions?.canComment) return;
     event.preventDefault();
     const card = form.closest('[data-comment-id]');
     const comment = comments.find(({ id }) => id === card.dataset.commentId);

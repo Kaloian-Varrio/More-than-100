@@ -12,6 +12,7 @@ import {
   deleteUserAsAdmin,
   getAdminOverviewData,
   setArticlePublishedAsAdmin,
+  setUserRoleAsAdmin,
   updateCommentAsAdmin,
   updateProfileAsAdmin,
 } from '../../services/admin-service.js';
@@ -86,6 +87,7 @@ function stat(icon, label, value) {
 }
 
 function usersSection(profiles) {
+  const adminCount = profiles.filter(({ role }) => role === 'admin').length;
   const body = profiles.length ? `
     <div class="table-responsive">
       <table class="table table-hover align-middle admin-table mb-0">
@@ -96,7 +98,20 @@ function usersSection(profiles) {
               <td><div class="d-flex align-items-center gap-2">${createProfileAvatar(profile, null, 'admin-avatar')}<span>${escapeHtml(fullName(profile))}</span></div></td>
               <td><span class="text-break">${escapeHtml(profile.email || 'Unavailable')}</span></td>
               <td>${escapeHtml(profile.nickname || '—')}</td>
-              <td><span class="badge text-bg-${profile.role === 'admin' ? 'success' : 'secondary'}">${escapeHtml(profile.role)}</span></td>
+              <td>
+                <div class="admin-role-control" data-current-role="${escapeHtml(profile.role)}">
+                  <span class="badge text-bg-${profile.role === 'admin' ? 'success' : profile.role === 'reader' ? 'info' : 'secondary'} mb-2">Current: ${escapeHtml(roleLabel(profile.role))}</span>
+                  <div class="input-group input-group-sm">
+                    <label class="visually-hidden" for="role-${profile.id}">Role for ${escapeHtml(fullName(profile))}</label>
+                    <select class="form-select" id="role-${profile.id}" data-role-select>
+                      ${roleOption('reader', profile.role, profile.role === 'admin' && adminCount === 1)}
+                      ${roleOption('user', profile.role, profile.role === 'admin' && adminCount === 1)}
+                      ${roleOption('admin', profile.role)}
+                    </select>
+                    <button class="btn btn-outline-success" type="button" data-save-role disabled>Update</button>
+                  </div>
+                </div>
+              </td>
               <td>
                 <div class="d-flex flex-wrap justify-content-end gap-2">
                   <button class="btn btn-sm btn-outline-primary" data-edit-profile><i class="bi bi-pencil me-1" aria-hidden="true"></i>Edit profile</button>
@@ -107,7 +122,15 @@ function usersSection(profiles) {
         </tbody>
       </table>
     </div>` : empty('No users found.');
-  return panel('users', 'Users and profiles', body, 'Auth account deletion is permanent and securely processed server-side.');
+  return panel('users', 'Users and profiles', body, 'Roles are changed through the secure Admin service. The last administrator cannot be demoted.');
+}
+
+function roleOption(role, currentRole, disabled = false) {
+  return `<option value="${role}"${role === currentRole ? ' selected' : ''}${disabled ? ' disabled' : ''}>${roleLabel(role)}</option>`;
+}
+
+function roleLabel(role) {
+  return ({ reader: 'Reader', user: 'User', admin: 'Admin' })[role] || role;
 }
 
 function articlesSection(articles) {
@@ -216,9 +239,55 @@ function commentModal() {
 function initializeActions(data) {
   initializeProfileActions(data);
   initializeUserActions(data);
+  initializeRoleActions(data);
   initializeArticleActions();
   initializeStoryActions();
   initializeCommentActions(data);
+}
+
+function initializeRoleActions(data) {
+  const section = document.querySelector('#users');
+  section.querySelectorAll('[data-role-select]').forEach((select) => {
+    select.addEventListener('change', () => {
+      const control = select.closest('[data-current-role]');
+      control.querySelector('[data-save-role]').disabled = select.value === control.dataset.currentRole;
+    });
+  });
+  section.addEventListener('click', async (event) => {
+    const button = event.target.closest('[data-save-role]');
+    if (!button) return;
+    const row = button.closest('tr[data-profile-id]');
+    const control = button.closest('[data-current-role]');
+    const select = control.querySelector('[data-role-select]');
+    const profile = data.profiles.find(({ id }) => id === row.dataset.profileId);
+    const currentRole = control.dataset.currentRole;
+    const nextRole = select.value;
+    if (!profile || nextRole === currentRole) return;
+    if (nextRole === 'admin' && !window.confirm('Promote this user to Admin? This will grant full administrative access.')) {
+      select.value = currentRole;
+      button.disabled = true;
+      return;
+    }
+    if (currentRole === 'admin' && nextRole !== 'admin' && !window.confirm('Remove Admin access from this user?')) {
+      select.value = currentRole;
+      button.disabled = true;
+      return;
+    }
+    button.disabled = true;
+    select.disabled = true;
+    button.innerHTML = '<span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>Updating';
+    try {
+      await setUserRoleAsAdmin(profile.id, nextRole);
+      await loadAdmin(`${displayName(profile)} is now ${roleLabel(nextRole)}.`);
+    } catch (error) {
+      console.error('Role update failed.', error);
+      select.disabled = false;
+      select.value = currentRole;
+      button.textContent = 'Update';
+      button.disabled = true;
+      feedback(error.message || 'The role could not be updated.', 'danger');
+    }
+  });
 }
 
 function initializeStoryActions() {

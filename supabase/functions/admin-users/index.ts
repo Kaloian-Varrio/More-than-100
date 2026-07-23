@@ -14,6 +14,7 @@ const json = (body: Record<string, unknown>, status = 200) => new Response(JSON.
 
 const isUuid = (value: unknown): value is string =>
   typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+const allowedRoles = new Set(['reader', 'user', 'admin']);
 
 Deno.serve(async (request) => {
   if (request.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -90,6 +91,24 @@ Deno.serve(async (request) => {
     const { error } = await adminClient.auth.admin.deleteUser(targetUserId);
     if (error) return json({ error: 'The user account could not be deleted.' }, 500);
     return json({ success: true });
+  }
+
+  if (payload.action === 'set-role') {
+    const requestedRole = payload.role;
+    if (typeof requestedRole !== 'string' || !allowedRoles.has(requestedRole)) {
+      return json({ error: 'Role must be reader, user or admin.' }, 400);
+    }
+    const { data: role, error } = await adminClient.rpc('admin_set_user_role', {
+      target_user_id: targetUserId,
+      requested_role: requestedRole,
+    });
+    if (error) {
+      if (error.code === '23514') return json({ error: 'The last remaining administrator cannot be demoted.' }, 409);
+      if (error.code === 'P0002') return json({ error: 'The target user role was not found.' }, 404);
+      if (error.code === '22023') return json({ error: 'Role must be reader, user or admin.' }, 400);
+      return json({ error: 'The user role could not be changed.' }, 500);
+    }
+    return json({ success: true, role });
   }
 
   return json({ error: 'Unknown admin action.' }, 400);
