@@ -45,7 +45,7 @@ export function createFooter() {
             <a class="footer-brand d-inline-flex align-items-center gap-2" href="/" id="footer-title" aria-label="More Than 100 home" data-brand-identity>
               <span class="footer-brand__mark" aria-hidden="true" data-brand-fallback>100<span>+</span></span>
               <img class="brand-logo brand-logo--footer" alt="" data-brand-logo hidden>
-              <span>More Than 100</span>
+              <span data-brand-label>More Than 100</span>
             </a>
             <p class="footer-tagline mt-3 mb-2">Small choices. Smart actions. A longer, healthier life.</p>
             <p class="footer-description mb-4">Practical ideas for nourishing habits, joyful movement, mindfulness and lasting wellbeing.</p>
