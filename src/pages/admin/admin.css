@@ -9,5 +9,9 @@
 .admin-avatar.profile-avatar--broken .profile-avatar__initials { display: inline; }
 .admin-table { min-width: 720px; }
 .admin-comment { max-width: 26rem; white-space: normal; }
+.admin-article-thumb { display: grid; width: 4.5rem; flex: 0 0 4.5rem; overflow: hidden; border-radius: 0.65rem; aspect-ratio: 16 / 9; background: #dce9df; place-items: center; }
+.admin-article-thumb__image { width: 100%; height: 100%; object-fit: cover; }
+.admin-article-thumb .article-image-visual { display: grid; width: 100%; height: 100%; background: linear-gradient(145deg, #75a96f, #245c45); color: #fff; font-size: 0; place-items: center; }
+.admin-article-thumb .article-image-visual .bi { font-size: 1.25rem; }
 .admin-section { scroll-margin-top: 1rem; }
 @media (max-width: 575.98px) { .admin-hero .btn, .admin-modal-actions .btn { width: 100%; } }

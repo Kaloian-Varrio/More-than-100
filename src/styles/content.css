@@ -82,6 +82,13 @@
 .article-cover-wrap { max-width: 71rem; aspect-ratio: 16 / 9; }
 
 .article-body { max-width: 48rem; font-size: 1.08rem; line-height: 1.85; }
+.article-body h2 { margin: 2.75rem 0 1rem; color: var(--mt-forest); font-size: clamp(1.45rem, 3vw, 1.9rem); letter-spacing: -0.025em; }
+.article-body p { margin-bottom: 1.35rem; }
+.article-body ul,
+.article-body ol { margin: 0 0 1.5rem; padding-left: 1.4rem; }
+.article-body li { margin-bottom: 0.55rem; padding-left: 0.25rem; }
+.article-body li::marker { color: var(--mt-teal-dark); font-weight: 750; }
+.article-body > :first-child { margin-top: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .article-card,

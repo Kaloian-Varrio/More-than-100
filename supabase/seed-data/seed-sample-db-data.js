@@ -218,6 +218,298 @@ const articles = [
   },
 ];
 
+const expandedArticleContent = {
+  'short-morning-walk-start-day': `## A small walk with a useful purpose
+A morning walk does not need to be long, fast or athletic. Ten to fifteen minutes of comfortable movement can mark the transition from sleep into the day, offer daylight and create a little space before messages and tasks take over.
+
+## How to begin
+- Put on comfortable shoes and choose a familiar route.
+- Walk at a pace that lets you breathe easily and speak in full sentences.
+- Keep your phone in your pocket unless you need it for safety.
+- Notice light, temperature and sounds instead of chasing a distance goal.
+
+If ten minutes feels unrealistic, start with five. Link the walk to something that already happens, such as making coffee, taking a child to school or walking a dog. On busy mornings, a walk to transport or one lap around the building still counts.
+
+Prepare shoes and a light layer the night before. Vary the experience gently: use a greener route once a week, invite a neighbor or finish with one minute of easy mobility. Consistency matters more than turning every outing into a workout.
+
+## Comfort and safety
+Choose visible routes and adapt to weather, traffic and daylight. Wear reflective details in low light and carry water for longer or hotter walks. Stop for pain, dizziness or unusual shortness of breath and seek appropriate advice. This is a flexible wellbeing habit, not a test you have to pass.`,
+
+  'build-regular-sleep-rhythm': `## Why rhythm matters
+Sleep is influenced by many factors, but timing is one of the clearest signals you can shape. A fairly regular wake-up time gives the day an anchor. The goal is not perfect discipline; it is a pattern that makes evenings calmer and mornings more predictable.
+
+Choose a wake-up time that works on most workdays and weekends. Try to keep it within roughly the same hour, then get natural light and gentle movement after waking. If shifts change, repeat the same sequence—light, water, breakfast and movement—even when the clock time varies.
+
+## Build a short wind-down
+Thirty to sixty minutes before bed, lower the intensity of the day:
+- dim bright lights and finish demanding work where possible;
+- prepare clothes or a bag for tomorrow;
+- wash, stretch gently or read a few pages;
+- keep the bedroom cool, dark and reasonably quiet.
+
+A ten-minute routine you repeat is more useful than an elaborate ideal you rarely follow. If you remain wide awake and frustrated, get up briefly and do something quiet in low light, then return when sleepy.
+
+Notice whether late caffeine, alcohol, heavy meals, naps or stressful work consistently affect you. Change one factor at a time. Occasional poor nights are normal. Persistent insomnia, loud snoring with breathing pauses or severe daytime sleepiness deserve discussion with a qualified health professional. Lifestyle routines can support sleep, but they do not replace treatment when a problem continues.`,
+
+  'simple-breathing-pause-busy-moments': `## What a breathing pause is
+A breathing pause is a brief moment of attention, not a test of lung capacity. Many people use it as a transition between tasks or to interrupt the feeling of rushing.
+
+## Try one gentle minute
+Sit with your feet supported or stand comfortably. Let your shoulders drop. Breathe in through the nose if that feels natural, then exhale without pushing. For five rounds, allow the exhale to last slightly longer than the inhale. You might count three in and four out, but the exact numbers do not matter.
+
+Keep the breath small and comfortable. If counting creates tension, notice the coolness of the inhale and warmth of the exhale instead.
+
+## Use everyday cues
+- Pause before opening email or joining a meeting.
+- Take three calm breaths after parking.
+- Use a kettle boiling or an elevator ride as a reminder.
+- Pair the pause with washing your hands or sitting down to eat.
+
+You may feel calmer, or you may simply notice how activated you are. Both are useful observations. The aim is not to erase emotion but to create a little room to respond.
+
+## Safety
+Never breathe rapidly, hold your breath for long periods or continue through dizziness, tingling, chest discomfort or panic. Return to normal breathing if you feel unwell. People with respiratory, cardiovascular or panic-related conditions should ask a qualified professional about suitable practices. This pause supports everyday awareness; it does not replace care.`,
+
+  'hydration-everyday-habit': `## Hydration without complicated rules
+Water supports normal daily function, but there is no single perfect amount for everyone. Needs vary with body size, food, activity, climate, pregnancy, illness and medication. Make water easy to access and respond to thirst rather than forcing an arbitrary target.
+
+Keep a glass or bottle where you spend time. Drink with meals, refill before leaving home and take a few sips after activity. Fruit, vegetables, soups and yogurt also contribute fluid. If plain water feels unappealing, try it cool or room temperature, use sparkling water, or add citrus and herbs.
+
+## Adjust to the day
+Hot weather, long exercise and heavy sweating usually require more attention. Bring water before you become very thirsty and drink gradually. For ordinary short activity, water is generally the simplest choice. Very long or intense exercise may need a specific fluid and electrolyte plan.
+
+## Make it sustainable
+- Choose a bottle that is easy to clean and carry.
+- Refill at predictable moments.
+- Place water beside items you always take.
+- Increase gradually if you currently drink little.
+
+Urine color is only a rough clue and can be affected by food, supplements and medication.
+
+## Safety matters
+More is not always better. Drinking excessive water quickly can be dangerous. People with kidney, heart or endocrine conditions, or medicines affecting fluid balance, should follow individualized advice. Seek help for persistent extreme thirst, confusion or signs of dehydration. Everyday hydration is about steady support, not forcing large amounts.`,
+
+  'make-more-room-for-nature': `## Nature can be close and ordinary
+Meaningful outdoor time does not require a remote forest. A tree-lined street, balcony, garden, river path or patch of sky can provide a change in sensory input. People often use nature time to step away from screens, move gently and regain perspective.
+
+Choose the easiest option: eat lunch outside, walk through a small park or sit near an open window. Spend ten minutes noticing specific details—the direction of light, wind, bird sounds, bark texture or seasonal change. This is not about forcing relaxation. Attention itself is the practice.
+
+## Make room during a full week
+- Move one phone call outdoors when privacy allows.
+- Get off transport one stop earlier near a green route.
+- Plan a simple weekend walk before the calendar fills.
+- Keep a rain layer or comfortable shoes ready.
+- Invite someone who makes the outing easier and safer.
+
+If green space is limited, care for a plant, watch clouds or look for a route with daylight and open views.
+
+Some people enjoy standing barefoot on grass because it feels sensory and calming. Claims that grounding cures illness are not established; treat it as personal comfort, not medical therapy.
+
+## Safety and respect
+Check weather, terrain and daylight. Use sun protection, suitable footwear and insect precautions. Avoid unknown plants, unstable water edges and isolated routes that feel unsafe. Leave habitats as you found them. Nature time should support both your wellbeing and the place you visit.`,
+
+  'stretching-after-long-sitting': `## Movement after stillness
+Long sitting can leave the body feeling stiff or sleepy. A short break changes position, moves joints through comfortable ranges and gives the eyes a reason to look beyond the screen. You do not need an intense stretching session.
+
+## A three-minute reset
+Stand beside a stable chair or desk, then:
+- roll the shoulders slowly in both directions;
+- reach overhead without forcing the ribs forward;
+- turn the upper body gently from side to side;
+- shift weight between the feet and circle each ankle;
+- step one foot back for a comfortable calf stretch;
+- finish with a short walk around the room.
+
+Hold nothing to the point of strain. Smooth movement often feels better after sitting than a deep static stretch.
+
+Two or three minutes every hour or two may be more realistic than trying to undo a desk day in one evening session. Use a meeting ending, drink refill or bathroom break as the cue. Alternate sitting, standing and walking when possible. No posture needs to be held perfectly; variety is the useful principle.
+
+Once breaks become automatic, add a few sit-to-stands, wall push-ups or a longer lunchtime walk.
+
+## Safety
+Stretching should create mild tension, never sharp pain, numbness or tingling. Avoid bouncing and forcing joints. Recent injury, surgery, osteoporosis, balance concerns or persistent pain may require adapted professional guidance. Movement breaks can improve comfort, but they do not diagnose ongoing symptoms.`,
+
+  'social-connection-everyday-life': `## Connection is built through attention
+Social wellbeing is not measured by a full calendar. It comes from feeling seen, supported and able to offer the same to others. One honest conversation or a reliable weekly walk can matter more than many hurried interactions.
+
+Think of one person you would genuinely like to hear from. Send a specific message: ask about something they mentioned or suggest a simple time to talk. “Would you like to walk for twenty minutes on Thursday?” is easier to answer than “We should meet.”
+
+During conversation, place the phone aside when possible. Ask a follow-up question, allow pauses and resist planning your reply while the other person speaks.
+
+## Create repeatable formats
+- Share a regular meal without making it elaborate.
+- Walk together so conversation happens side by side.
+- Schedule a short weekly call with distant family.
+- Join a class, volunteer group or community activity around a real interest.
+- Offer practical help and allow others to help you.
+
+People vary in social energy, culture and communication style. Meaningful relationships do not require constant contact. Digital connection can be valuable, but notice which spaces leave you nourished or depleted.
+
+## When loneliness feels heavy
+Loneliness is common and not a personal failure. Persistent isolation, grief or low mood may need more support from a counselor, community organization or healthcare professional. If a relationship is controlling or unsafe, prioritize specialist help rather than simply increasing contact. Connection should protect dignity and wellbeing.`,
+
+  'fermented-foods-familiar-meals': `## What fermented foods are
+Fermentation uses microorganisms such as bacteria or yeast to transform food. Familiar examples include yogurt, kefir, sauerkraut, kimchi and miso. Not every fermented product contains live cultures when eaten; heat treatment and processing can remove them.
+
+People include these foods for taste, tradition and variety. Some provide protein, calcium, fiber or live cultures, depending on the product. Research on the gut microbiome is developing, but no single fermented food is a cure or a requirement for health.
+
+## Begin with familiar meals
+- Add plain yogurt and fruit to breakfast.
+- Blend kefir into a smoothie.
+- Serve a spoonful of sauerkraut beside lunch.
+- Stir miso into soup after removing it from high heat.
+- Add kimchi to rice, eggs or vegetables.
+
+Start with a small portion and choose one product you genuinely enjoy. Look at storage directions, added sugar and salt. Pickles made only with vinegar are tasty but are not necessarily fermented.
+
+## Comfort and food safety
+Increase portions gradually; fermented foods can cause gas or bloating for some people. High-sodium products may not suit everyone. Use clean utensils, refrigerate as directed and discard products with unexpected mold, odor or damaged packaging.
+
+Home fermentation requires reliable instructions, correct salt levels and good hygiene. People who are pregnant, immunocompromised or managing specific digestive, kidney or cardiovascular conditions should seek individualized guidance about unpasteurized foods, sodium and portions. Fermented foods can add interest to a balanced pattern, but tolerance and moderation matter.`,
+
+  'cold-exposure-basics-beginners': `## What cold exposure means
+Cold exposure is intentional, brief contact with cool air or water. It ranges from ending a normal shower with cooler water to supervised immersion. People may use it for alertness, personal challenge or recovery rituals. Dramatic claims about immunity, metabolism or disease prevention are not a reason to take risks.
+
+## A conservative beginning
+Start with an ordinary warm shower. During the final fifteen to thirty seconds, lower the temperature only until it feels clearly cool—not painfully cold. Keep breathing normally, relax your shoulders and step out whenever you choose. Repeat on another day before increasing time or lowering temperature.
+
+If you later try immersion, use a controlled setting, know the temperature, enter gradually and have a capable person nearby. Keep your head out at first. Never compete over time.
+
+## Practical rules
+- Decide your limit before starting.
+- Avoid breath-holding, rapid breathing and alcohol.
+- Keep dry clothes and a warm environment ready.
+- Exit if coordination, speech or thinking changes.
+- Warm gradually with dry layers and gentle movement.
+
+Cold shock can cause an involuntary gasp and rapid changes in breathing and heart rate. Open water adds currents, depth and difficult exits.
+
+## Who should be cautious
+Pregnancy, cardiovascular disease, uncontrolled blood pressure, Raynaud’s phenomenon, cold urticaria, fainting history or medicines affecting circulation can increase risk. Ask a qualified healthcare professional when unsure. Stop for chest pain, severe breathlessness, dizziness, confusion or uncontrollable shivering. Cold exposure is not medical treatment; a mild cool finish is enough if it feels good.`,
+
+  'pets-daily-presence': `## Presence through shared routine
+Animals respond to immediate signals: a leash appearing, food being prepared, a familiar voice or a patch of sunlight. Caring for a pet can invite us into the same moment. Feeding, grooming, walking and play provide clear shared activities.
+
+Choose one daily routine and put distractions aside for five minutes. Notice the animal’s posture, energy and preferences. During a walk, let safe sniffing be part of the experience rather than treating every outing as a distance target. During play, stop before the animal becomes overtired.
+
+This attention supports practical care: you may notice changes in appetite, movement or behavior earlier because you know what is normal.
+
+## Build mutual wellbeing
+- Keep feeding, exercise and rest reasonably predictable.
+- Match activity to species, age, health and temperament.
+- Offer quiet companionship as well as stimulation.
+- Learn consent signals; not every pet wants constant touch.
+- Share care fairly so one person does not carry everything.
+
+Pets create joy and opportunities for movement, but also cost, cleaning, planning and grief. Do not acquire an animal solely as a wellbeing tool. Consider shelter volunteering or walking a friend’s dog first, and assess housing, allergies and long-term capacity before adoption.
+
+## Safety and support
+Supervise children and animals, wash hands after waste handling and follow veterinary guidance. Seek veterinary care for sudden changes, pain or aggression. Human-animal connection may be comforting, but it does not replace mental health support or human relationships.`,
+
+  'colorful-bowl-everyday-vegetables': `## A formula, not a strict recipe
+A vegetable bowl is a flexible way to combine color, texture and satisfying ingredients. Begin with two or three vegetables, then add protein or a hearty grain and a dressing you enjoy. The goal is a meal you want to eat, not a perfect photograph.
+
+## Build the bowl
+- Use raw, roasted, steamed or sautéed vegetables.
+- Add beans, lentils, eggs, fish, chicken or tofu.
+- Include rice, quinoa, potatoes, whole grains or bread as desired.
+- Finish with herbs, seeds, nuts or a little cheese.
+- Use olive oil and lemon, yogurt and herbs, tahini or a favorite sauce.
+
+Contrast makes vegetables interesting: crisp cucumber with roasted carrots, warm broccoli with fresh leaves, or creamy beans with shredded cabbage.
+
+Wash and cut sturdy vegetables when you have time, roast a tray while cooking another meal and make enough grain for two days. Store wet dressing separately from delicate greens. Frozen vegetables reduce preparation and waste; canned beans make the bowl faster.
+
+You do not need every color at every meal. Rotate what is affordable and seasonal across the week. Leftovers and imperfect-looking produce are useful once safely prepared.
+
+## Food safety
+Wash produce, prevent cross-contamination with raw meat and refrigerate cooked ingredients promptly. Allergies, digestive conditions and kidney disease may affect suitable ingredients. Adapt the formula rather than following it rigidly. A colorful bowl supports an overall eating pattern; it is not a detox or medical treatment.`,
+
+  'running-conversational-pace': `## What conversational pace means
+A conversational run is easy enough that you can speak a complete short sentence without gasping. The pace changes with fitness, sleep, hills, heat and stress, so effort is more useful than a number on a watch. The aim is to finish with energy left.
+
+## Start with run-walk intervals
+Warm up with five to ten minutes of brisk walking. Alternate one minute of relaxed jogging with one or two minutes of walking for fifteen to twenty minutes. If speaking feels difficult, shorten the running interval or slow down.
+
+Over several weeks, lengthen only the parts that feel comfortable. There is no need to eliminate walking.
+
+## Make easy days easy
+- Choose a flat, familiar route.
+- Run with a friend who supports the relaxed pace.
+- Ignore average speed and focus on even breathing.
+- Shorten the session in heat or after poor sleep.
+- Finish with a few minutes of walking.
+
+Relaxed hands, shoulders away from the ears and a natural stride are enough; do not force a particular foot strike.
+
+## Recovery and safety
+Increase total running time gradually and allow recovery days. Suitable shoes, visibility and awareness of traffic matter more than fashionable equipment. Stop for sharp pain, chest pain, dizziness or unusual breathlessness. People returning after illness, pregnancy, injury or a long inactive period may benefit from professional guidance. Running is one movement option, not a requirement; walking, cycling or swimming can provide an enjoyable easy-effort session too.`,
+
+  'create-quiet-tea-ritual': `## More than a hot drink
+A tea ritual is ordinary preparation given a little attention. Boiling water, measuring leaves, noticing aroma and sitting for a few minutes can create a boundary between tasks. The value comes from the pause, not from claiming that one tea solves a health problem.
+
+## Create a five-minute version
+Choose a tea you enjoy. While water heats, clear one small space and put the phone aside. Follow package guidance for temperature and steeping time, especially for green tea. Notice color and aroma before the first sip.
+
+Sit down if you can. Drink slowly enough to notice temperature and taste. When the cup is finished, decide what you are moving into next. This turns the ritual into a useful transition.
+
+## Adapt it
+- Use morning tea as a quiet start before messages.
+- Make an afternoon cup away from the workstation.
+- Share a pot and give conversation time.
+- Choose caffeine-free infusions later in the day.
+- Prepare a thermos when you need the pause outside home.
+
+A mug, kettle and strainer are enough. The ritual should reduce friction, not create a shopping project.
+
+## Tea and safety
+Caffeine varies by tea and preparation, and some people are sensitive to its effects on sleep, anxiety, heart rhythm or digestion. Herbal does not automatically mean risk-free; some herbs interact with medicines or are unsuitable during pregnancy. Use reputable food products and ask a professional when unsure. Avoid liquids hot enough to burn. Enjoy tea for taste and a calm pause, not as medical treatment.`,
+
+  'share-food-time-attention': `## The table as a place to connect
+Sharing food is a simple way to create time together. The meal does not need to be impressive. Soup, bread, fruit or a familiar one-pan dish can support conversation just as well as a special menu. What matters is the invitation and attention.
+
+Invite one or two people and be specific. Say the meal will be simple, ask about allergies and let guests contribute if they want. A shared lunch, picnic or workplace fruit break may feel easier than a formal dinner. Use store-bought items freely; hospitality is not a performance.
+
+## Share the activity
+- Chop vegetables or assemble bowls together.
+- Ask someone to choose music or make tea.
+- Invite children to wash produce or set safe items.
+- Pack leftovers for a neighbor who needs support.
+- Rotate homes or meet in a park to share effort.
+
+Put phones aside when practical, make room for everyone to speak and avoid commenting on how much another person eats. Do not pressure anyone to try food.
+
+Food carries culture, religion, identity and memory. Ask rather than assume. Provide ingredient information for allergies and consider seating, sensory needs, alcohol-free choices and cost.
+
+## Keep it safe
+Wash hands, keep hot food hot and cold food cold, cook animal products appropriately and refrigerate leftovers promptly. If eating with others triggers significant anxiety or disordered eating concerns, choose a lower-pressure form of connection and seek qualified support. Shared meals should create belonging, never judgment.`,
+
+  'gentle-ten-minute-yoga-reset': `## A short reset, not a full class
+Ten minutes of gentle yoga can provide a transition after sitting, before bed or at the start of a busy day. The aim is comfortable movement and steady breathing. You do not need advanced flexibility or special clothing.
+
+Use a mat or non-slip surface with room to reach your arms. Keep a chair, wall, folded towel or blocks nearby.
+
+## A simple sequence
+1. Stand or sit and take three natural breaths.
+2. Roll the shoulders and gently turn the head.
+3. Fold forward with knees bent and hands supported.
+4. Step one foot back into a low lunge, using support.
+5. Return to sitting for a mild twist, growing tall before turning.
+6. Finish lying down or seated, noticing the breath for one minute.
+
+Spend three to five breaths in each position, or move sooner. Repeat the lunge on both sides. Nothing should require strain or breath-holding.
+
+On a low-energy day, do the sequence seated. On a stronger day, add slow cat-cow movements. Consistency means responding honestly to the body you have today.
+
+## Safety
+Yoga should not cause sharp pain, numbness, dizziness or instability. Avoid forcing stretches or copying an image that does not suit your proportions. Pregnancy, recent surgery, glaucoma, osteoporosis, balance concerns or injury may require modifications from a qualified instructor or clinician. Yoga can support movement and awareness, but it is not a substitute for diagnosis or treatment.`,
+};
+
+articles.forEach((article) => {
+  article.content = expandedArticleContent[article.slug];
+  article.cover_image_url = `/images/articles/${article.slug}.jpg`;
+});
+
 const comments = [
   ['short-morning-walk-start-day', 'nelina@gmail.com', 'I tried this before breakfast and enjoyed how calm the street felt.'],
   ['short-morning-walk-start-day', 'denis@gmail.com', 'Keeping the phone in my pocket made the walk feel much longer in a good way.'],
@@ -270,10 +562,6 @@ function stableUuid(value) {
 
 function slugify(value) {
   return value.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
-
-function placeholderImageUrl(title) {
-  return `https://placehold.co/1600x900/2f6b4f/ffffff?text=${encodeURIComponent(`Temporary: ${title}`)}`;
 }
 
 async function request(path, { method = 'GET', body, headers = {} } = {}) {
@@ -467,7 +755,7 @@ async function seedArticles(usersByEmail, categoriesBySlug) {
     slug: article.slug,
     short_description: article.short_description,
     content: article.content,
-    cover_image_url: placeholderImageUrl(article.title),
+    cover_image_url: article.cover_image_url,
   }));
   const saved = await upsert('articles', payload, 'slug');
   console.log(`  ${saved.length} articles ready`);
@@ -603,6 +891,8 @@ function validateSeedDefinition() {
     [expectedCategoryCount === 41, 'six main categories and 35 subcategories'],
     [articles.length === 15 && uniqueArticleSlugs.size === articles.length, '15 uniquely slugged articles'],
     [articles.every(({ author, category }) => userEmails.has(author) && categoryNames.has(category)), 'valid article references'],
+    [articles.every(({ content }) => content.trim().split(/\s+/).length >= 180), 'expanded article content'],
+    [articles.every(({ cover_image_url: coverImageUrl }) => /^\/images\/articles\/[a-z0-9-]+\.jpg$/.test(coverImageUrl)), 'stable local article cover images'],
     [activeComments().length >= 20 && activeComments().length <= 25, '20-25 comments'],
     [activeComments().every(({ comment: [slug, email] }) => uniqueArticleSlugs.has(slug) && userEmails.has(email)), 'valid comment references'],
     [assessmentResults.every(([email]) => email !== 'kaloianh@gmail.com' && userEmails.has(email)), 'normal-user assessment results only'],

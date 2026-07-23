@@ -23,7 +23,7 @@ try {
     const authorName = article.author?.nickname
       || [article.author?.first_name, article.author?.last_name].filter(Boolean).join(' ')
       || 'More Than 100 contributor';
-    const paragraphs = article.content.split(/\n+/).filter(Boolean).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('');
+    const articleContent = renderArticleContent(article.content);
     document.title = `${article.title} | More Than 100`;
     container.innerHTML = `
       <article class="py-lg-4">
@@ -35,7 +35,7 @@ try {
           <p class="small text-body-secondary mb-0">By ${escapeHtml(authorName)} <span aria-hidden="true">·</span> ${new Intl.DateTimeFormat('en', { dateStyle: 'long' }).format(new Date(article.created_at))}</p>
         </header>
         <div class="article-cover-wrap mx-auto mb-5">${createArticleImage(article, { className: 'article-cover d-block', loading: 'eager' })}</div>
-        <div class="article-body mx-auto">${paragraphs}</div>
+        <div class="article-body mx-auto">${articleContent}</div>
       </article>
       <section class="comments-shell mx-auto py-5 border-top" id="comments-section" aria-labelledby="comments-title">
         <h2 class="h3 mb-4" id="comments-title"><i class="bi bi-chat-square-text me-2 text-success" aria-hidden="true"></i>Comments</h2>
@@ -49,4 +49,44 @@ try {
 } catch (error) {
   console.error('Article could not be loaded.', error);
   container.innerHTML = createErrorState();
+}
+
+function renderArticleContent(content = '') {
+  const output = [];
+  let paragraph = [];
+  let listType = '';
+  let listItems = [];
+  const flushParagraph = () => {
+    if (paragraph.length) output.push(`<p>${escapeHtml(paragraph.join(' '))}</p>`);
+    paragraph = [];
+  };
+  const flushList = () => {
+    if (listItems.length) output.push(`<${listType}>${listItems.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</${listType}>`);
+    listType = '';
+    listItems = [];
+  };
+
+  content.trim().split('\n').forEach((line) => {
+    const value = line.trim();
+    if (!value) {
+      flushParagraph();
+      flushList();
+    } else if (value.startsWith('## ')) {
+      flushParagraph();
+      flushList();
+      output.push(`<h2>${escapeHtml(value.slice(3))}</h2>`);
+    } else if (/^[-*] /.test(value) || /^\d+\. /.test(value)) {
+      flushParagraph();
+      const nextType = /^[-*] /.test(value) ? 'ul' : 'ol';
+      if (listType && listType !== nextType) flushList();
+      listType = nextType;
+      listItems.push(value.replace(/^([-*] |\d+\. )/, ''));
+    } else {
+      flushList();
+      paragraph.push(value);
+    }
+  });
+  flushParagraph();
+  flushList();
+  return output.join('');
 }
