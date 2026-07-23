@@ -118,6 +118,17 @@ button:focus-visible {
 
 .brand-mark span { color: var(--mt-teal); }
 
+.brand-logo {
+  display: block;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand-logo--header {
+  max-width: 7rem;
+  height: 2.25rem;
+}
+
 .site-footer {
   position: relative;
   overflow: hidden;
@@ -159,6 +170,10 @@ button:focus-visible {
 }
 
 .footer-brand__mark span { color: var(--mt-lime); }
+.brand-logo--footer {
+  max-width: 8.5rem;
+  height: 3rem;
+}
 .footer-brand:hover,
 .footer-brand:focus-visible { color: var(--mt-lime); }
 .footer-tagline { max-width: 30rem; color: #fff; font-size: 1.08rem; font-weight: 700; }

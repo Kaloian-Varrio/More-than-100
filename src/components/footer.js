@@ -42,8 +42,9 @@ export function createFooter() {
       <div class="container position-relative py-5 py-lg-6">
         <div class="row g-5">
           <div class="col-lg-5">
-            <a class="footer-brand d-inline-flex align-items-center gap-2" href="/" id="footer-title" aria-label="More Than 100 home">
-              <span class="footer-brand__mark" aria-hidden="true">100<span>+</span></span>
+            <a class="footer-brand d-inline-flex align-items-center gap-2" href="/" id="footer-title" aria-label="More Than 100 home" data-brand-identity>
+              <span class="footer-brand__mark" aria-hidden="true" data-brand-fallback>100<span>+</span></span>
+              <img class="brand-logo brand-logo--footer" alt="" data-brand-logo hidden>
               <span>More Than 100</span>
             </a>
             <p class="footer-tagline mt-3 mb-2">Small choices. Smart actions. A longer, healthier life.</p>

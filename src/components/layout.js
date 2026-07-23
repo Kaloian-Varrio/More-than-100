@@ -1,6 +1,7 @@
 import { createFooter, initializeFooter } from './footer.js';
 import { createHeader, initializeAuthHeader } from './header.js';
 import { createMainContent } from './main-content.js';
+import { initializeBrandLogos } from '../services/brand-logo-service.js';
 
 export function renderLayout({ activePath, content, mainClass = '' }) {
   const app = document.querySelector('#app');
@@ -18,4 +19,5 @@ export function renderLayout({ activePath, content, mainClass = '' }) {
 
   initializeAuthHeader(activePath);
   initializeFooter();
+  initializeBrandLogos();
 }
