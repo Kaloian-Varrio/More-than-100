@@ -1,3 +1,13 @@
-/articles  /articles.html  200
-/articles/*  /article.html  200
-/categories/*  /category.html  200
+/articles                 /articles.html      200
+/articles/*               /article.html       200
+/categories/*             /category.html      200
+/stories                  /stories.html       200
+/admin/stories/create     /story-editor.html  200
+/admin/stories/*/edit     /story-editor.html  200
+/stories/*                /story.html         200
+/dashboard                /dashboard.html     200
+/profile                  /profile.html       200
+/admin                    /admin.html         200
+/assessment               /assessment.html    200
+/login                    /login.html         200
+/register                 /register.html      200
