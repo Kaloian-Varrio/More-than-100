@@ -14,6 +14,8 @@ import { getAssessmentRecommendations } from '../../services/recommendation-serv
 import { createArticleCard, initializeArticleImages } from '../../components/article-card.js';
 
 document.querySelector('#app').innerHTML = '<main class="d-grid min-vh-100" style="place-items:center"><span class="spinner-border text-success" aria-label="Loading assessment"></span></main>';
+const questionsPerStep = 5;
+const totalSteps = Math.ceil(assessmentQuestions.length / questionsPerStep);
 const user = await requireAuthenticatedUser();
 
 if (user) initializeAssessment();
@@ -25,11 +27,13 @@ function initializeAssessment() {
     <aside class="assessment-disclaimer rounded-3 p-3 mb-4 small" aria-label="Important disclaimer"><i class="bi bi-info-circle me-2 text-success" aria-hidden="true"></i>This tool supports general lifestyle and wellbeing awareness. It is not a medical or psychological diagnosis and does not replace professional medical or mental health advice.</aside>
     <div id="assessment-content"></div>
   </section>` });
-  renderStep(state);
+  try {
+    renderStep(state);
+  } catch (error) {
+    console.error('Assessment questionnaire could not be initialized.', error);
+    document.querySelector('#assessment-content').innerHTML = '<div class="alert alert-danger" role="alert">The questionnaire could not be loaded. Please refresh the page and try again.</div>';
+  }
 }
-
-const questionsPerStep = 5;
-const totalSteps = Math.ceil(assessmentQuestions.length / questionsPerStep);
 
 function getStepQuestions(step) {
   return assessmentQuestions.slice(step * questionsPerStep, (step + 1) * questionsPerStep);
@@ -40,7 +44,7 @@ function renderStep(state) {
   const percent = Math.round(((state.step + 1) / totalSteps) * 100);
   const container = document.querySelector('#assessment-content');
   container.innerHTML = `<article class="card assessment-card border-0"><div class="card-body p-sm-5">
-    <div class="d-flex flex-column flex-sm-row justify-content-between gap-1 gap-sm-3 mb-2"><span class="text-success fw-semibold">Step ${state.step + 1} of ${totalSteps}</span><span class="text-body-secondary">Questions ${questions[0].id}&ndash;${questions.at(-1).id} of ${assessmentQuestions.length}</span></div>
+    <div class="d-flex flex-column flex-sm-row justify-content-between gap-1 gap-sm-3 mb-2"><span class="text-success fw-semibold">Step ${state.step + 1} of ${totalSteps}</span><span class="text-body-secondary">Questions ${questions[0].id}&ndash;${questions[questions.length - 1].id} of ${assessmentQuestions.length}</span></div>
     <div class="progress assessment-progress mb-4" role="progressbar" aria-label="Assessment progress" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:${percent}%"></div></div>
     <form id="question-form" novalidate>
       <div class="assessment-step-questions">${questions.map((item) => createQuestionFieldset(item, state.answers[item.id])).join('')}</div>

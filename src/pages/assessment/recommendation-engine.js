@@ -18,7 +18,7 @@ export function recommendArticles(scores, articles, categories, limit = 5) {
     sortRecent(uniqueArticles.filter((article) => getCategoryPath(article.category_id, categoryMap).some((category) => maintenanceCategorySlugs.includes(category.slug)))).forEach(add);
   }
 
-  const spread = scores[rankedDimensions[0]].score - scores[rankedDimensions.at(-1)].score;
+  const spread = scores[rankedDimensions[0]].score - scores[rankedDimensions[rankedDimensions.length - 1]].score;
   const topGap = scores[rankedDimensions[0]].score - scores[rankedDimensions[1]].score;
   const quotas = spread <= 5 || topGap <= 10 ? [2, 2, 1] : [3, 1, 1];
   rankedDimensions.forEach((dimension, index) => {

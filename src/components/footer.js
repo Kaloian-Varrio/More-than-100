@@ -2,6 +2,7 @@ import { getCurrentUser, onAuthStateChange } from '../services/auth-service.js';
 
 const primaryLinks = [
   ['Home', '/'],
+  ['Articles', '/articles'],
   ['Personal Assessment', '/assessment'],
   ['About Us', '/information.html#about'],
   ['Contact', '/information.html#contact'],

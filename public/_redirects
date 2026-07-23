@@ -1,2 +1,3 @@
+/articles  /articles.html  200
 /articles/*  /article.html  200
 /categories/*  /category.html  200

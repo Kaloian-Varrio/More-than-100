@@ -1,0 +1,11 @@
+.articles-page { background: var(--mt-background); }
+.articles-hero { border-bottom: 1px solid var(--mt-border); background: radial-gradient(circle at 86% 18%, rgb(183 217 85 / 25%), transparent 24rem), var(--mt-gradient-wellbeing); }
+.articles-hero .lead { max-width: 46rem; color: var(--mt-text); }
+.articles-eyebrow { color: var(--mt-teal-dark); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+.article-filters { padding-bottom: 0.25rem; }
+.article-filter { padding: 0.58rem 0.95rem; border: 1px solid var(--mt-border); border-radius: 999px; background: #fff; color: var(--mt-text); font-size: 0.88rem; font-weight: 750; transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, transform 160ms ease; }
+.article-filter:hover { border-color: var(--mt-teal); color: var(--mt-teal-dark); transform: translateY(-1px); }
+.article-filter.active { border-color: var(--mt-green); background: var(--mt-green); color: #fff; box-shadow: 0 0.45rem 1.2rem rgb(25 122 80 / 18%); }
+.article-filter:focus-visible { outline: 3px solid rgb(183 217 85 / 70%); outline-offset: 2px; }
+.articles-count { font-size: 0.9rem; font-weight: 650; }
+@media (prefers-reduced-motion: reduce) { .article-filter { transition: none; } .article-filter:hover { transform: none; } }

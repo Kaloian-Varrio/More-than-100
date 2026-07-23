@@ -3,8 +3,8 @@ import { isCurrentUserAdmin } from '../services/role-service.js';
 
 const navigationItems = [
   { label: 'Home', href: '/' },
-  { label: 'Explore', href: '/#content-areas' },
-  { label: 'Featured', href: '/#featured-content' },
+  { label: 'Articles', href: '/articles' },
+  { label: 'Explore Topics', href: '/#content-areas' },
   { label: 'Why it matters', href: '/#why-it-matters' },
 ];
 

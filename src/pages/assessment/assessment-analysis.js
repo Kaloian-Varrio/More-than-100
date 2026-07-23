@@ -7,7 +7,7 @@ const dimensions = {
 export function generateAssessmentAnalysis(scores) {
   const ranked = Object.entries(scores).sort(([, a], [, b]) => b.score - a.score);
   const [highestKey, highest] = ranked[0];
-  const [lowestKey, lowest] = ranked.at(-1);
+  const [lowestKey, lowest] = ranked[ranked.length - 1];
   const highestKeys = ranked.filter(([, value]) => value.score === highest.score).map(([key]) => key);
   const allEqual = highest.score === lowest.score;
   const elevatedCount = ranked.filter(([, value]) => value.score > 50).length;

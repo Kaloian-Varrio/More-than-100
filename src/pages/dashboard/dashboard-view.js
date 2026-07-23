@@ -110,7 +110,7 @@ export function createDashboardContent(user, profile, data = {}) {
     <section class="container pb-5" id="my-articles" aria-labelledby="my-articles-title">
       <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mb-4">
         <div><p class="text-success fw-semibold mb-2">Your contributions</p><h2 class="h3 mb-0" id="my-articles-title">My Articles</h2></div>
-        <a class="btn btn-primary" href="/articles/create"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Create Article</a>
+        <div class="d-flex flex-column flex-sm-row gap-2"><a class="btn btn-outline-primary" href="/articles"><i class="bi bi-journals me-2" aria-hidden="true"></i>Explore All Articles</a><a class="btn btn-primary" href="/articles/create"><i class="bi bi-plus-lg me-2" aria-hidden="true"></i>Create Article</a></div>
       </div>
       <div class="my-articles-card" id="my-articles-list">
         ${createArticlesMarkup(articles, articlesError)}

@@ -8,6 +8,7 @@ export default defineConfig({
     configureServer(server) {
       server.middlewares.use((request, _response, next) => {
         if (request.url?.startsWith('/articles/')) request.url = '/article.html';
+        if (request.url === '/articles' || request.url?.startsWith('/articles?')) request.url = '/articles.html';
         if (request.url?.startsWith('/categories/')) request.url = '/category.html';
         next();
       });
@@ -24,6 +25,7 @@ export default defineConfig({
         login: resolve(import.meta.dirname, 'login.html'),
         register: resolve(import.meta.dirname, 'register.html'),
         article: resolve(import.meta.dirname, 'article.html'),
+        articles: resolve(import.meta.dirname, 'articles.html'),
         category: resolve(import.meta.dirname, 'category.html'),
         information: resolve(import.meta.dirname, 'information.html'),
       },
