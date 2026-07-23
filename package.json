@@ -8,6 +8,7 @@
     "build": "vite build",
     "db:seed": "node --env-file=.env.local supabase/seed-data/seed-sample-db-data.js",
     "db:seed:validate": "node supabase/seed-data/seed-sample-db-data.js --validate",
+    "test:stories:rls": "node --env-file=.env.local scripts/verify-stories-rls.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -4,6 +4,7 @@ import { isCurrentUserAdmin } from '../services/role-service.js';
 const navigationItems = [
   { label: 'Home', href: '/' },
   { label: 'Articles', href: '/articles' },
+  { label: 'Stories', href: '/stories' },
   { label: 'Explore Topics', href: '/#content-areas' },
   { label: 'Why it matters', href: '/#why-it-matters' },
 ];

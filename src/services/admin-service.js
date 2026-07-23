@@ -1,13 +1,15 @@
 import { supabase } from './supabase-client.js';
 import { getAllArticles } from './article-service.js';
+import { getAllStoriesForAdmin } from './story-service.js';
 
 const profileFields = 'id, first_name, last_name, nickname, bio, avatar_url, website_url, instagram_url, facebook_url, created_at, updated_at';
 
 export async function getAdminOverviewData() {
-  const [profilesResult, rolesResult, articles, commentsResult, authUsers] = await Promise.all([
+  const [profilesResult, rolesResult, articles, stories, commentsResult, authUsers] = await Promise.all([
     supabase.from('profiles').select(profileFields).order('created_at'),
     supabase.from('user_roles').select('user_id, role').order('created_at'),
     getAllArticles(),
+    getAllStoriesForAdmin(),
     supabase.from('comments').select('id, article_id, author_id, content, created_at, updated_at').order('created_at', { ascending: false }),
     invokeAdminUsers({ action: 'list' }).then(({ users }) => users),
   ]);
@@ -22,6 +24,7 @@ export async function getAdminOverviewData() {
       email: authUsers.find(({ id }) => id === profile.id)?.email || null,
     })),
     articles: articles.map((article) => ({ ...article, author: profilesById.get(article.author_id) || null })),
+    stories,
     comments: commentsResult.data.map((comment) => ({ ...comment, author: profilesById.get(comment.author_id) || null, article: articlesById.get(comment.article_id) || null })),
   };
 }

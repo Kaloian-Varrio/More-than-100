@@ -7,6 +7,9 @@ export default defineConfig({
     name: 'clean-content-routes',
     configureServer(server) {
       server.middlewares.use((request, _response, next) => {
+        if (request.url?.startsWith('/admin/stories/')) request.url = '/story-editor.html';
+        else if (request.url?.startsWith('/stories/')) request.url = '/story.html';
+        else if (request.url === '/stories' || request.url?.startsWith('/stories?')) request.url = '/stories.html';
         if (request.url?.startsWith('/articles/')) request.url = '/article.html';
         if (request.url === '/articles' || request.url?.startsWith('/articles?')) request.url = '/articles.html';
         if (request.url?.startsWith('/categories/')) request.url = '/category.html';
@@ -27,6 +30,9 @@ export default defineConfig({
         article: resolve(import.meta.dirname, 'article.html'),
         articles: resolve(import.meta.dirname, 'articles.html'),
         category: resolve(import.meta.dirname, 'category.html'),
+        stories: resolve(import.meta.dirname, 'stories.html'),
+        story: resolve(import.meta.dirname, 'story.html'),
+        storyEditor: resolve(import.meta.dirname, 'story-editor.html'),
         information: resolve(import.meta.dirname, 'information.html'),
       },
     },

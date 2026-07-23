@@ -510,6 +510,138 @@ articles.forEach((article) => {
   article.cover_image_url = `/images/articles/${article.slug}.jpg`;
 });
 
+const stories = [
+  {
+    title: 'Steady Strength, Open Trails',
+    slug: 'steady-strength-open-trails',
+    person_name: 'Daniel, 57',
+    intro: 'Daniel rebuilt his everyday energy and mobility through repeatable routines, patient strength work and regular time outdoors with his dog.',
+    image_url: '/images/stories/steady-strength-outdoor-life.jpg',
+    themes: ['Strength', 'Outdoor activity', 'Sleep', 'Daily routines'],
+    content: `## Where Daniel started
+
+At 52, Daniel did not think of himself as unhealthy. He worked full days, kept up with family responsibilities and still managed the occasional weekend walk. Yet ordinary things had become less comfortable. His lower back felt stiff after driving, he avoided carrying heavy shopping bags in one trip, and his energy often disappeared by late afternoon. Most evenings ended on the sofa with a laptop still open.
+
+The change was not prompted by a dramatic event. During a holiday hike, Daniel noticed that he was watching the ground rather than the landscape because every uneven step demanded attention. His dog, Milo, kept stopping and looking back. Daniel finished the walk, but the experience made him wonder how much of his world had quietly become smaller.
+
+## What changed
+
+He began with a deliberately modest plan. Three mornings each week, he walked Milo for twenty minutes before checking messages. Twice a week, he followed a basic strength routine built around squats to a chair, supported rows, light carries and push-ups against a bench. He chose weights that left him confident he could have completed another repetition.
+
+The first month felt almost too easy. That was the point. Daniel had started ambitious plans before and abandoned them when work became busy. This time, the minimum version of every habit mattered. A ten-minute walk counted. One set of each exercise counted. Going to bed fifteen minutes earlier counted.
+
+He also created a clearer end to his workday. His laptop stayed out of the bedroom, evening coffee became herbal tea, and he prepared his walking clothes before bed. A regular wake-up time gradually made mornings less negotiable.
+
+## Challenges along the way
+
+Progress was not perfectly linear. A demanding project interrupted his routine, and a sore knee made him anxious about losing momentum. Instead of pushing through, Daniel shortened his walks, used flatter routes and asked a qualified trainer to review his technique. The adjustment reminded him that consistency is not the same as stubbornness.
+
+He stopped measuring success only by body weight or workout numbers. He noticed different evidence: getting out of the car without stiffness, carrying luggage upstairs, sleeping more predictably and feeling willing to suggest an outdoor plan at the weekend.
+
+## How life feels today
+
+Five years later, Daniel still trains twice most weeks and walks every day, although the distance changes. He enjoys longer hikes again and uses trekking poles on steep ground without seeing them as a concession. Milo remains his enthusiastic training partner and the reason Daniel goes outside when motivation is low.
+
+Daniel describes the biggest improvement as capacity. He has more room in the day for work, relationships and spontaneous activity because ordinary movement costs less effort. His physique is stronger, but realistically so; his routines support his life rather than dominating it.
+
+## What Daniel learned
+
+- Make the useful habit small enough to repeat during a difficult week.
+- Strength training can begin with supported, familiar movements.
+- Sleep routines improve when the evening has a clear boundary.
+- Outdoor activity is easier to sustain when it includes companionship and enjoyment.
+- Pain, unusual symptoms or persistent limitations deserve appropriate professional advice rather than heroic persistence.
+
+This is an inspirational fictionalized example based on common healthy lifestyle journeys. It is not a medical case study, and the same habits will not produce identical outcomes for everyone.`,
+  },
+  {
+    title: 'The Consistency That Changed Everything',
+    slug: 'consistency-that-changed-everything',
+    person_name: 'Maya, 35',
+    intro: 'Maya moved away from extreme dieting and built a calmer pattern of nourishing meals, walking, strength work, sleep and stress recovery.',
+    image_url: '/images/stories/consistency-changed-everything.jpg',
+    themes: ['Nutrition', 'Walking', 'Strength', 'Stress management'],
+    content: `## A cycle that was no longer working
+
+Maya entered her mid-thirties feeling tired of starting over. She had tried strict meal plans, intense exercise challenges and rules that divided food into good and bad. Each attempt created a short burst of progress, followed by exhaustion and a return to old patterns. Busy workdays made skipped lunches common, and late evenings often ended with convenience food eaten while answering messages.
+
+She wanted to lose some excess weight, but more than that she wanted steady energy and a way of caring for herself that did not require constant willpower. Her turning point was surprisingly ordinary: she cancelled a weekend plan because she felt too depleted to enjoy it. Maya realized that a routine designed only around appearance was not improving her actual life.
+
+## Building a steadier foundation
+
+She began by making breakfast and lunch more predictable. Instead of chasing perfect recipes, she used a simple structure: a source of protein, vegetables or fruit, a satisfying carbohydrate and some healthy fat. She kept yogurt, oats, eggs, frozen vegetables, beans and ready-to-wash fruit available for busy days.
+
+Walking became her main form of daily movement. Maya started with fifteen minutes after lunch, partly to create a boundary in her workday. Over several months, the walks became longer and occasionally social. She added two short strength sessions each week, learning basic movements from a qualified coach and progressing only when her technique felt secure.
+
+Sleep was the least visible change and one of the most useful. Maya set an evening reminder to finish work, dimmed the lights and stopped treating midnight as extra productive time. She did not sleep perfectly, but a more regular rhythm reduced the powerful hunger and irritability that had made other habits harder.
+
+## Learning to handle imperfect weeks
+
+Travel, deadlines and family celebrations tested the new approach. In the past, one unplanned meal would have become evidence that the whole week was ruined. Maya practised returning to her next ordinary meal instead. She kept walking even when a gym session was impossible and used five quiet minutes of breathing or journaling when stress was high.
+
+Her body composition changed gradually. Clothes fitted differently, strength improved and excess weight reduced over time, but there was no dramatic deadline. Maya tracked how she felt during afternoon meetings, how comfortably she climbed stairs and whether her routines left space for friends. Those measures helped her continue when the scale barely moved.
+
+## How she feels now
+
+Maya still enjoys dessert, restaurant meals and quiet days. The difference is that none of them need to be corrected with punishment. She walks because it clears her mind, trains because feeling capable is rewarding and prepares food because it makes busy days easier.
+
+Her energy is more dependable and she feels comfortable planning active weekends. The result is not a finished transformation but a stable direction. She knows that work, sleep and appetite will fluctuate, so her routines include flexibility from the beginning.
+
+## Practical lessons from Maya's journey
+
+- Build meals from a simple pattern rather than a long list of forbidden foods.
+- Use walking as repeatable movement, recovery and a transition between tasks.
+- Strength and mobility improve through gradual practice, not punishment.
+- Protect sleep and stress recovery because they influence every other choice.
+- After an imperfect day, return to the next useful action without waiting for Monday.
+
+This fictionalized inspirational story reflects a common sustainable lifestyle journey, not a guaranteed weight-loss outcome or medical recommendation. Individual needs and results vary.`,
+  },
+  {
+    title: 'The Mountains Keep Us Moving',
+    slug: 'mountains-keep-us-moving',
+    person_name: 'Elena, 89',
+    intro: 'For Elena, movement has never been about proving her age wrong. It is how she stays connected to the mountains, her family and everyday independence.',
+    image_url: '/images/stories/mountains-keep-us-moving.jpg',
+    themes: ['Healthy ageing', 'Mobility', 'Family', 'Nature'],
+    content: `## A lifetime of ordinary movement
+
+Elena is 89 and still looks forward to mountain mornings. She does not race to a summit or pretend that the trail feels the same as it did decades ago. She chooses broad, familiar paths, carries light equipment and checks the weather carefully. What has remained constant is her delight in being outside.
+
+Movement was woven into Elena's life long before it became a wellness goal. She walked to school, tended a garden, carried groceries and spent family holidays near the mountains. In middle age she joined a community walking group, partly for exercise and mostly for conversation. The group gave the week a rhythm and turned neighbours into close friends.
+
+## Adapting instead of stopping
+
+As the years passed, Elena changed how she moved. She added simple strength exercises after noticing that getting up from low chairs required more effort. At home she practises controlled sit-to-stands, heel raises while holding a counter and light resistance-band rows. A physiotherapist helped her choose movements appropriate for her balance and joints.
+
+Her mountain walks became shorter, and trekking poles became standard equipment. Elena plans rest points and is comfortable turning around early. She says that adapting a route protects the next walk; pushing to satisfy pride can take the joy out of the entire season.
+
+Mobility practice is brief but frequent. She moves her ankles before leaving the house, reaches and rotates gently while waiting for the kettle, and keeps frequently used items where she can reach them safely. None of it looks impressive in isolation. Together, the habits support confidence in daily tasks.
+
+## Passing the habit forward
+
+Elena's favourite walking partners are her grandchildren. When they were young, she invented games around spotting birds, balancing on safe logs and packing their own water. Now they understand that a good outing is not measured only by distance. They wait at junctions, share snacks and let the oldest walker help choose the pace.
+
+She also teaches them that sport includes responsibility. They prepare for weather, respect trail closures and leave natural places as they found them. The conversation matters as much as the exercise. On the path, phones disappear into backpacks and stories emerge that might not surface around a table.
+
+## Challenges and support
+
+Elena has experienced setbacks, including a winter when illness reduced her strength and confidence. She restarted indoors with professional guidance, family nearby and smaller goals. Social support made the return less frightening. Her walking group stayed in touch even when she could not join them, reminding her that belonging did not depend on performance.
+
+Today, Elena schedules recovery as carefully as activity. She eats regularly, brings water, rests after longer outings and does not walk alone on remote routes. She has routine health care and treats changes in balance, pain or breathlessness as information to discuss, not obstacles to hide.
+
+## What her example offers
+
+- Movement accumulated over decades can be ordinary, social and enjoyable.
+- Strength and balance practice should be adapted to the individual and the season of life.
+- Shorter routes, poles and rest stops are tools for participation.
+- Family and community connection can make activity more meaningful and sustainable.
+- Positive thinking helps most when it includes realistic planning and a willingness to ask for support.
+
+Elena's story is a fictionalized inspirational example, not a promise of exceptional longevity. Ageing experiences differ widely, and no routine guarantees the same health or independence for everyone.`,
+  },
+];
+
 const comments = [
   ['short-morning-walk-start-day', 'nelina@gmail.com', 'I tried this before breakfast and enjoyed how calm the street felt.'],
   ['short-morning-walk-start-day', 'denis@gmail.com', 'Keeping the phone in my pocket made the walk feel much longer in a good way.'],
@@ -647,7 +779,7 @@ async function createAuthUser(seedUser) {
 }
 
 async function ensureAuthUsers() {
-  console.log('1/7 Creating or reusing sample Auth users...');
+  console.log('1/8 Creating or reusing sample Auth users...');
   const existingUsers = await listAuthUsers();
   const usersByEmail = new Map(existingUsers.map((user) => [user.email.toLowerCase(), user]));
   const result = new Map();
@@ -687,7 +819,7 @@ async function loadExistingSeedUsers() {
 }
 
 async function seedProfilesAndRoles(usersByEmail) {
-  console.log('2/7 Upserting profiles and roles...');
+  console.log('2/8 Upserting profiles and roles...');
   const users = [...usersByEmail.values()];
   const profiles = users.map(({ id, profile }) => ({
     id,
@@ -712,7 +844,7 @@ async function seedProfilesAndRoles(usersByEmail) {
 }
 
 async function seedCategories() {
-  console.log('3/7 Creating or reusing categories...');
+  console.log('3/8 Creating or reusing categories...');
   const existing = await request('/rest/v1/categories?select=id,name,slug,parent_id');
   const bySlug = new Map(existing.map((category) => [category.slug, category]));
 
@@ -744,7 +876,7 @@ async function seedCategories() {
 }
 
 async function seedArticles(usersByEmail, categoriesBySlug) {
-  console.log('4/7 Upserting sample articles...');
+  console.log('4/8 Upserting sample articles...');
   const existing = await request('/rest/v1/articles?select=id,slug');
   const existingBySlug = new Map(existing.map((article) => [article.slug, article]));
   const payload = articles.map((article) => ({
@@ -762,8 +894,21 @@ async function seedArticles(usersByEmail, categoriesBySlug) {
   return new Map(saved.map((article) => [article.slug, article]));
 }
 
+async function seedStories() {
+  console.log('5/8 Upserting inspirational demo stories...');
+  const existing = await request('/rest/v1/stories?select=id,slug');
+  const existingBySlug = new Map(existing.map((story) => [story.slug, story]));
+  const payload = stories.map((story) => ({
+    id: existingBySlug.get(story.slug)?.id || stableUuid(`story:${story.slug}`),
+    ...story,
+    is_published: true,
+  }));
+  const saved = await upsert('stories', payload, 'slug');
+  console.log(`  ${saved.length} stories ready`);
+}
+
 async function seedComments(usersByEmail, articlesBySlug) {
-  console.log('5/7 Upserting sample comments...');
+  console.log('6/8 Upserting sample comments...');
   const obsoleteIds = [...omittedCommentIndexes].map((index) => {
     const [articleSlug, authorEmail] = comments[index];
     return stableUuid(`comment:${index}:${articleSlug}:${authorEmail}`);
@@ -784,7 +929,7 @@ async function seedComments(usersByEmail, articlesBySlug) {
 }
 
 async function seedAssessmentResults(usersByEmail) {
-  console.log('6/7 Upserting sample assessment results...');
+  console.log('7/8 Upserting sample assessment results...');
   const payload = assessmentResults.map(([email, stressScore, sedentaryScore, socialScore, summary], index) => ({
     id: stableUuid(`assessment:${index}:${email}`),
     user_id: usersByEmail.get(email).id,
@@ -798,14 +943,15 @@ async function seedAssessmentResults(usersByEmail) {
 }
 
 async function verifySeed(usersByEmail) {
-  console.log('7/7 Verifying seeded records...');
+  console.log('8/8 Verifying seeded records...');
   const userIds = [...usersByEmail.values()].map(({ id }) => id);
   const encodedIds = encodeURIComponent(`(${userIds.join(',')})`);
-  const [profiles, roles, categories, savedArticles, savedComments, assessments] = await Promise.all([
+  const [profiles, roles, categories, savedArticles, savedStories, savedComments, assessments] = await Promise.all([
     request(`/rest/v1/profiles?select=id&id=in.${encodedIds}`),
     request(`/rest/v1/user_roles?select=user_id,role&user_id=in.${encodedIds}`),
     request('/rest/v1/categories?select=id,slug'),
     request(`/rest/v1/articles?select=id,slug&slug=in.(${articles.map(({ slug }) => `\"${slug}\"`).join(',')})`),
+    request(`/rest/v1/stories?select=id,slug,image_url&slug=in.(${stories.map(({ slug }) => `\"${slug}\"`).join(',')})`),
     request(`/rest/v1/comments?select=id&id=in.(${activeComments().map(({ comment: entry, index }) => stableUuid(`comment:${index}:${entry[0]}:${entry[1]}`)).join(',')})`),
     request(`/rest/v1/assessment_results?select=id&id=in.(${assessmentResults.map((entry, index) => stableUuid(`assessment:${index}:${entry[0]}`)).join(',')})`),
   ]);
@@ -818,6 +964,7 @@ async function verifySeed(usersByEmail) {
     roles: [roles.length, authUsers.length],
     categories: [categories.filter(({ slug }) => Object.keys(categoryTree).some((name) => slug === slugify(name)) || Object.values(categoryTree).flat().some((name) => slug === slugify(name))).length, expectedCategoryCount],
     articles: [savedArticles.length, articles.length],
+    stories: [savedStories.length, stories.length],
     comments: [savedComments.length, activeComments().length],
     assessments: [assessments.length, assessmentResults.length],
   };
@@ -871,6 +1018,7 @@ async function main() {
   }
   const categoriesBySlug = await seedCategories();
   const articlesBySlug = await seedArticles(usersByEmail, categoriesBySlug);
+  await seedStories();
   await seedComments(usersByEmail, articlesBySlug);
   await seedAssessmentResults(usersByEmail);
   await verifySeed(usersByEmail);
@@ -882,6 +1030,7 @@ function validateSeedDefinition() {
   const categoryNames = new Set([...Object.keys(categoryTree), ...Object.values(categoryTree).flat()]);
   const userEmails = new Set(authUsers.map(({ email }) => email));
   const uniqueArticleSlugs = new Set(articles.map(({ slug }) => slug));
+  const uniqueStorySlugs = new Set(stories.map(({ slug }) => slug));
   const uniqueNicknames = new Set(authUsers.map(({ profile }) => profile.nickname));
 
   const checks = [
@@ -893,6 +1042,9 @@ function validateSeedDefinition() {
     [articles.every(({ author, category }) => userEmails.has(author) && categoryNames.has(category)), 'valid article references'],
     [articles.every(({ content }) => content.trim().split(/\s+/).length >= 180), 'expanded article content'],
     [articles.every(({ cover_image_url: coverImageUrl }) => /^\/images\/articles\/[a-z0-9-]+\.jpg$/.test(coverImageUrl)), 'stable local article cover images'],
+    [stories.length === 3 && uniqueStorySlugs.size === stories.length, 'exactly three uniquely slugged stories'],
+    [stories.every(({ content }) => { const count = content.trim().split(/\s+/).length; return count >= 500 && count <= 900; }), 'story content is 500-900 words'],
+    [stories.every(({ image_url: imageUrl }) => /^\/images\/stories\/[a-z0-9-]+\.jpg$/.test(imageUrl)), 'stable local story cover images'],
     [activeComments().length >= 20 && activeComments().length <= 25, '20-25 comments'],
     [activeComments().every(({ comment: [slug, email] }) => uniqueArticleSlugs.has(slug) && userEmails.has(email)), 'valid comment references'],
     [assessmentResults.every(([email]) => email !== 'kaloianh@gmail.com' && userEmails.has(email)), 'normal-user assessment results only'],

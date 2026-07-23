@@ -1,0 +1,2 @@
+.story-editor { max-width: 58rem; }
+.story-editor__preview { width: 100%; max-height: 25rem; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 1rem; background: #e8f2f0; }

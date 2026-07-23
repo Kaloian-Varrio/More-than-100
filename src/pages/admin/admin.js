@@ -17,6 +17,7 @@ import {
 } from '../../services/admin-service.js';
 import { initializeBrandLogos, uploadBrandLogo, validateBrandLogo } from '../../services/brand-logo-service.js';
 import { escapeHtml } from '../../utils/html.js';
+import { deleteStory, setStoryPublished } from '../../services/story-service.js';
 
 document.querySelector('#app').innerHTML = '<main class="d-grid min-vh-100" style="place-items:center"><span class="spinner-border text-success" aria-label="Loading admin panel"></span></main>';
 const currentAdmin = await requireAdminUser();
@@ -54,16 +55,19 @@ function renderAdmin(data) {
         <section class="row g-3 mb-5" aria-label="Overview">
           ${stat('people', 'Users', data.profiles.length)}
           ${stat('journal-text', 'Articles', data.articles.length)}
+          ${stat('people-fill', 'Stories', data.stories.length)}
           ${stat('chat-square-text', 'Comments', data.comments.length)}
         </section>
         <nav class="nav nav-pills flex-nowrap gap-2 mb-4 admin-nav" aria-label="Admin sections">
           <a class="nav-link active" href="#users">Users</a>
           <a class="nav-link" href="#articles">Articles</a>
+          <a class="nav-link" href="#stories">Stories</a>
           <a class="nav-link" href="#comments">Comments</a>
           <a class="nav-link" href="#branding">Branding</a>
         </nav>
         ${usersSection(data.profiles)}
         ${articlesSection(data.articles)}
+        ${storiesSection(data.stories)}
         ${commentsSection(data.comments)}
         ${brandingSection()}
       </div>
@@ -78,7 +82,7 @@ function renderAdmin(data) {
 }
 
 function stat(icon, label, value) {
-  return `<div class="col-12 col-sm-4"><article class="card admin-stat h-100"><div class="card-body d-flex align-items-center gap-3"><span class="admin-stat__icon"><i class="bi bi-${icon}" aria-hidden="true"></i></span><div><strong class="h3 d-block mb-0">${value}</strong><span class="text-body-secondary">${label}</span></div></div></article></div>`;
+  return `<div class="col-6 col-xl-3"><article class="card admin-stat h-100"><div class="card-body d-flex align-items-center gap-3"><span class="admin-stat__icon"><i class="bi bi-${icon}" aria-hidden="true"></i></span><div><strong class="h3 d-block mb-0">${value}</strong><span class="text-body-secondary">${label}</span></div></div></article></div>`;
 }
 
 function usersSection(profiles) {
@@ -129,6 +133,15 @@ function articlesSection(articles) {
       </table>
     </div>` : empty('No articles found.');
   return panel('articles', 'Articles', body, 'Unpublished articles remain available to their author and administrators.');
+}
+
+function storiesSection(stories) {
+  const body = stories.length ? `
+    <div class="p-4 border-bottom text-end"><a class="btn btn-primary" href="/admin/stories/create"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Create story</a></div>
+    <div class="table-responsive"><table class="table table-hover align-middle admin-table mb-0"><thead><tr><th>Story</th><th>Person</th><th>Visibility</th><th>Created</th><th class="text-end">Actions</th></tr></thead><tbody>
+    ${stories.map((story) => `<tr data-story-id="${story.id}"><td><div class="d-flex align-items-center gap-3"><img class="admin-story-thumb" src="${escapeHtml(story.image_url)}" alt="" width="96" height="54"><span class="fw-semibold">${escapeHtml(story.title)}</span></div></td><td>${escapeHtml(story.person_name)}</td><td><span class="badge ${story.is_published ? 'text-bg-success' : 'text-bg-secondary'}">${story.is_published ? 'Published' : 'Unpublished'}</span></td><td>${date(story.created_at)}</td><td><div class="d-flex flex-wrap justify-content-end gap-2"><a class="btn btn-sm btn-outline-primary" href="/stories/${encodeURIComponent(story.slug)}">View</a><a class="btn btn-sm btn-outline-secondary" href="/admin/stories/${encodeURIComponent(story.slug)}/edit">Edit</a><button class="btn btn-sm btn-outline-warning" data-toggle-story data-published="${story.is_published}">${story.is_published ? 'Unpublish' : 'Publish'}</button><button class="btn btn-sm btn-outline-danger" data-delete-story>Delete</button></div></td></tr>`).join('')}
+    </tbody></table></div>` : `<div class="p-4 border-bottom text-end"><a class="btn btn-primary" href="/admin/stories/create">Create story</a></div>${empty('No stories found.')}`;
+  return panel('stories', 'Stories', body, 'Create, edit and control publication of story content.');
 }
 
 function commentsSection(comments) {
@@ -204,7 +217,41 @@ function initializeActions(data) {
   initializeProfileActions(data);
   initializeUserActions(data);
   initializeArticleActions();
+  initializeStoryActions();
   initializeCommentActions(data);
+}
+
+function initializeStoryActions() {
+  document.querySelector('#stories').addEventListener('click', async (event) => {
+    const row = event.target.closest('tr[data-story-id]');
+    if (!row) return;
+    const toggle = event.target.closest('[data-toggle-story]');
+    if (toggle) {
+      const published = toggle.dataset.published === 'true';
+      if (!window.confirm(`${published ? 'Unpublish' : 'Publish'} this story?`)) return;
+      toggle.disabled = true;
+      try {
+        await setStoryPublished(row.dataset.storyId, !published);
+        await loadAdmin(`Story ${published ? 'unpublished' : 'published'} successfully.`);
+      } catch (error) {
+        console.error('Story visibility update failed.', error);
+        toggle.disabled = false;
+        feedback(error.message || 'Story visibility could not be changed.', 'danger');
+      }
+      return;
+    }
+    const button = event.target.closest('[data-delete-story]');
+    if (!button || !window.confirm('Delete this story permanently?')) return;
+    button.disabled = true;
+    try {
+      await deleteStory(row.dataset.storyId);
+      await loadAdmin('Story deleted successfully.');
+    } catch (error) {
+      console.error('Story deletion failed.', error);
+      button.disabled = false;
+      feedback(error.message || 'The story could not be deleted.', 'danger');
+    }
+  });
 }
 
 function initializeProfileActions(data) {

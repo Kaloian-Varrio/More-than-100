@@ -72,6 +72,10 @@ export function createFeaturedContentSection() {
   return `<section class="featured-content section-space" id="featured-content" aria-labelledby="featured-title"><div class="container"><div class="d-lg-flex justify-content-between align-items-end gap-4 mb-4 mb-lg-5"><div class="section-heading text-lg-start mb-3 mb-lg-0"><p class="section-eyebrow mb-2">A good place to start</p><h2 class="section-title mb-3" id="featured-title">Practical reads for real life</h2><p class="section-description text-body-secondary mb-0">Short, useful ideas you can carry into your next meal, walk or quiet moment.</p></div><a class="btn btn-outline-primary" href="/articles">Explore All Articles <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a></div><div class="row g-4" id="featured-grid">${createLoadingState('Loading featured articles...')}</div></div></section>`;
 }
 
+export function createStoriesTeaserSection() {
+  return `<section class="section-space stories-teaser" aria-labelledby="home-stories-title"><div class="container"><div class="d-lg-flex justify-content-between align-items-end gap-4 mb-4"><div><p class="section-eyebrow mb-2">Healthy living, human stories</p><h2 class="section-title mb-2" id="home-stories-title">See how small choices can fit real life.</h2><p class="text-body-secondary mb-0">Fictional demonstrations shaped around practical routines and everyday challenges.</p></div><a class="btn btn-outline-primary mt-3 mt-lg-0" href="/stories">Explore all stories <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a></div><div class="row g-4" id="home-stories-grid">${createLoadingState('Loading stories...')}</div></div></section>`;
+}
+
 export function createCategoryGrid(categories) { return categories.map(createContentAreaCard).join(''); }
 export function createFeaturedGrid(articles) { return articles.map(createArticleCard).join(''); }
 

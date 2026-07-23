@@ -2,12 +2,15 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../../styles/global.css';
 import '../../styles/content.css';
 import './home.css';
+import '../../styles/stories.css';
 import { renderLayout } from '../../components/layout.js';
 import { initializeArticleImages } from '../../components/article-card.js';
 import { createEmptyState, createErrorState } from '../../components/content-state.js';
 import { getFeaturedArticles } from '../../services/article-service.js';
 import { buildCategoryTree, getCategories } from '../../services/category-service.js';
 import { getCurrentUser } from '../../services/auth-service.js';
+import { getPublishedStories } from '../../services/story-service.js';
+import { createStoryCard, initializeStoryImages } from '../../components/story-card.js';
 import {
   createCategoryGrid,
   createContentAreasSection,
@@ -15,6 +18,7 @@ import {
   createFeaturedContentSection,
   createHeroSection,
   createAssessmentPromotionSection,
+  createStoriesTeaserSection,
   createValueSection,
 } from './home-sections.js';
 
@@ -23,6 +27,7 @@ const homeContent = [
   createAssessmentPromotionSection(),
   createContentAreasSection(),
   createFeaturedContentSection(),
+  createStoriesTeaserSection(),
   createValueSection(),
 ].join('');
 
@@ -37,6 +42,7 @@ if (currentUser) {
 
 const categoryGrid = document.querySelector('#category-grid');
 const featuredGrid = document.querySelector('#featured-grid');
+const storiesGrid = document.querySelector('#home-stories-grid');
 
 try {
   const categories = buildCategoryTree(await getCategories());
@@ -44,6 +50,15 @@ try {
 } catch (error) {
   console.error('Categories could not be loaded.', error);
   categoryGrid.innerHTML = createErrorState();
+}
+
+try {
+  const stories = await getPublishedStories(3);
+  storiesGrid.innerHTML = stories.length ? stories.map(createStoryCard).join('') : createEmptyState('Stories coming soon', 'New stories will appear here soon.');
+  initializeStoryImages(storiesGrid);
+} catch (error) {
+  console.error('Stories could not be loaded.', error);
+  storiesGrid.innerHTML = createErrorState();
 }
 
 try {
