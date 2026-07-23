@@ -95,13 +95,32 @@
 .account-details dd { font-weight: 700; }
 
 #my-articles { scroll-margin-top: 1.5rem; }
-.my-articles-card { overflow: hidden; border-radius: 1.25rem; background: #fff; box-shadow: 0 1rem 3rem rgb(18 60 45 / 8%); }
+.dashboard-section,
+#my-articles { scroll-margin-top: 1.5rem; }
+.my-articles-card,
+.dashboard-list-card { overflow: hidden; border-radius: 1.25rem; background: #fff; box-shadow: 0 1rem 3rem rgb(18 60 45 / 8%); }
 .dashboard-article + .dashboard-article { border-top: 1px solid #e2ebe5; }
 .dashboard-article__image { flex: 0 0 12rem; overflow: hidden; border-radius: 0.85rem; aspect-ratio: 16 / 9; background: #dce9df; }
 .dashboard-article__image img { width: 100%; height: 100%; object-fit: cover; }
 .dashboard-article__fallback { display: grid; width: 100%; height: 100%; place-items: center; background: linear-gradient(145deg, #75a96f, #245c45); color: #fff; font-size: 2rem; }
 .article-empty > .bi { color: #197a50; font-size: 2.2rem; }
 .min-w-0 { min-width: 0; }
+.dashboard-comment + .dashboard-comment { border-top: 1px solid var(--mt-border); }
+.dashboard-comment__text { max-width: 56rem; color: var(--mt-text); line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+.assessment-history-card { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-lg); background: #fff; box-shadow: var(--mt-shadow-sm); }
+.dashboard-score { display: grid; height: 100%; gap: 0.15rem; padding: 0.8rem; border-radius: var(--mt-radius-sm); background: #f3f7f5; }
+.dashboard-score span { color: var(--mt-muted); font-size: 0.72rem; font-weight: 700; }
+.dashboard-score strong { color: var(--mt-forest); font-size: 1.35rem; }
+.dashboard-score small { font-weight: 750; }
+.dashboard-score--low small { color: #256642; }
+.dashboard-score--mild small { color: #64721f; }
+.dashboard-score--elevated small { color: #8a5617; }
+.dashboard-score--high small { color: #914237; }
+.assessment-summary { border-top: 1px solid var(--mt-border); color: var(--mt-text); }
+.assessment-summary summary { padding-top: 1rem; color: var(--mt-green-strong); font-weight: 750; cursor: pointer; }
+.assessment-summary p { line-height: 1.7; }
+.assessment-summary p:last-child { margin-bottom: 0; }
+#dashboard-recommendations .article-card { background: #fff; }
 
 @media (max-width: 575.98px) {
   .dashboard-hero .btn { width: 100%; }
@@ -112,4 +131,10 @@
 
   #my-articles > div:first-child .btn { width: 100%; }
   .dashboard-article__image { width: 100%; flex-basis: auto; }
+  .dashboard-comment .btn { flex: 1 1 auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-card { transition: none; }
+  .dashboard-card:hover { transform: none; }
 }

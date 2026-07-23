@@ -1,5 +1,6 @@
-import { createArticleImage } from '../../components/article-card.js';
+import { createArticleCard, createArticleImage } from '../../components/article-card.js';
 import { createProfileAvatar } from '../../components/profile-avatar.js';
+import { getRiskLabel } from '../assessment/assessment-scoring.js';
 
 const dashboardSections = [
   {
@@ -13,6 +14,8 @@ const dashboardSections = [
     icon: 'bi-chat-square-text',
     title: 'My Comments',
     description: 'Review and manage your contributions to community conversations.',
+    href: '#my-comments',
+    action: 'View comments',
   },
   {
     icon: 'bi-clipboard2-pulse',
@@ -24,12 +27,16 @@ const dashboardSections = [
   {
     icon: 'bi-graph-up-arrow',
     title: 'My Assessment Results',
-    description: 'Your saved assessment history and wellbeing trends will appear here.',
+    description: 'Review your saved assessment history and personalized summaries.',
+    href: '#assessment-history',
+    action: 'View results',
   },
   {
     icon: 'bi-lightbulb',
     title: 'Recommendations',
     description: 'Receive practical next steps tailored to your wellbeing journey.',
+    href: '#dashboard-recommendations',
+    action: 'View recommendations',
   },
 ];
 
@@ -47,9 +54,7 @@ function getDisplayName(user, profile) {
 }
 
 function createSectionCard({ icon, title, description, href, action }) {
-  const actionMarkup = href
-    ? `<a class="btn btn-outline-primary mt-auto align-self-start" href="${href}">${action}<i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a>`
-    : '<span class="dashboard-status mt-auto align-self-start"><i class="bi bi-clock me-1" aria-hidden="true"></i>Coming soon</span>';
+  const actionMarkup = `<a class="btn btn-outline-primary mt-auto align-self-start" href="${href}">${action}<i class="bi bi-arrow-right ms-2" aria-hidden="true"></i></a>`;
 
   return `
     <div class="col-12 col-md-6 col-xl-4">
@@ -64,7 +69,11 @@ function createSectionCard({ icon, title, description, href, action }) {
     </div>`;
 }
 
-export function createDashboardContent(user, profile, articles = [], articlesError = false) {
+export function createDashboardContent(user, profile, data = {}) {
+  const {
+    articles = [], comments = [], assessmentResults = [], recommendations = [],
+    articlesError = false, commentsError = false, assessmentError = false, recommendationsError = false,
+  } = data;
   const displayName = escapeHtml(getDisplayName(user, profile));
   const firstName = escapeHtml(profile?.first_name || 'Not provided');
   const lastName = escapeHtml(profile?.last_name || 'Not provided');
@@ -91,7 +100,7 @@ export function createDashboardContent(user, profile, articles = [], articlesErr
       <div class="mb-4">
         <p class="text-success fw-semibold mb-2">Small steps, organized</p>
         <h2 class="h3 mb-2" id="dashboard-tools-title">Your dashboard</h2>
-        <p class="text-body-secondary mb-0">These areas will grow as personal features become available.</p>
+        <p class="text-body-secondary mb-0">Jump directly to your content, assessment history and personalized next steps.</p>
       </div>
       <div class="row g-4">
         ${dashboardSections.map(createSectionCard).join('')}
@@ -106,6 +115,22 @@ export function createDashboardContent(user, profile, articles = [], articlesErr
       <div class="my-articles-card" id="my-articles-list">
         ${createArticlesMarkup(articles, articlesError)}
       </div>
+    </section>
+
+    <section class="container pb-5 dashboard-section" id="my-comments" aria-labelledby="my-comments-title">
+      <div class="mb-4"><p class="text-success fw-semibold mb-2">Your conversations</p><h2 class="h3 mb-0" id="my-comments-title">My Comments</h2></div>
+      <div class="dashboard-list-card" id="my-comments-list">${createCommentsMarkup(comments, commentsError)}</div>
+      <div class="alert d-none mt-3" id="comments-feedback" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="container pb-5 dashboard-section" id="assessment-history" aria-labelledby="assessment-history-title">
+      <div class="d-flex flex-column flex-sm-row align-items-sm-end justify-content-between gap-3 mb-4"><div><p class="text-success fw-semibold mb-2">Your progress</p><h2 class="h3 mb-0" id="assessment-history-title">My Assessment Results</h2></div><a class="btn btn-outline-primary" href="/assessment">Take Assessment</a></div>
+      ${createAssessmentHistoryMarkup(assessmentResults, assessmentError)}
+    </section>
+
+    <section class="container pb-5 dashboard-section" id="dashboard-recommendations" aria-labelledby="dashboard-recommendations-title">
+      <div class="mb-4"><p class="text-success fw-semibold mb-2">Based on your latest result</p><h2 class="h3 mb-0" id="dashboard-recommendations-title">Recommendations</h2></div>
+      ${createRecommendationsMarkup(recommendations, assessmentResults, recommendationsError || assessmentError)}
     </section>
 
     <section class="container pb-5" id="account" aria-labelledby="account-title" tabindex="-1">
@@ -129,6 +154,49 @@ export function createDashboardContent(user, profile, articles = [], articlesErr
         </div>
       </article>
     </section>`;
+}
+
+function createCommentsMarkup(comments, hasError) {
+  if (hasError) return createDashboardEmpty('exclamation-circle', 'Comments could not be loaded', 'Refresh the page to try again.');
+  if (!comments.length) return createDashboardEmpty('chat-square-text', 'No comments yet', 'Comments you add to articles will appear here.');
+
+  return comments.map((comment) => `
+    <article class="dashboard-comment p-3 p-lg-4" data-comment-row="${escapeHtml(comment.id)}">
+      <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+        <div class="min-w-0">
+          <p class="small text-body-secondary mb-2"><i class="bi bi-journal-text me-1" aria-hidden="true"></i>${escapeHtml(comment.article?.title || 'Article unavailable')} &middot; <time datetime="${comment.created_at}">${formatDate(comment.created_at)}</time></p>
+          <p class="dashboard-comment__text mb-0">${escapeHtml(comment.content)}</p>
+        </div>
+        <div class="d-flex flex-wrap align-self-md-start gap-2">
+          ${comment.article?.slug ? `<a class="btn btn-sm btn-outline-primary" href="/articles/${encodeURIComponent(comment.article.slug)}">View Article</a>` : ''}
+          <button class="btn btn-sm btn-outline-secondary" type="button" data-edit-comment>Edit</button>
+          <button class="btn btn-sm btn-outline-danger" type="button" data-delete-comment>Delete</button>
+        </div>
+      </div>
+    </article>`).join('');
+}
+
+function createAssessmentHistoryMarkup(results, hasError) {
+  if (hasError) return createDashboardEmpty('exclamation-circle', 'Assessment results could not be loaded', 'Refresh the page to try again.');
+  if (!results.length) return `${createDashboardEmpty('clipboard2-pulse', 'No assessment results yet', 'Complete your first assessment to see your saved history.')}<div class="text-center mt-3"><a class="btn btn-primary" href="/assessment">Take Your Personal Assessment</a></div>`;
+
+  return `<div class="row g-3">${results.map((result, index) => `<div class="col-12 col-xl-6"><article class="assessment-history-card h-100 p-4"><div class="d-flex justify-content-between align-items-start gap-3 mb-3"><div><p class="small text-body-secondary mb-1"><time datetime="${result.created_at}">${formatDate(result.created_at)}</time></p><h3 class="h5 mb-0">Assessment ${results.length - index}</h3></div>${index === 0 ? '<span class="badge text-bg-success">Latest</span>' : ''}</div><div class="row g-2">${createScore('Stress', result.stress_score)}${createScore('Sedentary lifestyle', result.sedentary_score)}${createScore('Social disconnection', result.social_score)}</div>${result.summary ? `<details class="assessment-summary mt-3"><summary>Read personalized summary</summary><div class="pt-3">${result.summary.split(/\n+/).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div></details>` : ''}</article></div>`).join('')}</div>`;
+}
+
+function createScore(label, score) {
+  const risk = getRiskLabel(score);
+  return `<div class="col-sm-4"><div class="dashboard-score dashboard-score--${risk.toLowerCase()}"><span>${escapeHtml(label)}</span><strong>${score}%</strong><small>${risk} risk</small></div></div>`;
+}
+
+function createRecommendationsMarkup(recommendations, assessmentResults, hasError) {
+  if (hasError) return createDashboardEmpty('exclamation-circle', 'Recommendations could not be loaded', 'Refresh the page to try again.');
+  if (!assessmentResults.length) return `${createDashboardEmpty('lightbulb', 'Complete an assessment first', 'Your latest scores help select useful reading for your next steps.')}<div class="text-center mt-3"><a class="btn btn-primary" href="/assessment">Take Your Personal Assessment</a></div>`;
+  if (!recommendations.length) return createDashboardEmpty('journal-heart', 'No recommendations available', 'Explore wellbeing categories from the Home page while new content is added.');
+  return `<div class="row g-4">${recommendations.map(createArticleCard).join('')}</div>`;
+}
+
+function createDashboardEmpty(icon, title, description) {
+  return `<div class="article-empty text-center p-5"><i class="bi bi-${icon} d-block mb-3" aria-hidden="true"></i><h3 class="h5">${title}</h3><p class="text-body-secondary mb-0">${description}</p></div>`;
 }
 
 function createArticlesMarkup(articles, hasError) {

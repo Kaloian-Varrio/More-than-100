@@ -1,4 +1,5 @@
 import { supabase } from './supabase-client.js';
+import { getCurrentUser } from './auth-service.js';
 
 const commentFields = 'id, article_id, author_id, content, created_at, updated_at';
 
@@ -21,6 +22,30 @@ export async function getCommentsForArticle(articleId) {
   if (profileError) throw profileError;
   const profilesById = new Map(profiles.map((profile) => [profile.id, profile]));
   return comments.map((comment) => ({ ...comment, author: profilesById.get(comment.author_id) || null }));
+}
+
+export async function getCurrentUserComments() {
+  const user = await getCurrentUser();
+  if (!user) throw new Error('You must be logged in to view your comments.');
+
+  const { data: comments, error } = await supabase
+    .from('comments')
+    .select(commentFields)
+    .eq('author_id', user.id)
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+  if (!comments.length) return [];
+
+  const articleIds = [...new Set(comments.map(({ article_id: articleId }) => articleId))];
+  const { data: articles, error: articleError } = await supabase
+    .from('articles')
+    .select('id, title, slug')
+    .in('id', articleIds);
+
+  if (articleError) throw articleError;
+  const articlesById = new Map(articles.map((article) => [article.id, article]));
+  return comments.map((comment) => ({ ...comment, article: articlesById.get(comment.article_id) || null }));
 }
 
 export async function createComment({ articleId, authorId, content }) {

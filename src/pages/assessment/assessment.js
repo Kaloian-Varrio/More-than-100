@@ -19,47 +19,75 @@ const user = await requireAuthenticatedUser();
 if (user) initializeAssessment();
 
 function initializeAssessment() {
-  const state = { index: 0, answers: {}, submitting: false };
+  const state = { step: 0, answers: {}, submitting: false };
   renderLayout({ activePath: '/assessment', mainClass: 'assessment-page', content: `<section class="container assessment-shell py-5">
     <header class="text-center mb-4"><p class="text-success fw-bold text-uppercase small mb-2">Personal Assessment</p><h1 class="display-6 fw-bold mb-3">Lifestyle &amp; Wellbeing Self-Assessment</h1><p class="lead text-body-secondary mb-0">Reflect on everyday patterns across stress, movement and social connection.</p></header>
     <aside class="assessment-disclaimer rounded-3 p-3 mb-4 small" aria-label="Important disclaimer"><i class="bi bi-info-circle me-2 text-success" aria-hidden="true"></i>This tool supports general lifestyle and wellbeing awareness. It is not a medical or psychological diagnosis and does not replace professional medical or mental health advice.</aside>
     <div id="assessment-content"></div>
   </section>` });
-  renderQuestion(state);
+  renderStep(state);
 }
 
-function renderQuestion(state) {
-  const item = assessmentQuestions[state.index];
-  const selected = state.answers[item.id];
-  const percent = Math.round(((state.index + 1) / assessmentQuestions.length) * 100);
+const questionsPerStep = 5;
+const totalSteps = Math.ceil(assessmentQuestions.length / questionsPerStep);
+
+function getStepQuestions(step) {
+  return assessmentQuestions.slice(step * questionsPerStep, (step + 1) * questionsPerStep);
+}
+
+function renderStep(state) {
+  const questions = getStepQuestions(state.step);
+  const percent = Math.round(((state.step + 1) / totalSteps) * 100);
   const container = document.querySelector('#assessment-content');
   container.innerHTML = `<article class="card assessment-card border-0"><div class="card-body p-sm-5">
-    <div class="d-flex justify-content-between gap-3 mb-2"><span class="text-success fw-semibold">${escapeHtml(assessmentDimensions[item.dimension])}</span><span class="text-body-secondary">Question ${item.id} of ${assessmentQuestions.length}</span></div>
+    <div class="d-flex flex-column flex-sm-row justify-content-between gap-1 gap-sm-3 mb-2"><span class="text-success fw-semibold">Step ${state.step + 1} of ${totalSteps}</span><span class="text-body-secondary">Questions ${questions[0].id}&ndash;${questions.at(-1).id} of ${assessmentQuestions.length}</span></div>
     <div class="progress assessment-progress mb-4" role="progressbar" aria-label="Assessment progress" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:${percent}%"></div></div>
-    <form id="question-form"><fieldset><legend class="h3 mb-4">${escapeHtml(item.prompt)}</legend><div class="d-grid gap-3">${item.answers.map((answer) => `<div class="assessment-option form-check"><input class="form-check-input" type="radio" name="answer" id="answer-${item.id}-${answer.score}" value="${answer.score}"${selected === answer.score ? ' checked' : ''} required><label class="form-check-label" for="answer-${item.id}-${answer.score}">${escapeHtml(answer.label)}</label></div>`).join('')}</div><div class="text-danger small mt-3 d-none" id="answer-error" role="alert">Choose one answer to continue.</div></fieldset>
-      <div class="assessment-actions d-flex flex-column-reverse flex-sm-row justify-content-between gap-2 mt-4"><button class="btn btn-outline-secondary" id="previous-question" type="button"${state.index === 0 ? ' disabled' : ''}><i class="bi bi-arrow-left me-2"></i>Previous</button><button class="btn btn-primary" id="next-question" type="submit">${state.index === assessmentQuestions.length - 1 ? 'Submit & View Results <i class="bi bi-check2-circle ms-2"></i>' : 'Next <i class="bi bi-arrow-right ms-2"></i>'}</button></div>
+    <form id="question-form" novalidate>
+      <div class="assessment-step-questions">${questions.map((item) => createQuestionFieldset(item, state.answers[item.id])).join('')}</div>
+      <div class="alert alert-danger d-none mt-4 mb-0" id="step-error" role="alert">Please answer every question in this step before continuing.</div>
+      <div class="assessment-actions d-flex flex-column-reverse flex-sm-row justify-content-between gap-2 mt-4"><button class="btn btn-outline-secondary" id="previous-step" type="button"${state.step === 0 ? ' disabled' : ''}><i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Previous</button><button class="btn btn-primary" id="next-step" type="submit">${state.step === totalSteps - 1 ? 'View My Results <i class="bi bi-check2-circle ms-2" aria-hidden="true"></i>' : 'Next Step <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>'}</button></div>
     </form>
   </div></article>`;
 
-  container.querySelector('#previous-question').addEventListener('click', () => { saveVisibleAnswer(state); state.index -= 1; renderQuestion(state); });
+  container.querySelectorAll('input[type="radio"]').forEach((input) => {
+    input.addEventListener('change', () => {
+      state.answers[Number(input.name.replace('question-', ''))] = Number(input.value);
+      input.closest('.assessment-question').classList.remove('assessment-question--invalid');
+      input.closest('.assessment-question').querySelector('.question-error').classList.add('d-none');
+    });
+  });
+  container.querySelector('#previous-step').addEventListener('click', () => {
+    state.step -= 1;
+    renderStep(state);
+    focusAssessmentContent();
+  });
   container.querySelector('#question-form').addEventListener('submit', (event) => handleNext(event, state));
-  container.querySelector('input:checked, input')?.focus({ preventScroll: true });
+}
+
+function createQuestionFieldset(item, selected) {
+  return `<fieldset class="assessment-question" data-question-id="${item.id}">
+    <legend><span class="assessment-question__number">Question ${item.id}</span><span class="assessment-question__dimension">${escapeHtml(assessmentDimensions[item.dimension])}</span><span class="h5 d-block mt-2 mb-0">${escapeHtml(item.prompt)}</span></legend>
+    <div class="row g-2 mt-2">${item.answers.map((answer) => `<div class="col-12 col-lg-4"><div class="assessment-option form-check h-100"><input class="form-check-input" type="radio" name="question-${item.id}" id="answer-${item.id}-${answer.score}" value="${answer.score}"${selected === answer.score ? ' checked' : ''}><label class="form-check-label" for="answer-${item.id}-${answer.score}">${escapeHtml(answer.label)}</label></div></div>`).join('')}</div>
+    <p class="question-error text-danger small mt-2 mb-0 d-none">Choose one answer for question ${item.id}.</p>
+  </fieldset>`;
 }
 
 async function handleNext(event, state) {
   event.preventDefault();
-  if (!saveVisibleAnswer(state)) {
-    document.querySelector('#answer-error').classList.remove('d-none');
+  if (!validateCurrentStep(state)) {
+    document.querySelector('#step-error').classList.remove('d-none');
+    document.querySelector('.assessment-question--invalid')?.scrollIntoView({ behavior: preferredScrollBehavior(), block: 'center' });
     return;
   }
-  if (state.index < assessmentQuestions.length - 1) {
-    state.index += 1;
-    renderQuestion(state);
+  if (state.step < totalSteps - 1) {
+    state.step += 1;
+    renderStep(state);
+    focusAssessmentContent();
     return;
   }
   if (state.submitting || Object.keys(state.answers).length !== assessmentQuestions.length) return;
   state.submitting = true;
-  const button = document.querySelector('#next-question');
+  const button = document.querySelector('#next-step');
   button.disabled = true;
   button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
   try {
@@ -77,17 +105,33 @@ async function handleNext(event, state) {
   } catch (error) {
     console.error('Assessment could not be saved.', error);
     state.submitting = false;
-    renderQuestion(state);
+    renderStep(state);
     const form = document.querySelector('#question-form');
     form.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger">Your assessment could not be saved. Please check your connection and try again.</div>');
   }
 }
 
-function saveVisibleAnswer(state) {
-  const selected = document.querySelector('input[name="answer"]:checked');
-  if (!selected) return false;
-  state.answers[assessmentQuestions[state.index].id] = Number(selected.value);
-  return true;
+function validateCurrentStep(state) {
+  let valid = true;
+  getStepQuestions(state.step).forEach((item) => {
+    const fieldset = document.querySelector(`[data-question-id="${item.id}"]`);
+    const answered = Number.isInteger(state.answers[item.id]);
+    fieldset.classList.toggle('assessment-question--invalid', !answered);
+    fieldset.querySelector('.question-error').classList.toggle('d-none', answered);
+    valid = valid && answered;
+  });
+  return valid;
+}
+
+function focusAssessmentContent() {
+  requestAnimationFrame(() => {
+    document.querySelector('#assessment-content')?.scrollIntoView({ behavior: preferredScrollBehavior(), block: 'start' });
+    document.querySelector('#assessment-content input:checked, #assessment-content input')?.focus({ preventScroll: true });
+  });
+}
+
+function preferredScrollBehavior() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
 }
 
 function renderCompletionLoading() {

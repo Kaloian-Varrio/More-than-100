@@ -21,3 +21,17 @@ export async function saveAssessmentResult(scores, analysis) {
   if (error) throw error;
   return data;
 }
+
+export async function getCurrentUserAssessmentResults() {
+  const user = await getCurrentUser();
+  if (!user) throw new Error('You must be logged in to view assessment results.');
+
+  const { data, error } = await supabase
+    .from('assessment_results')
+    .select('id, user_id, stress_score, sedentary_score, social_score, summary, created_at')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+  return data;
+}
