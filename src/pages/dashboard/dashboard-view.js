@@ -207,7 +207,10 @@ function createArticlesMarkup(articles, hasError) {
     <article class="dashboard-article d-flex flex-column flex-md-row gap-3 p-3 p-lg-4" data-article-row>
       <div class="dashboard-article__image">${createDashboardImage(article)}</div>
       <div class="flex-grow-1 min-w-0">
-        <p class="article-card__category mb-1">${escapeHtml(article.category?.name || 'Wellbeing')}</p>
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+          <p class="article-card__category mb-0">${escapeHtml(article.category?.name || 'Wellbeing')}</p>
+          ${article.is_published ? '' : '<span class="badge text-bg-secondary">Unpublished</span>'}
+        </div>
         <h3 class="h5 mb-2 text-break">${escapeHtml(article.title)}</h3>
         <p class="small text-body-secondary mb-3"><i class="bi bi-calendar3 me-1" aria-hidden="true"></i>${formatDate(article.created_at)}</p>
         <div class="d-flex flex-wrap gap-2">

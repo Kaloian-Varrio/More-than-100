@@ -1,9 +1,10 @@
 import { supabase } from './supabase-client.js';
 import { getCurrentUser } from './auth-service.js';
+import { isCurrentUserAdmin } from './role-service.js';
 
 const articleFields = `
   id, author_id, category_id, title, slug, short_description,
-  content, cover_image_url, created_at, updated_at,
+  content, cover_image_url, is_published, created_at, updated_at,
   category:categories!articles_category_id_fkey(name, slug)
 `;
 
@@ -75,12 +76,12 @@ export async function getCurrentUserArticles() {
 
 export async function getOwnedArticleBySlug(slug) {
   const user = await requireUser();
-  const { data, error } = await supabase
+  let query = supabase
     .from('articles')
     .select(articleFields)
-    .eq('slug', slug)
-    .eq('author_id', user.id)
-    .maybeSingle();
+    .eq('slug', slug);
+  if (!await isCurrentUserAdmin()) query = query.eq('author_id', user.id);
+  const { data, error } = await query.maybeSingle();
 
   if (error) throw error;
   return data;
