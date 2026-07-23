@@ -76,6 +76,23 @@ export function createArticleCard(article) {
     </div>`;
 }
 
+export function createCompactArticleCard(article) {
+  const title = escapeHtml(article.title);
+
+  return `
+    <div class="col-12 col-md-6 col-lg-4">
+      <article class="article-card article-card--compact card h-100">
+        <a class="article-card__image-wrap article-card__image-wrap--compact" href="/articles/${encodeURIComponent(article.slug)}" tabindex="-1" aria-hidden="true">${createArticleImage(article, { className: 'article-card__image article-card__image--compact' })}</a>
+        <div class="card-body d-flex flex-column p-3 p-xl-4">
+          <p class="article-card__category mb-2">${escapeHtml(article.category?.name || 'Wellbeing')}</p>
+          <h3 class="h5 card-title mb-2"><a class="stretched-link" href="/articles/${encodeURIComponent(article.slug)}">${title}</a></h3>
+          <p class="article-card__description card-text text-body-secondary mb-3">${escapeHtml(article.short_description || 'Discover a practical idea for everyday wellbeing.')}</p>
+          <span class="article-card__link mt-auto">Read article <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
+        </div>
+      </article>
+    </div>`;
+}
+
 export function initializeArticleImages(root = document) {
   root.querySelectorAll('[data-content-image]').forEach((image) => {
     const useFallback = () => {

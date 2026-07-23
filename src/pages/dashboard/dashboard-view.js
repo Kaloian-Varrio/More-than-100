@@ -1,4 +1,4 @@
-import { createArticleCard, createArticleImage } from '../../components/article-card.js';
+import { createArticleImage, createCompactArticleCard } from '../../components/article-card.js';
 import { createProfileAvatar } from '../../components/profile-avatar.js';
 import { getRiskLabel } from '../assessment/assessment-scoring.js';
 
@@ -192,7 +192,7 @@ function createRecommendationsMarkup(recommendations, assessmentResults, hasErro
   if (hasError) return createDashboardEmpty('exclamation-circle', 'Recommendations could not be loaded', 'Refresh the page to try again.');
   if (!assessmentResults.length) return `${createDashboardEmpty('lightbulb', 'Complete an assessment first', 'Your latest scores help select useful reading for your next steps.')}<div class="text-center mt-3"><a class="btn btn-primary" href="/assessment">Take Your Personal Assessment</a></div>`;
   if (!recommendations.length) return createDashboardEmpty('journal-heart', 'No recommendations available', 'Explore wellbeing categories from the Home page while new content is added.');
-  return `<div class="row g-4">${recommendations.map(createArticleCard).join('')}</div>`;
+  return `<div class="row g-3 g-xl-4">${recommendations.map(createCompactArticleCard).join('')}</div>`;
 }
 
 function createDashboardEmpty(icon, title, description) {
