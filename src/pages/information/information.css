@@ -1,0 +1,32 @@
+.information-hero {
+  background: var(--mt-gradient-wellbeing);
+  border-bottom: 1px solid var(--mt-border);
+}
+
+.information-hero .lead {
+  max-width: 44rem;
+  color: var(--mt-text);
+}
+
+.information-eyebrow {
+  color: var(--mt-teal-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.information-card {
+  scroll-margin-top: 1.5rem;
+  border: 1px solid var(--mt-border);
+  border-radius: var(--mt-radius-lg);
+  background: var(--mt-surface);
+  box-shadow: var(--mt-shadow-sm);
+}
+
+.information-card p { line-height: 1.75; }
+
+:target .information-card {
+  border-color: var(--mt-teal);
+  box-shadow: 0 0 0 0.25rem rgb(22 139 134 / 12%), var(--mt-shadow-sm);
+}

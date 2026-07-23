@@ -1,4 +1,4 @@
-import { createFooter } from './footer.js';
+import { createFooter, initializeFooter } from './footer.js';
 import { createHeader, initializeAuthHeader } from './header.js';
 import { createMainContent } from './main-content.js';
 
@@ -17,4 +17,5 @@ export function renderLayout({ activePath, content, mainClass = '' }) {
     </div>`;
 
   initializeAuthHeader(activePath);
+  initializeFooter();
 }

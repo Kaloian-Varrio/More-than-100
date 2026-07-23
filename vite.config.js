@@ -25,6 +25,7 @@ export default defineConfig({
         register: resolve(import.meta.dirname, 'register.html'),
         article: resolve(import.meta.dirname, 'article.html'),
         category: resolve(import.meta.dirname, 'category.html'),
+        information: resolve(import.meta.dirname, 'information.html'),
       },
     },
   },
