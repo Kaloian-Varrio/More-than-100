@@ -32,16 +32,13 @@ export function createHeroSection() {
       <div class="container position-relative py-5 py-lg-6">
         <div class="row align-items-center g-5">
           <div class="col-lg-7">
-            <p class="hero-kicker mb-3"><i class="bi bi-stars me-2" aria-hidden="true"></i>Healthy living, made practical</p>
             <h1 class="hero-headline mb-4" id="hero-title"><span class="hero-headline__small">Small</span> choices. <span class="hero-headline__smart">Smart</span> actions. A <span class="hero-headline__life">longer, healthier life.</span></h1>
-            <p class="hero-copy mb-3">Understand your stress, sedentary lifestyle and social connection risks&mdash;then receive visual scores, a personalized analysis and relevant articles for your next steps.</p>
-            <p class="hero-access-note mb-4" data-assessment-access><i class="bi bi-lock me-2" aria-hidden="true"></i>Login or register to take the assessment and save your results.</p>
+            <p class="hero-copy mb-4">Understand your stress, sedentary lifestyle and social connection risks&mdash;then receive visual scores, a personalized analysis and relevant articles for your next steps.</p>
             <div class="d-flex flex-column flex-sm-row flex-wrap align-items-sm-center gap-3" aria-label="Get started">
               <a class="btn btn-primary btn-lg px-4" href="/login" data-assessment-cta><i class="bi bi-clipboard2-pulse me-2" aria-hidden="true"></i><span>Take Your Personal Assessment</span></a>
               <a class="btn btn-outline-primary btn-lg px-4" href="/register" data-guest-only><i class="bi bi-person-plus me-2" aria-hidden="true"></i>Register</a>
-              <a class="hero-login-link" href="/login" data-guest-only>Already a member? Login</a>
             </div>
-            <p class="hero-note mt-4 mb-0"><i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>Practical ideas. No pressure. Progress at your pace.</p>
+            <p class="hero-access-note mt-3 mb-0" data-assessment-access><i class="bi bi-lock me-2" aria-hidden="true"></i>Login or register to take the assessment and save your results.</p>
           </div>
           <div class="col-lg-5">
             <div class="hero-visual" aria-label="A balanced approach to everyday wellbeing">

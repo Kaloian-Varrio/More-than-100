@@ -49,10 +49,8 @@ export function createFooter() {
               <img class="brand-logo brand-logo--footer" alt="" data-brand-logo hidden>
               <span data-brand-label>More Than 100</span>
             </a>
-            ${createMiniBrandSlogan('mt-3 mb-2')}
-            <p class="footer-tagline mb-2">Small choices. Smart actions. A longer, healthier life.</p>
-            <p class="footer-description mb-4">Practical ideas for nourishing habits, joyful movement, mindfulness and lasting wellbeing.</p>
-            <form class="newsletter-form" id="newsletter-form" novalidate>
+            ${createMiniBrandSlogan('mt-3 mb-0')}
+            <form class="newsletter-form footer-newsletter mt-4 pt-4" id="newsletter-form" novalidate>
               <label class="form-label footer-heading" for="newsletter-email">Fresh ideas, occasionally</label>
               <div class="newsletter-controls">
                 <input class="form-control" id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" aria-describedby="newsletter-note newsletter-feedback" required>

@@ -12,7 +12,6 @@
 .section-heading { max-width: 43rem; }
 
 .section-eyebrow,
-.hero-kicker,
 .article-card__category {
   color: var(--home-green);
   font-size: 0.78rem;
@@ -63,15 +62,6 @@
   content: '';
 }
 
-.hero-kicker {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.55rem 0.9rem;
-  border: 1px solid rgb(25 122 80 / 16%);
-  border-radius: 999px;
-  background: rgb(255 255 255 / 70%);
-}
-
 .hero-headline {
   max-width: 52rem;
   color: var(--home-ink);
@@ -108,11 +98,6 @@
 }
 
 .hero-access-note { color: #3d5d4f; font-size: 0.92rem; font-weight: 650; }
-.hero-login-link { color: var(--home-forest); font-weight: 750; text-underline-offset: 0.22rem; }
-.hero-login-link:hover { color: var(--home-green); }
-.hero-note { color: #567066; font-size: 0.92rem; font-weight: 600; }
-.hero-note .bi { color: var(--home-green); }
-
 .hero-visual {
   position: relative;
   width: min(100%, 29rem);
