@@ -208,17 +208,17 @@
 .hero-pill .bi { color: var(--home-green); font-size: 1.15rem; }
 .hero-orbiting { position: absolute; inset: 5%; animation: hero-orbit 46s linear infinite; }
 .hero-orbiting--connect { animation-delay: -23s; }
-.hero-orbiting--nourish,
-.hero-orbiting--restore { inset: 15%; animation-duration: 34s; }
-.hero-orbiting--nourish { animation-delay: -8.5s; }
-.hero-orbiting--restore { animation-delay: -25.5s; }
+.hero-orbiting--fuel,
+.hero-orbiting--recover { inset: 15%; animation-duration: 34s; }
+.hero-orbiting--fuel { animation-delay: -8.5s; }
+.hero-orbiting--recover { animation-delay: -25.5s; }
 .hero-orbiting--move .hero-pill,
 .hero-orbiting--connect .hero-pill { animation: hero-counter-orbit 46s linear infinite; }
 .hero-orbiting--connect .hero-pill { animation-delay: -23s; }
-.hero-orbiting--nourish .hero-pill,
-.hero-orbiting--restore .hero-pill { animation: hero-counter-orbit 34s linear infinite; }
-.hero-orbiting--nourish .hero-pill { animation-delay: -8.5s; }
-.hero-orbiting--restore .hero-pill { animation-delay: -25.5s; }
+.hero-orbiting--fuel .hero-pill,
+.hero-orbiting--recover .hero-pill { animation: hero-counter-orbit 34s linear infinite; }
+.hero-orbiting--fuel .hero-pill { animation-delay: -8.5s; }
+.hero-orbiting--recover .hero-pill { animation-delay: -25.5s; }
 
 @keyframes hero-orbit { to { transform: rotate(360deg); } }
 @keyframes hero-counter-orbit { to { transform: translate(-50%, -50%) rotate(-360deg); } }

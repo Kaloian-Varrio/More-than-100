@@ -47,7 +47,7 @@ export function createHeroSection() {
             <div class="hero-visual" aria-label="A balanced approach to everyday wellbeing">
               <div class="hero-orbit hero-orbit--outer"></div><div class="hero-orbit hero-orbit--inner"></div>
               <div class="hero-visual__center"><span class="hero-visual__number">100<span>+</span></span><span class="hero-visual__label">reasons to begin</span></div>
-              ${[['move', 'activity', 'Move'], ['nourish', 'basket2', 'Nourish'], ['connect', 'people', 'Connect'], ['restore', 'moon-stars', 'Restore']].map(([key, icon, label]) => `<div class="hero-orbiting hero-orbiting--${key}"><div class="hero-pill"><i class="bi bi-${icon}"></i><span>${label}</span></div></div>`).join('')}
+              ${[['move', 'activity', 'Move'], ['fuel', 'basket2', 'Fuel'], ['connect', 'people', 'Connect'], ['recover', 'moon-stars', 'Recover']].map(([key, icon, label]) => `<div class="hero-orbiting hero-orbiting--${key}"><div class="hero-pill"><i class="bi bi-${icon}" aria-hidden="true"></i><span>${label}</span></div></div>`).join('')}
             </div>
           </div>
         </div>

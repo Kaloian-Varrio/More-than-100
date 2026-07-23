@@ -1,4 +1,5 @@
 import { getCurrentUser, onAuthStateChange } from '../services/auth-service.js';
+import { createMiniBrandSlogan } from './brand-slogan.js';
 
 const primaryLinks = [
   ['Home', '/'],
@@ -48,7 +49,8 @@ export function createFooter() {
               <img class="brand-logo brand-logo--footer" alt="" data-brand-logo hidden>
               <span data-brand-label>More Than 100</span>
             </a>
-            <p class="footer-tagline mt-3 mb-2">Small choices. Smart actions. A longer, healthier life.</p>
+            ${createMiniBrandSlogan('mt-3 mb-2')}
+            <p class="footer-tagline mb-2">Small choices. Smart actions. A longer, healthier life.</p>
             <p class="footer-description mb-4">Practical ideas for nourishing habits, joyful movement, mindfulness and lasting wellbeing.</p>
             <form class="newsletter-form" id="newsletter-form" novalidate>
               <label class="form-label footer-heading" for="newsletter-email">Fresh ideas, occasionally</label>

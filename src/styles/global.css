@@ -228,6 +228,14 @@ button:focus-visible {
   color: #07556b;
 }
 .footer-tagline { max-width: 30rem; color: #fff; font-size: 1.08rem; font-weight: 700; }
+.mini-brand-slogan {
+  color: #bfe6e5;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  line-height: 1.4;
+  white-space: nowrap;
+}
 .footer-description { max-width: 34rem; color: #c9e1e3; line-height: 1.7; }
 
 .footer-heading {
