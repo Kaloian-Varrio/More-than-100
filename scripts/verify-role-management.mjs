@@ -135,7 +135,10 @@ try {
   await setRole('user');
 
   const invalidRole = await invoke(admin, { action: 'set-role', targetUserId: testUserId, role: 'owner' });
-  assert(!invalidRole.ok && invalidRole.status === 400, 'Invalid role was not rejected.');
+  assert(
+    !invalidRole.ok && invalidRole.status === 400,
+    `Invalid role was not rejected: ${invalidRole.status} ${JSON.stringify(invalidRole.data)}`,
+  );
   const { data: adminUser } = await admin.auth.getUser();
   const lastAdminDemotion = await invoke(admin, { action: 'set-role', targetUserId: adminUser.user.id, role: 'user' });
   assert(!lastAdminDemotion.ok && lastAdminDemotion.status === 409, 'Last administrator demotion was not rejected.');

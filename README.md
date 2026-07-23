@@ -44,6 +44,12 @@ Run the reversible role/RLS security verification with configured local Supabase
 npm run test:roles:security
 ```
 
+## AI Image Generation
+
+Article contributors and administrators can request Article cover previews; only administrators can request Story covers. The browser sends validated content context to the JWT-protected `generate-cover-image` Supabase Edge Function, which builds a concise server-side prompt and calls a small replaceable provider adapter. Raw prompts and provider credentials never reach frontend code.
+
+Configure the server secret with `supabase secrets set AI_IMAGE_PROVIDER_API_KEY=...` and optionally set `AI_IMAGE_MODEL`. Without a provider key, the function returns a friendly unavailable response and the application continues to support manual JPEG, PNG and WebP uploads through the existing `article-images` Storage workflow. Generated previews are only uploaded after the user explicitly accepts them and saves the Article or Story.
+
 ## Project structure
 
 - `dashboard.html` — Dashboard HTML entry point

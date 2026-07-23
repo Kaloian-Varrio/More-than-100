@@ -9,12 +9,14 @@ import { getCategories } from '../../services/category-service.js';
 import { escapeHtml } from '../../utils/html.js';
 import { safeImageUrl } from '../../utils/html.js';
 import { removeArticleImage, uploadArticleImage, validateArticleImage } from '../../services/article-media-service.js';
-import { generateArticleImage, ImageGenerationUnavailableError } from '../../services/article-image-generation-service.js';
+import { generateCoverImage, ImageGenerationUnavailableError } from '../../services/image-generation-service.js';
 
 class ReaderAccessHandledError extends Error {}
 
 let selectedImageFile = null;
 let localPreviewUrl = null;
+let pendingGeneratedFile = null;
+let pendingPreviewUrl = null;
 let generationBusy = false;
 
 const parts = window.location.pathname.split('/').filter(Boolean);
@@ -69,7 +71,7 @@ function renderEditor(categories, article) {
           <div class="mb-3"><label class="form-label fw-semibold" for="article-title">Title</label><input class="form-control" id="article-title" name="title" maxlength="200" required value="${escapeHtml(article?.title || '')}"><div class="invalid-feedback">Enter an article title.</div></div>
           <div class="mb-3"><label class="form-label fw-semibold" for="article-description">Short description</label><textarea class="form-control" id="article-description" name="shortDescription" maxlength="500" required>${escapeHtml(article?.short_description || '')}</textarea><div class="invalid-feedback">Enter a short description.</div></div>
           <div class="mb-3"><label class="form-label fw-semibold" for="article-category">Category</label><select class="form-select" id="article-category" name="categoryId" required><option value="">Choose a category</option>${categories.map((category) => `<option value="${escapeHtml(category.id)}"${category.id === article?.category_id ? ' selected' : ''}>${escapeHtml(category.name)}</option>`).join('')}</select><div class="invalid-feedback">Choose a category.</div></div>
-          <fieldset class="article-media p-3 p-sm-4 mb-3"><legend class="h5 px-1">Cover image</legend><div class="article-media__preview mb-3" id="article-image-preview">${createMediaPreview(article?.cover_image_url)}</div><div class="article-media__controls d-flex flex-column flex-sm-row gap-2"><label class="btn btn-outline-primary mb-0" for="article-image-file"><i class="bi bi-upload me-2" aria-hidden="true"></i>Upload Image</label><input class="visually-hidden" id="article-image-file" type="file" accept="image/jpeg,image/png,image/webp"><button class="btn btn-outline-primary" id="generate-image" type="button"><i class="bi bi-stars me-2" aria-hidden="true"></i>Generate with AI</button></div><div class="alert d-none mt-3 mb-0" id="media-feedback" role="status"></div><p class="form-text mb-0 mt-3">JPEG, PNG or WebP, up to 1 MB. Images use a responsive 16:9 cover. AI generation requires a configured secure Edge Function.</p><div class="mt-3"><label class="form-label small fw-semibold" for="article-image">Or keep/use an external image URL</label><input class="form-control" id="article-image" name="coverImageUrl" type="url" inputmode="url" placeholder="https://example.com/image.jpg" value="${escapeHtml(article?.cover_image_url || '')}"><div class="invalid-feedback">Enter a valid HTTP or HTTPS URL.</div></div></fieldset>
+          <fieldset class="article-media p-3 p-sm-4 mb-3"><legend class="h5 px-1">Cover image</legend><div class="article-media__preview mb-3" id="article-image-preview">${createMediaPreview(article?.cover_image_url)}</div><div class="article-media__controls d-flex flex-column flex-sm-row gap-2"><label class="btn btn-outline-primary mb-0" for="article-image-file"><i class="bi bi-upload me-2" aria-hidden="true"></i>Upload Image</label><input class="visually-hidden" id="article-image-file" type="file" accept="image/jpeg,image/png,image/webp"><button class="btn btn-outline-primary" id="generate-image" type="button"><i class="bi bi-stars me-2" aria-hidden="true"></i>Generate with AI</button></div><div class="d-none flex-wrap gap-2 mt-3" id="generated-image-actions"><button class="btn btn-success btn-sm" type="button" data-accept-generated>Accept image</button><button class="btn btn-outline-primary btn-sm" type="button" data-regenerate-image>Regenerate</button><button class="btn btn-outline-secondary btn-sm" type="button" data-cancel-generated>Cancel</button></div><div class="alert d-none mt-3 mb-0" id="media-feedback" role="status"></div><p class="form-text mb-0 mt-3">JPEG, PNG or WebP, up to 1 MB. Images use a responsive 16:9 cover. AI generation is optional and requires a configured secure Edge Function.</p><div class="mt-3"><label class="form-label small fw-semibold" for="article-image">Or keep/use an external image URL</label><input class="form-control" id="article-image" name="coverImageUrl" type="url" inputmode="url" placeholder="https://example.com/image.jpg" value="${escapeHtml(article?.cover_image_url || '')}"><div class="invalid-feedback">Enter a valid HTTP or HTTPS URL.</div></div></fieldset>
           <div class="mb-4"><label class="form-label fw-semibold" for="article-content">Content</label><textarea class="form-control" id="article-content" name="content" required>${escapeHtml(article?.content || '')}</textarea><div class="invalid-feedback">Enter the article content.</div></div>
           <div class="article-editor-actions d-flex flex-column flex-sm-row gap-2"><button class="btn btn-primary" id="article-submit" type="submit"><i class="bi bi-check2-circle me-2"></i>${action}</button><a class="btn btn-outline-secondary" href="/dashboard#my-articles">Cancel</a></div>
         </form>
@@ -77,7 +79,7 @@ function renderEditor(categories, article) {
     </section>`,
   });
   document.querySelector('#article-form').addEventListener('submit', (event) => submitForm(event, article));
-  initializeMediaControls();
+  initializeMediaControls(article);
 }
 
 async function submitForm(event, article) {
@@ -117,14 +119,16 @@ async function submitForm(event, article) {
   }
 }
 
-function initializeMediaControls() {
+function initializeMediaControls(article) {
   const fileInput = document.querySelector('#article-image-file');
   const generateButton = document.querySelector('#generate-image');
+  const generatedActions = document.querySelector('#generated-image-actions');
   const urlInput = document.querySelector('#article-image');
   fileInput.addEventListener('change', () => {
     try {
       const file = validateArticleImage(fileInput.files[0]);
       if (!file) return;
+      clearPendingGeneration();
       selectImageFile(file, 'Image selected. It will upload when you save the article.');
     } catch (error) {
       fileInput.value = '';
@@ -132,23 +136,59 @@ function initializeMediaControls() {
     }
   });
   urlInput.addEventListener('change', () => { if (!selectedImageFile) showMediaPreview(safeImageUrl(urlInput.value)); });
-  generateButton.addEventListener('click', async () => {
+  const requestGeneration = async () => {
     if (generationBusy) return;
     const form = document.querySelector('#article-form');
     if (!form.elements.title.value.trim()) { setMediaFeedback('Add an article title before generating an image.', 'warning'); return; }
     generationBusy = true;
     generateButton.disabled = true;
+    generatedActions.querySelectorAll('button').forEach((button) => { button.disabled = true; });
     generateButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating...';
     try {
-      const file = await generateArticleImage({ title: form.elements.title.value, shortDescription: form.elements.shortDescription.value, category: form.elements.categoryId.selectedOptions[0]?.textContent || '', content: form.elements.content.value });
+      const file = await generateCoverImage({
+        contentType: 'article',
+        articleId: article?.id,
+        context: {
+          title: form.elements.title.value,
+          description: form.elements.shortDescription.value,
+          category: form.elements.categoryId.selectedOptions[0]?.textContent || '',
+          topic: form.elements.content.value.slice(0, 300),
+        },
+      });
       validateArticleImage(file);
-      selectImageFile(file, 'Generated image selected. Save the article to accept and store it.');
-      generateButton.innerHTML = '<i class="bi bi-stars me-2"></i>Generate Another';
+      clearPendingGeneration();
+      pendingGeneratedFile = file;
+      pendingPreviewUrl = URL.createObjectURL(file);
+      showMediaPreview(pendingPreviewUrl);
+      generatedActions.className = 'd-flex flex-wrap gap-2 mt-3';
+      setMediaFeedback('Generated image preview. Accept it to use this cover, regenerate, or cancel.', 'success');
+      generateButton.innerHTML = '<i class="bi bi-stars me-2"></i>Generate with AI';
     } catch (error) {
       const message = error instanceof ImageGenerationUnavailableError ? error.message : 'AI image generation failed. You can still upload an image manually.';
       setMediaFeedback(message, 'warning');
       generateButton.innerHTML = '<i class="bi bi-stars me-2"></i>Generate with AI';
-    } finally { generationBusy = false; generateButton.disabled = false; }
+    } finally {
+      generationBusy = false;
+      generateButton.disabled = false;
+      generatedActions.querySelectorAll('button').forEach((button) => { button.disabled = false; });
+    }
+  };
+  generateButton.addEventListener('click', requestGeneration);
+  generatedActions.querySelector('[data-regenerate-image]').addEventListener('click', requestGeneration);
+  generatedActions.querySelector('[data-accept-generated]').addEventListener('click', () => {
+    if (!pendingGeneratedFile) return;
+    if ((selectedImageFile || formHasExistingCover()) && !window.confirm('Use this generated image as the cover? The current selection will be replaced when you save.')) return;
+    const file = pendingGeneratedFile;
+    pendingGeneratedFile = null;
+    if (pendingPreviewUrl) URL.revokeObjectURL(pendingPreviewUrl);
+    pendingPreviewUrl = null;
+    generatedActions.className = 'd-none flex-wrap gap-2 mt-3';
+    selectImageFile(file, 'Generated image accepted. It will upload when you save the article.');
+  });
+  generatedActions.querySelector('[data-cancel-generated]').addEventListener('click', () => {
+    clearPendingGeneration();
+    restoreAcceptedPreview();
+    setMediaFeedback('Generated preview cancelled. Your current cover is unchanged.', 'secondary');
   });
 }
 
@@ -158,6 +198,23 @@ function selectImageFile(file, message) {
   localPreviewUrl = URL.createObjectURL(file);
   showMediaPreview(localPreviewUrl);
   setMediaFeedback(message, 'success');
+}
+
+function clearPendingGeneration() {
+  pendingGeneratedFile = null;
+  if (pendingPreviewUrl) URL.revokeObjectURL(pendingPreviewUrl);
+  pendingPreviewUrl = null;
+  const actions = document.querySelector('#generated-image-actions');
+  if (actions) actions.className = 'd-none flex-wrap gap-2 mt-3';
+}
+
+function restoreAcceptedPreview() {
+  if (selectedImageFile && localPreviewUrl) showMediaPreview(localPreviewUrl);
+  else showMediaPreview(safeImageUrl(document.querySelector('#article-image')?.value));
+}
+
+function formHasExistingCover() {
+  return Boolean(document.querySelector('#article-image')?.value.trim());
 }
 
 function createMediaPreview(value) { const url = safeImageUrl(value); return url ? `<img src="${escapeHtml(url)}" alt="Article cover preview"><span class="d-none"><i class="bi bi-image"></i></span>` : '<span class="text-center"><i class="bi bi-image d-block mb-2"></i>No cover image selected</span>'; }
