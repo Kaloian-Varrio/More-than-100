@@ -47,3 +47,13 @@
 .admin-role-control { min-width: 14rem; }
 .admin-table .reorder-column { width: 6rem; }
 .admin-table .reorder-item--dragging > * { background: #eaf7f3; }
+@media (max-width: 767.98px) {
+  .admin-panel .table-responsive {
+    border-radius: 0 0 1rem 1rem;
+    scrollbar-color: var(--mt-teal) transparent;
+  }
+  .admin-table td,
+  .admin-table th { padding: 0.75rem; }
+  .admin-table td:last-child .btn { min-height: 2.5rem; }
+  .admin-table td:last-child > .d-flex { flex-wrap: nowrap !important; }
+}

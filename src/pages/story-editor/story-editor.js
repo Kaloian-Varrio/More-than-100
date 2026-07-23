@@ -27,7 +27,8 @@ async function initialize() {
     if (isEdit && !story) throw new Error('Story not found.');
     render(story);
   } catch (error) {
-    renderLayout({ activePath: '/admin', content: `<section class="container py-5"><div class="alert alert-danger">${escapeHtml(error.message)}</div><a href="/admin#stories">Back to Admin</a></section>` });
+    console.error('Story editor could not be loaded.', error);
+    renderLayout({ activePath: '/admin', content: '<section class="container py-5"><div class="alert alert-danger">The Story editor could not be loaded. Please try again.</div><a class="btn btn-outline-primary" href="/admin#stories">Back to Admin</a></section>' });
   }
 }
 
@@ -51,7 +52,7 @@ function render(story) {
             <div class="d-flex flex-column flex-sm-row gap-2">
               <label class="btn btn-outline-primary mb-0" for="story-image-file"><i class="bi bi-upload me-2" aria-hidden="true"></i>Upload Image</label>
               <input class="visually-hidden" id="story-image-file" type="file" accept="image/jpeg,image/png,image/webp">
-              <button class="btn btn-outline-primary" id="generate-story-image" type="button"><i class="bi bi-stars me-2" aria-hidden="true"></i>Generate with AI</button>
+              <button class="btn btn-outline-secondary" id="generate-story-image" type="button"><i class="bi bi-stars me-2" aria-hidden="true"></i>Generate with AI</button>
             </div>
             <div class="d-none flex-wrap gap-2 mt-3" id="story-generated-actions"><button class="btn btn-success btn-sm" type="button" data-accept-generated>Accept image</button><button class="btn btn-outline-primary btn-sm" type="button" data-regenerate-image>Regenerate</button><button class="btn btn-outline-secondary btn-sm" type="button" data-cancel-generated>Cancel</button></div>
             <div class="alert d-none mt-3 mb-0" id="story-media-feedback" role="status"></div>
@@ -159,7 +160,7 @@ async function submitForm(event, story) {
   } catch (error) {
     console.error('Story save failed.', error);
     const feedback = document.querySelector('#story-feedback');
-    feedback.textContent = error.message || 'The story could not be saved.';
+    feedback.textContent = 'The story could not be saved. Check the form and try again.';
     feedback.className = 'alert alert-danger';
     button.disabled = false;
   }

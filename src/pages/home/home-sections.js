@@ -80,7 +80,7 @@ export function createValueSection() {
   const values = [
     ['person-walking', 'Move more', 'Find enjoyable ways to add movement and build consistency.', 'green'],
     ['basket2', 'Eat better', 'Make nourishing choices that still fit real life and real routines.', 'warm'],
-    ['moon-stars', 'Restore well', 'Give sleep, recovery and quiet moments the attention they deserve.', 'teal'],
+    ['moon-stars', 'Recover well', 'Give sleep, recovery and quiet moments the attention they deserve.', 'teal'],
     ['people', 'Connect deeply', 'Make room for relationships, shared time and belonging.', 'green'],
     ['wind', 'Reduce daily stress', 'Use simple practices to create more calm and perspective.', 'teal'],
     ['repeat', 'Build lasting habits', 'Start small, learn what works and make progress sustainable.', 'warm'],

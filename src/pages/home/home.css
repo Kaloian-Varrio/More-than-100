@@ -360,6 +360,14 @@
 }
 
 @media (max-width: 399.98px) {
+  .hero-headline { font-size: clamp(2.65rem, 12.5vw, 3.5rem); }
+  .hero-copy { line-height: 1.65; }
+  .home-hero [data-assessment-cta] {
+    padding-inline: 1rem !important;
+    font-size: 1.02rem;
+    white-space: normal;
+  }
+  .hero-visual { width: min(88vw, 21rem); }
   .hero-pill span { display: none; }
   .hero-pill { padding: 0.65rem; }
   .hero-visual__label { max-width: 6rem; text-align: center; }

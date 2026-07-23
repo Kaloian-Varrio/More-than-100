@@ -12,6 +12,7 @@ export function renderLayout({ activePath, content, mainClass = '' }) {
 
   app.innerHTML = `
     <div class="d-flex flex-column min-vh-100">
+      <a class="skip-link" href="#main-content">Skip to main content</a>
       ${createHeader(activePath)}
       ${createMainContent(content, mainClass)}
       ${createFooter()}

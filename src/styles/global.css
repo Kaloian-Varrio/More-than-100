@@ -39,6 +39,23 @@ body {
   color: var(--mt-ink);
 }
 
+.skip-link {
+  position: fixed;
+  z-index: 1100;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.7rem 1rem;
+  border-radius: var(--mt-radius-sm);
+  background: #fff;
+  box-shadow: var(--mt-shadow);
+  color: var(--mt-forest);
+  font-weight: 800;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
 .navbar-brand {
   letter-spacing: 0.02em;
 }
@@ -47,6 +64,29 @@ body {
   border-radius: var(--mt-radius-sm);
   font-weight: 700;
   transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.form-control,
+.form-select {
+  min-height: 2.75rem;
+  border-color: #c9dacf;
+  border-radius: var(--mt-radius-sm);
+}
+
+.form-label,
+legend { color: var(--mt-ink); font-weight: 650; }
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  border-color: var(--mt-green);
+  box-shadow: 0 0 0 0.25rem rgb(25 122 80 / 14%);
+}
+
+.form-control:disabled,
+.form-select:disabled,
+.btn:disabled {
+  cursor: not-allowed;
 }
 
 .btn:hover { transform: translateY(-2px); }
@@ -372,7 +412,7 @@ button:focus-visible {
   .py-lg-6 { padding-block: 6rem !important; }
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 1199.98px) {
   .site-navbar {
     min-height: 4.5rem;
     background: linear-gradient(90deg, #f9fdff 0%, #dff7f5 38%, #58bbb8 68%, #0a4a56 100%);
@@ -426,9 +466,21 @@ button:focus-visible {
   .newsletter-controls { flex-direction: column; }
   .newsletter-controls .btn { width: 100%; }
   .footer-links--legal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reorder-handle,
+  .reorder-step { width: 2.5rem; }
+  .reorder-step-controls { gap: 0.25rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
   .footer-links a,
   .footer-socials a { transition: none; }
 

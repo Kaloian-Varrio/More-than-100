@@ -24,7 +24,7 @@ export function createHeader(activePath) {
 
   return `
     <header>
-      <nav class="navbar navbar-expand-lg navbar-dark site-navbar" aria-label="Main navigation">
+      <nav class="navbar navbar-expand-xl navbar-dark site-navbar" aria-label="Main navigation">
         <div class="container">
           <a class="navbar-brand d-inline-flex align-items-center gap-2 fw-semibold" href="/" aria-label="More Than 100 home" data-brand-identity>
             <span class="brand-mark" aria-hidden="true" data-brand-fallback>100<span>+</span></span>

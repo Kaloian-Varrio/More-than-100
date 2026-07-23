@@ -109,7 +109,8 @@ if (user) {
         list.innerHTML = '<div class="article-empty text-center p-5"><i class="bi bi-journal-plus d-block mb-3" aria-hidden="true"></i><h3 class="h5">No articles yet</h3><p class="text-body-secondary mb-3">Create your first article and share it with the community.</p><a class="btn btn-primary" href="/articles/create">Create Article</a></div>';
       }
     } catch (error) {
-      window.alert(error.message || 'The article could not be deleted.');
+      console.error('Article could not be deleted.', error);
+      window.alert('The article could not be deleted. Please try again.');
       button.disabled = false;
     }
   });

@@ -117,8 +117,8 @@ function usersSection(profiles) {
               </td>
               <td>
                 <div class="d-flex flex-wrap justify-content-end gap-2">
-                  <button class="btn btn-sm btn-outline-primary" data-edit-profile><i class="bi bi-pencil me-1" aria-hidden="true"></i>Edit profile</button>
-                  <button class="btn btn-sm btn-outline-danger" data-delete-user${profile.id === currentAdmin.id ? ' disabled title="You cannot delete your active account."' : ''}><i class="bi bi-person-x me-1" aria-hidden="true"></i>Delete user</button>
+                  <button class="btn btn-sm btn-outline-primary" type="button" data-edit-profile><i class="bi bi-pencil me-1" aria-hidden="true"></i>Edit profile</button>
+                  <button class="btn btn-sm btn-outline-danger" type="button" data-delete-user${profile.id === currentAdmin.id ? ' disabled title="You cannot delete your active account."' : ''}><i class="bi bi-person-x me-1" aria-hidden="true"></i>Delete user</button>
                 </div>
               </td>
             </tr>`).join('')}
@@ -152,8 +152,8 @@ function articlesSection(articles) {
               <td><div class="d-flex flex-wrap justify-content-end gap-2">
                 <a class="btn btn-sm btn-outline-primary" href="/articles/${encodeURIComponent(article.slug)}">View</a>
                 <a class="btn btn-sm btn-outline-secondary" href="/articles/${encodeURIComponent(article.slug)}/edit">Edit</a>
-                <button class="btn btn-sm btn-outline-warning" data-toggle-published data-published="${article.is_published}">${article.is_published ? 'Unpublish' : 'Publish'}</button>
-                <button class="btn btn-sm btn-outline-danger" data-delete-article>Delete</button>
+                <button class="btn btn-sm ${article.is_published ? 'btn-outline-warning' : 'btn-success'}" type="button" data-toggle-published data-published="${article.is_published}">${article.is_published ? 'Unpublish' : 'Publish'}</button>
+                <button class="btn btn-sm btn-outline-danger" type="button" data-delete-article>Delete</button>
               </div></td>
             </tr>`).join('')}
         </tbody>
@@ -166,7 +166,7 @@ function storiesSection(stories) {
   const body = stories.length ? `
     <div class="p-4 border-bottom text-end"><a class="btn btn-primary" href="/admin/stories/create"><i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Create story</a></div>
     <div class="table-responsive"><table class="table table-hover align-middle admin-table mb-0"><thead><tr><th class="reorder-column">Order</th><th>Story</th><th>Person</th><th>Visibility</th><th>Created</th><th class="text-end">Actions</th></tr></thead><tbody data-reorder-list="admin-stories">
-    ${stories.map((story) => `<tr data-story-id="${story.id}"><td>${createReorderControls(`story ${story.title}`)}</td><td><div class="d-flex align-items-center gap-3"><img class="admin-story-thumb" src="${escapeHtml(story.image_url)}" alt="" width="96" height="54"><span class="fw-semibold">${escapeHtml(story.title)}</span></div></td><td>${escapeHtml(story.person_name)}</td><td><span class="badge ${story.is_published ? 'text-bg-success' : 'text-bg-secondary'}">${story.is_published ? 'Published' : 'Unpublished'}</span></td><td>${date(story.created_at)}</td><td><div class="d-flex flex-wrap justify-content-end gap-2"><a class="btn btn-sm btn-outline-primary" href="/stories/${encodeURIComponent(story.slug)}">View</a><a class="btn btn-sm btn-outline-secondary" href="/admin/stories/${encodeURIComponent(story.slug)}/edit">Edit</a><button class="btn btn-sm btn-outline-warning" data-toggle-story data-published="${story.is_published}">${story.is_published ? 'Unpublish' : 'Publish'}</button><button class="btn btn-sm btn-outline-danger" data-delete-story>Delete</button></div></td></tr>`).join('')}
+    ${stories.map((story) => `<tr data-story-id="${story.id}"><td>${createReorderControls(`story ${story.title}`)}</td><td><div class="d-flex align-items-center gap-3"><img class="admin-story-thumb" src="${escapeHtml(story.image_url)}" alt="" width="96" height="54"><span class="fw-semibold">${escapeHtml(story.title)}</span></div></td><td>${escapeHtml(story.person_name)}</td><td><span class="badge ${story.is_published ? 'text-bg-success' : 'text-bg-secondary'}">${story.is_published ? 'Published' : 'Unpublished'}</span></td><td>${date(story.created_at)}</td><td><div class="d-flex flex-wrap justify-content-end gap-2"><a class="btn btn-sm btn-outline-primary" href="/stories/${encodeURIComponent(story.slug)}">View</a><a class="btn btn-sm btn-outline-secondary" href="/admin/stories/${encodeURIComponent(story.slug)}/edit">Edit</a><button class="btn btn-sm ${story.is_published ? 'btn-outline-warning' : 'btn-success'}" type="button" data-toggle-story data-published="${story.is_published}">${story.is_published ? 'Unpublish' : 'Publish'}</button><button class="btn btn-sm btn-outline-danger" type="button" data-delete-story>Delete</button></div></td></tr>`).join('')}
     </tbody></table></div>` : `<div class="p-4 border-bottom text-end"><a class="btn btn-primary" href="/admin/stories/create">Create story</a></div>${empty('No stories found.')}`;
   return panel('stories', 'Stories', body, 'Create, edit and control publication of story content.');
 }
@@ -185,8 +185,8 @@ function commentsSection(comments) {
               <td class="admin-comment" data-comment-content>${escapeHtml(comment.content)}</td>
               <td>${date(comment.created_at)}</td>
               <td><div class="d-flex flex-wrap justify-content-end gap-2">
-                <button class="btn btn-sm btn-outline-primary" data-edit-comment>Edit</button>
-                <button class="btn btn-sm btn-outline-danger" data-delete-comment>Delete</button>
+                <button class="btn btn-sm btn-outline-primary" type="button" data-edit-comment>Edit</button>
+                <button class="btn btn-sm btn-outline-danger" type="button" data-delete-comment>Delete</button>
               </div></td>
             </tr>`).join('')}
         </tbody>
