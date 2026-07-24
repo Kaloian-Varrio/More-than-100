@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { createAuthAdmin } from './supabase-test-admin.mjs';
 
 const url = process.env.VITE_SUPABASE_URL;
 const publishableKey = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -7,6 +8,7 @@ if (!url || !publishableKey || !serviceRoleKey) throw new Error('Supabase test e
 
 const client = () => createClient(url, publishableKey, { auth: { persistSession: false, autoRefreshToken: false } });
 const service = createClient(url, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } });
+const authAdmin = createAuthAdmin(url, serviceRoleKey);
 const admin = client();
 const member = client();
 const guest = client();
@@ -42,9 +44,8 @@ const storyRequest = {
 
 try {
   await signIn(admin, 'kaloianh@gmail.com', process.env.SEED_ADMIN_PASSWORD);
-  const { data: created, error: createError } = await service.auth.admin.createUser({ email, password, email_confirm: true });
-  if (createError) throw createError;
-  userId = created.user.id;
+  const created = await authAdmin.createUser({ email, password, email_confirm: true });
+  userId = created.id;
   await new Promise((resolve) => setTimeout(resolve, 500));
   await signIn(member, email, password);
 
@@ -82,6 +83,6 @@ try {
   userId = null;
   console.log('AI image authorization passed: guest, Reader, Story, ownership and validation restrictions.');
 } finally {
-  if (userId) await service.auth.admin.deleteUser(userId);
+  if (userId) await authAdmin.deleteUser(userId);
   await Promise.all([admin.auth.signOut(), member.auth.signOut()]);
 }

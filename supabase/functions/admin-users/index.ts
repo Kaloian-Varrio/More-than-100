@@ -15,13 +15,25 @@ const json = (body: Record<string, unknown>, status = 200) => new Response(JSON.
 const isUuid = (value: unknown): value is string =>
   typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 const allowedRoles = new Set(['reader', 'user', 'admin']);
+const authAdminFetch = async (url: string, apiKey: string, options: RequestInit = {}) => {
+  let response: Response | undefined;
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    response = await fetch(url, { ...options, headers: { apikey: apiKey, ...options.headers } });
+    if (response.status !== 403) return response;
+    const body = await response.clone().json().catch(() => ({}));
+    if (body?.error_code !== 'bad_jwt' && body?.code !== 'bad_jwt') return response;
+    await new Promise((resolve) => setTimeout(resolve, 100 * (attempt + 1)));
+  }
+  return response!;
+};
 
 Deno.serve(async (request) => {
   if (request.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405);
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL');
-  const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+  const secretKeys = Deno.env.get('SUPABASE_SECRET_KEYS');
+  const serviceRoleKey = secretKeys ? JSON.parse(secretKeys).default : Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
   const authorization = request.headers.get('Authorization');
   if (!supabaseUrl || !serviceRoleKey) return json({ error: 'Server configuration is unavailable.' }, 500);
   if (!authorization?.startsWith('Bearer ')) return json({ error: 'Authentication is required.' }, 401);
@@ -52,9 +64,10 @@ Deno.serve(async (request) => {
   if (payload.action === 'list') {
     const users = [];
     for (let page = 1; page <= 20; page += 1) {
-      const { data, error } = await adminClient.auth.admin.listUsers({ page, perPage: 100 });
-      if (error) return json({ error: 'Users could not be loaded.' }, 500);
-      users.push(...data.users.map((user) => ({
+      const response = await authAdminFetch(`${supabaseUrl}/auth/v1/admin/users?page=${page}&per_page=100`, serviceRoleKey);
+      if (!response.ok) return json({ error: 'Users could not be loaded.' }, 500);
+      const data = await response.json();
+      users.push(...data.users.map((user: Record<string, unknown>) => ({
         id: user.id,
         email: user.email || null,
         createdAt: user.created_at,
@@ -68,8 +81,9 @@ Deno.serve(async (request) => {
   const targetUserId = payload.targetUserId;
   if (!isUuid(targetUserId)) return json({ error: 'A valid target user ID is required.' }, 400);
 
-  const { data: targetData, error: targetError } = await adminClient.auth.admin.getUserById(targetUserId);
-  if (targetError || !targetData.user) return json({ error: 'The target user was not found.' }, 404);
+  const targetResponse = await authAdminFetch(`${supabaseUrl}/auth/v1/admin/users/${targetUserId}`, serviceRoleKey);
+  if (targetResponse.status === 404) return json({ error: 'The target user was not found.' }, 404);
+  if (!targetResponse.ok) return json({ error: 'The target user could not be verified.' }, 502);
 
   const { data: targetRole, error: targetRoleError } = await adminClient
     .from('user_roles')
@@ -88,8 +102,10 @@ Deno.serve(async (request) => {
       if (error) return json({ error: 'Administrator protection could not be verified.' }, 500);
       if ((count || 0) <= 1) return json({ error: 'The last remaining administrator cannot be deleted.' }, 409);
     }
-    const { error } = await adminClient.auth.admin.deleteUser(targetUserId);
-    if (error) return json({ error: 'The user account could not be deleted.' }, 500);
+    const deleteResponse = await authAdminFetch(`${supabaseUrl}/auth/v1/admin/users/${targetUserId}`, serviceRoleKey, {
+      method: 'DELETE',
+    });
+    if (!deleteResponse.ok) return json({ error: 'The user account could not be deleted.' }, 500);
     return json({ success: true });
   }
 

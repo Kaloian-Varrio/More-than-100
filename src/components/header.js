@@ -70,6 +70,7 @@ function renderAuthNavigation(user, activePath = window.location.pathname, isAdm
 
   container.innerHTML = `
     <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
+      <a class="nav-link${activePath.startsWith('/members') ? ' active' : ''}" href="/members"${activePath.startsWith('/members') ? ' aria-current="page"' : ''}><i class="bi bi-people me-1" aria-hidden="true"></i>Members</a>
       <a class="nav-link${activePath === '/dashboard' ? ' active' : ''}" href="/dashboard"${activePath === '/dashboard' ? ' aria-current="page"' : ''}>Dashboard</a>
       <a class="nav-link${activePath === '/profile' ? ' active' : ''}" href="/profile"${activePath === '/profile' ? ' aria-current="page"' : ''}><i class="bi bi-person-circle me-1" aria-hidden="true"></i>Profile</a>
       ${isAdmin ? `<a class="nav-link${activePath === '/admin' ? ' active' : ''}" href="/admin"${activePath === '/admin' ? ' aria-current="page"' : ''}><i class="bi bi-shield-lock me-1" aria-hidden="true"></i>Admin</a>` : ''}

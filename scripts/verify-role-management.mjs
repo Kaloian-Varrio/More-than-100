@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { createAuthAdmin } from './supabase-test-admin.mjs';
 
 const url = process.env.VITE_SUPABASE_URL;
 const publishableKey = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -7,6 +8,7 @@ if (!url || !publishableKey || !serviceRoleKey) throw new Error('Supabase test e
 
 const browserClient = () => createClient(url, publishableKey, { auth: { persistSession: false, autoRefreshToken: false } });
 const service = createClient(url, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } });
+const authAdmin = createAuthAdmin(url, serviceRoleKey);
 const admin = browserClient();
 const member = browserClient();
 const guest = browserClient();
@@ -39,13 +41,12 @@ const expectDenied = (result, message) => {
 
 try {
   await signIn(admin, 'kaloianh@gmail.com', process.env.SEED_ADMIN_PASSWORD);
-  const { data: created, error: createUserError } = await service.auth.admin.createUser({
+  const created = await authAdmin.createUser({
     email: testEmail,
     password: testPassword,
     email_confirm: true,
   });
-  if (createUserError) throw createUserError;
-  testUserId = created.user.id;
+  testUserId = created.id;
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   const { data: initialRole, error: initialRoleError } = await service.from('user_roles').select('role').eq('user_id', testUserId).single();
@@ -159,7 +160,7 @@ try {
 } finally {
   if (testUserId) {
     if (storagePath) await service.storage.from('article-images').remove([storagePath]);
-    await service.auth.admin.deleteUser(testUserId);
+    await authAdmin.deleteUser(testUserId);
   }
   await Promise.all([admin.auth.signOut(), member.auth.signOut()]);
 }

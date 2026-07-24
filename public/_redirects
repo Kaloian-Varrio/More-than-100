@@ -11,3 +11,5 @@
 /assessment               /assessment.html    200
 /login                    /login.html         200
 /register                 /register.html      200
+/members                  /members.html       200
+/members/*                /members.html       200

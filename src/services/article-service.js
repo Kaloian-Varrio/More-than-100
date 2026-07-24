@@ -74,6 +74,19 @@ export async function getArticlesByCategoryIds(categoryIds) {
   return data;
 }
 
+export async function getPublishedArticlesByAuthor(authorId) {
+  const { data, error } = await supabase
+    .from('articles')
+    .select(articleFields)
+    .eq('author_id', authorId)
+    .eq('is_published', true)
+    .order('display_order')
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+  return data;
+}
+
 export async function getCurrentUserArticles() {
   const user = await requireUser();
   const { data, error } = await supabase
