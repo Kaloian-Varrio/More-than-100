@@ -80,19 +80,25 @@ All current public tables use RLS.
 | `assessment_results` | Private Assessment scores and summaries owned by an Auth user |
 | `stories` | Admin-managed inspirational content with themes, publication state and display ordering |
 
-```mermaid
-erDiagram
-    AUTH_USERS ||--|| PROFILES : has
-    AUTH_USERS ||--|| USER_ROLES : assigned
-    AUTH_USERS ||--o{ ARTICLES : authors
-    AUTH_USERS ||--o{ COMMENTS : writes
-    AUTH_USERS ||--o{ ASSESSMENT_RESULTS : owns
-    CATEGORIES ||--o{ CATEGORIES : contains
-    CATEGORIES ||--o{ ARTICLES : classifies
-    ARTICLES ||--o{ COMMENTS : receives
+### Database Relationships
+
+| Source | Relationship | Target | Description |
+|---|---|---|---|
+| `auth.users.id` | One-to-one | `profiles.id` | Each application Profile uses the Auth user ID as its primary and foreign key; deleting the Auth user cascades to the Profile |
+| `auth.users.id` | One-to-one | `user_roles.user_id` | Each Auth user has one unique application role; deleting the Auth user cascades to the role record |
+| `auth.users.id` | One-to-many | `articles.author_id` | An Auth user can author multiple Articles; deleting the Auth user cascades to owned Articles |
+| `auth.users.id` | One-to-many | `comments.author_id` | An Auth user can write multiple Comments; deleting the Auth user cascades to owned Comments |
+| `auth.users.id` | One-to-many | `assessment_results.user_id` | An Auth user can own multiple private Assessment results; deleting the Auth user cascades to those results |
+| `categories.id` | Self-referencing one-to-many | `categories.parent_id` | A Category can contain child categories; deleting a parent sets the child `parent_id` to `NULL` |
+| `categories.id` | One-to-many | `articles.category_id` | A Category can classify multiple Articles; deletion is restricted while Articles reference it |
+| `articles.id` | One-to-many | `comments.article_id` | An Article can receive multiple Comments; deleting the Article cascades to its Comments |
+
+```text
+Auth users → Profiles, Roles, Articles, Comments and Assessment results
+Categories → Child categories and Articles → Comments
 ```
 
-`stories` has no author foreign key and is therefore intentionally independent in the diagram.
+`stories` has no author foreign key and is intentionally independent from the user relationship model.
 
 ## Authentication, Security and RLS
 
