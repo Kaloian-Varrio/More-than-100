@@ -6,7 +6,7 @@
 .article-editor-card textarea[name="content"] { min-height: 18rem; resize: vertical; }
 .article-editor-card textarea[name="shortDescription"] { min-height: 6rem; resize: vertical; }
 .article-media { border: 1px solid #d7e4db; border-radius: 1rem; background: #f8fbf9; }
-.article-media__preview { display: grid; overflow: hidden; border-radius: 0.85rem; aspect-ratio: 16 / 9; place-items: center; background: #dce9df; color: #197a50; }
+.article-media__preview { display: grid; width: min(100%, 42rem); max-height: 23.625rem; overflow: hidden; border-radius: 0.85rem; aspect-ratio: 16 / 9; margin-inline: auto; place-items: center; background: #dce9df; color: #197a50; }
 .article-media__preview img { width: 100%; height: 100%; object-fit: cover; }
 .article-media__preview .bi { font-size: 2.5rem; }
 .article-media__controls .btn { min-height: 2.75rem; }

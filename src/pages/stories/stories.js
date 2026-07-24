@@ -7,7 +7,7 @@ import { createEmptyState, createErrorState, createLoadingState } from '../../co
 import { getPublishedStories } from '../../services/story-service.js';
 
 renderLayout({ activePath: '/stories', mainClass: 'stories-page', content: `
-  <section class="stories-hero py-5 py-lg-6"><div class="container"><div class="stories-hero__copy py-lg-4"><p class="section-eyebrow mb-2">Realistic paths, human scale</p><h1 class="display-4 fw-bold mb-3">Stories of small choices that add up.</h1><p class="lead text-body-secondary mb-0">Meet fictional people created to demonstrate how practical routines, patience and connection can support wellbeing at different stages of life.</p></div></div></section>
+  <section class="stories-hero py-5 py-lg-6"><div class="container"><div class="stories-hero__copy py-lg-4"><p class="section-eyebrow mb-2">Active living, human connection</p><h1 class="display-4 fw-bold mb-3">Stories of small choices that add up.</h1><p class="lead text-body-secondary mb-0">Discover inspiring paths shaped by active living, healthier habits and meaningful connections&mdash;small steps toward a longer, better life.</p></div></div></section>
   <section class="container py-5 py-lg-6" aria-labelledby="stories-title"><div class="d-flex justify-content-between align-items-end mb-4"><div><h2 class="h1 mb-2" id="stories-title">Latest stories</h2><p class="text-body-secondary mb-0">Ideas for inspiration, never medical advice.</p></div></div><div class="row g-4" id="stories-grid">${createLoadingState('Loading stories...')}</div></section>` });
 
 const grid = document.querySelector('#stories-grid');

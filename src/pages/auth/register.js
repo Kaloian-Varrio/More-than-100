@@ -22,7 +22,6 @@ if (!(await redirectAuthenticatedUser())) {
               <p class="lead text-body-secondary mb-4">Join More Than 100 to access your dashboard and personal assessment tools.</p>
               <div class="d-grid gap-3">
                 <div class="auth-benefit"><i class="bi bi-person-check" aria-hidden="true"></i><span>Every new account receives a private profile and standard user access.</span></div>
-                <div class="auth-benefit"><i class="bi bi-lock" aria-hidden="true"></i><span>Admin access can never be selected during registration.</span></div>
               </div>
             </div>
           </div>

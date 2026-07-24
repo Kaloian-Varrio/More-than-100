@@ -108,6 +108,23 @@
 .dashboard-comment + .dashboard-comment { border-top: 1px solid var(--mt-border); }
 .dashboard-comment__text { max-width: 56rem; color: var(--mt-text); line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
 .assessment-history-card { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-lg); background: #fff; box-shadow: var(--mt-shadow-sm); }
+.assessment-history-card--latest { background: linear-gradient(145deg, #fff, #f7fbf8); }
+.dashboard-gauges .assessment-gauge { height: 100%; padding: 1rem 0.75rem; border: 1px solid #dce9df; border-radius: 1rem; background: #fff; text-align: center; }
+.dashboard-gauges .assessment-gauge__title { min-height: 2.7rem; color: #243229; font-size: 0.92rem; font-weight: 750; }
+.dashboard-gauges .assessment-gauge__visual { display: block; width: min(100%, 12.5rem); height: auto; margin: 0 auto; overflow: visible; }
+.dashboard-gauges .assessment-gauge__track { fill: none; stroke: #e5ece7; stroke-width: 18; stroke-linecap: round; }
+.dashboard-gauges .assessment-gauge__scale { fill: none; stroke-width: 12; stroke-linecap: round; }
+.dashboard-gauges .assessment-gauge__needle line { stroke: #123c2d; stroke-width: 4; stroke-linecap: round; }
+.dashboard-gauges .assessment-gauge__needle circle { fill: #123c2d; }
+.dashboard-gauges .assessment-gauge__edge { fill: #66776d; font-size: 10px; font-weight: 700; }
+.dashboard-gauges .assessment-gauge__reading { display: flex; align-items: baseline; justify-content: center; gap: 0.45rem; margin-top: -0.25rem; }
+.dashboard-gauges .assessment-gauge__reading strong { color: #123c2d; font-size: 1.5rem; line-height: 1; }
+.dashboard-gauges .assessment-gauge__reading span { border-radius: 999px; padding: 0.2rem 0.5rem; font-size: 0.72rem; font-weight: 800; }
+.dashboard-gauges .assessment-gauge--low .assessment-gauge__reading span { background: #e4f3e9; color: #256642; }
+.dashboard-gauges .assessment-gauge--mild .assessment-gauge__reading span { background: #f0f3d7; color: #64721f; }
+.dashboard-gauges .assessment-gauge--elevated .assessment-gauge__reading span { background: #fff0d8; color: #8a5617; }
+.dashboard-gauges .assessment-gauge--high .assessment-gauge__reading span { background: #fbe4df; color: #914237; }
+.older-assessments > summary { width: fit-content; cursor: pointer; color: var(--mt-green); font-weight: 750; }
 .dashboard-score { display: grid; height: 100%; gap: 0.15rem; padding: 0.8rem; border-radius: var(--mt-radius-sm); background: #f3f7f5; }
 .dashboard-score span { color: var(--mt-muted); font-size: 0.72rem; font-weight: 700; }
 .dashboard-score strong { color: var(--mt-forest); font-size: 1.35rem; }

@@ -1,6 +1,7 @@
 import { createArticleImage, createCompactArticleCard } from '../../components/article-card.js';
 import { createProfileAvatar } from '../../components/profile-avatar.js';
 import { getRiskLabel } from '../assessment/assessment-scoring.js';
+import { createAssessmentGauge } from '../assessment/assessment-gauge.js';
 import { createReorderControls } from '../../components/reorderable-list.js';
 
 const dashboardSections = [
@@ -185,7 +186,23 @@ function createAssessmentHistoryMarkup(results, hasError) {
   if (hasError) return createDashboardEmpty('exclamation-circle', 'Assessment results could not be loaded', 'Refresh the page to try again.');
   if (!results.length) return `${createDashboardEmpty('clipboard2-pulse', 'No assessment results yet', 'Complete your first assessment to see your saved history.')}<div class="text-center mt-3"><a class="btn btn-primary" href="/assessment">Take Your Personal Assessment</a></div>`;
 
-  return `<div class="row g-3">${results.map((result, index) => `<div class="col-12 col-xl-6"><article class="assessment-history-card h-100 p-4"><div class="d-flex justify-content-between align-items-start gap-3 mb-3"><div><p class="small text-body-secondary mb-1"><time datetime="${result.created_at}">${formatDate(result.created_at)}</time></p><h3 class="h5 mb-0">Assessment ${results.length - index}</h3></div>${index === 0 ? '<span class="badge text-bg-success">Latest</span>' : ''}</div><div class="row g-2">${createScore('Stress', result.stress_score)}${createScore('Sedentary lifestyle', result.sedentary_score)}${createScore('Social disconnection', result.social_score)}</div>${result.summary ? `<details class="assessment-summary mt-3"><summary>Read personalized summary</summary><div class="pt-3">${result.summary.split(/\n+/).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div></details>` : ''}</article></div>`).join('')}</div>`;
+  const [latest, ...older] = results;
+  return `<div class="assessment-history-stack">
+    <article class="assessment-history-card assessment-history-card--latest p-4 p-lg-5">
+      <div class="d-flex justify-content-between align-items-start gap-3 mb-4"><div><p class="small text-body-secondary mb-1"><time datetime="${latest.created_at}">${formatDate(latest.created_at)}</time></p><h3 class="h4 mb-0">Latest assessment</h3></div><span class="badge text-bg-success">Latest</span></div>
+      <div class="row g-3 dashboard-gauges">
+        ${createCompactGauge('Stress Level', latest.stress_score, 'stress-latest')}
+        ${createCompactGauge('Sedentary Lifestyle Risk', latest.sedentary_score, 'sedentary-latest')}
+        ${createCompactGauge('Social Disconnection Risk', latest.social_score, 'social-latest')}
+      </div>
+      ${latest.summary ? `<details class="assessment-summary mt-4"><summary>Read personalized summary</summary><div class="pt-3">${latest.summary.split(/\n+/).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div></details>` : ''}
+    </article>
+    ${older.length ? `<details class="older-assessments mt-3"><summary>View ${older.length} earlier assessment${older.length === 1 ? '' : 's'}</summary><div class="row g-3 mt-1">${older.map((result, index) => `<div class="col-12 col-xl-6"><article class="assessment-history-card h-100 p-4"><div class="mb-3"><p class="small text-body-secondary mb-1"><time datetime="${result.created_at}">${formatDate(result.created_at)}</time></p><h3 class="h5 mb-0">Assessment ${results.length - index - 1}</h3></div><div class="row g-2">${createScore('Stress', result.stress_score)}${createScore('Sedentary lifestyle', result.sedentary_score)}${createScore('Social disconnection', result.social_score)}</div>${result.summary ? `<details class="assessment-summary mt-3"><summary>Read personalized summary</summary><div class="pt-3">${result.summary.split(/\n+/).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div></details>` : ''}</article></div>`).join('')}</div></details>` : ''}
+  </div>`;
+}
+
+function createCompactGauge(name, score, key) {
+  return `<div class="col-12 col-md-4">${createAssessmentGauge({ name, score, label: getRiskLabel(score), key })}</div>`;
 }
 
 function createScore(label, score) {

@@ -36,7 +36,7 @@ renderLayout({ activePath: '/', content: homeContent, mainClass: 'home-page' });
 const currentUser = await getCurrentUser();
 if (currentUser) {
   document.querySelectorAll('[data-assessment-cta]').forEach((link) => { link.href = '/assessment'; });
-  document.querySelectorAll('[data-assessment-access]').forEach((note) => { note.innerHTML = '<i class="bi bi-check-circle me-2" aria-hidden="true"></i>Your assessment is ready whenever you are.'; });
+  document.querySelectorAll('.home-hero [data-assessment-access]').forEach((note) => note.remove());
   document.querySelectorAll('[data-guest-only]').forEach((element) => element.remove());
 }
 
