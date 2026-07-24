@@ -179,17 +179,6 @@ button:focus-visible {
   letter-spacing: 0.005em;
 }
 
-.site-navigation .nav-item:first-child .nav-link {
-  color: #073f51;
-}
-
-.site-navigation .nav-item:first-child .nav-link:hover,
-.site-navigation .nav-item:first-child .nav-link:focus-visible,
-.site-navigation .nav-item:first-child .nav-link.active {
-  border-color: rgb(5 68 80 / 16%);
-  background-color: rgb(255 255 255 / 24%);
-}
-
 .auth-navigation .nav-link {
   color: #fff;
   font-size: 1rem;
@@ -427,17 +416,13 @@ button:focus-visible {
     box-shadow: 0 0.8rem 1.8rem rgb(4 43 51 / 18%);
   }
 
-  .site-navbar .navbar-collapse .nav-link,
-  .site-navigation .nav-item:first-child .nav-link {
+  .site-navbar .navbar-collapse .nav-link {
     color: #fff;
   }
 
   .site-navbar .navbar-collapse .nav-link:hover,
   .site-navbar .navbar-collapse .nav-link:focus-visible,
-  .site-navbar .navbar-collapse .nav-link.active,
-  .site-navigation .nav-item:first-child .nav-link:hover,
-  .site-navigation .nav-item:first-child .nav-link:focus-visible,
-  .site-navigation .nav-item:first-child .nav-link.active {
+  .site-navbar .navbar-collapse .nav-link.active {
     border-color: rgb(255 255 255 / 18%);
     background: rgb(255 255 255 / 12%);
   }
