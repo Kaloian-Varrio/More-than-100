@@ -1,6 +1,7 @@
 import { createFooter, initializeFooter } from './footer.js';
 import { createHeader, initializeAuthHeader } from './header.js';
 import { createMainContent } from './main-content.js';
+import { createAccessibilityPreferences, initializeAccessibilityPreferences } from './accessibility-preferences.js';
 import { initializeBrandLogos } from '../services/brand-logo-service.js';
 
 export function renderLayout({ activePath, content, mainClass = '' }) {
@@ -16,9 +17,11 @@ export function renderLayout({ activePath, content, mainClass = '' }) {
       ${createHeader(activePath)}
       ${createMainContent(content, mainClass)}
       ${createFooter()}
-    </div>`;
+    </div>
+    ${createAccessibilityPreferences()}`;
 
   initializeAuthHeader(activePath);
   initializeFooter();
   initializeBrandLogos();
+  initializeAccessibilityPreferences();
 }

@@ -56,6 +56,14 @@ Admin management lists support curated ordering for Articles, Stories, Users and
 
 Article and Story public lists use the Admin display order with deterministic creation-date fallback. Featured and recommended Articles retain their existing selection logic, and public Article comments remain chronological. Every reorderable list provides a drag handle plus Move Up and Move Down buttons for touch and keyboard access.
 
+## Accessibility
+
+The application includes keyboard-accessible navigation, a skip link, visible focus states, semantic form labels and reduced-motion support. A global Accessibility preferences panel lets Guests, Readers, Users and Admins adjust text size, high contrast, grayscale, motion, link underlines and readable text spacing.
+
+Preferences are stored only in the browser with `localStorage` and remain active across page navigation and refreshes. Manual Reduce Motion works alongside the browser or operating system `prefers-reduced-motion` setting.
+
+These features improve interface accessibility and customization, but they do not constitute formal WCAG compliance or accessibility certification.
+
 ## Project structure
 
 - `dashboard.html` — Dashboard HTML entry point

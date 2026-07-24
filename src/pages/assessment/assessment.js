@@ -3,6 +3,7 @@ import '../../styles/global.css';
 import '../../styles/content.css';
 import './assessment.css';
 import { renderLayout } from '../../components/layout.js';
+import { shouldReduceMotion } from '../../services/accessibility-preferences.js';
 import { requireAuthenticatedUser } from '../../services/auth-service.js';
 import { saveAssessmentResult } from '../../services/assessment-service.js';
 import { escapeHtml } from '../../utils/html.js';
@@ -135,7 +136,7 @@ function focusAssessmentContent() {
 }
 
 function preferredScrollBehavior() {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  return shouldReduceMotion() ? 'auto' : 'smooth';
 }
 
 function renderCompletionLoading() {
