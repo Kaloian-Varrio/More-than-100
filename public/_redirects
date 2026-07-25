@@ -13,3 +13,5 @@
 /register                 /register.html      200
 /members                  /members.html       200
 /members/*                /members.html       200
+/search                   /search.html        200
+/search/                  /search.html        200

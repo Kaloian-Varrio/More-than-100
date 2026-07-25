@@ -204,6 +204,43 @@ button:focus-visible {
   min-height: 1.95rem;
 }
 
+.header-search__launcher {
+  display: inline-grid;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.5rem;
+  place-items: center;
+}
+
+.header-search { position: relative; }
+.header-search__form {
+  position: absolute;
+  z-index: 1030;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  width: min(24rem, 70vw);
+  padding: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-radius: var(--mt-radius);
+  background: #0a4855;
+  box-shadow: var(--mt-shadow);
+}
+.header-search__form .form-control { min-width: 11rem; }
+
+@media (max-width: 1199.98px) {
+  .header-search,
+  .header-search__form { width: 100%; }
+  .header-search__form {
+    position: static;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .header-search__launcher { width: 2.75rem; }
+  .header-search__form .form-control { min-width: 0; }
+}
+
 .brand-mark {
   display: inline-grid;
   width: 2.25rem;

@@ -46,6 +46,19 @@ export function createHeader(activePath) {
             <ul class="navbar-nav site-navigation ms-auto mb-3 mb-lg-0 align-items-lg-center">
               ${navigation}
             </ul>
+            <div class="header-search ms-lg-2 mb-3 mb-xl-0">
+              <button class="header-search__launcher btn btn-outline-light" type="button" aria-label="Open search" aria-expanded="false" aria-controls="header-search-form">
+                <i class="bi bi-search" aria-hidden="true"></i>
+              </button>
+              <form class="header-search__form" id="header-search-form" action="/search/" method="get" hidden>
+                <label class="visually-hidden" for="header-search-query">Search articles, stories and topics</label>
+                <div class="input-group">
+                  <input class="form-control" id="header-search-query" name="q" type="search" placeholder="Search articles, stories and topics" autocomplete="off">
+                  <button class="btn btn-light" type="submit" aria-label="Search"><i class="bi bi-search" aria-hidden="true"></i></button>
+                  <button class="btn btn-outline-light" type="button" data-search-close aria-label="Close search"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+                </div>
+              </form>
+            </div>
             <div class="auth-navigation ms-lg-3" id="auth-navigation" aria-live="polite">
               <span class="spinner-border spinner-border-sm text-light" aria-label="Loading account navigation"></span>
             </div>
@@ -95,4 +108,43 @@ export async function initializeAuthHeader(activePath) {
   const render = async (user) => renderAuthNavigation(user, activePath, user ? await isCurrentUserAdmin().catch(() => false) : false);
   onAuthStateChange((user) => { render(user); });
   await render(await getCurrentUser());
+}
+
+export function initializeHeaderSearch() {
+  const launcher = document.querySelector('.header-search__launcher');
+  const form = document.querySelector('.header-search__form');
+  const input = document.querySelector('#header-search-query');
+  const closeButton = document.querySelector('[data-search-close]');
+  if (!launcher || !form || !input || !closeButton) return;
+
+  const close = () => {
+    form.hidden = true;
+    launcher.hidden = false;
+    launcher.setAttribute('aria-expanded', 'false');
+    requestAnimationFrame(() => launcher.focus());
+  };
+
+  launcher.addEventListener('click', () => {
+    launcher.hidden = true;
+    form.hidden = false;
+    launcher.setAttribute('aria-expanded', 'true');
+    requestAnimationFrame(() => input.focus());
+  });
+  closeButton.addEventListener('click', close);
+  form.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      close();
+    }
+  });
+  form.addEventListener('submit', (event) => {
+    const query = input.value.trim();
+    if (!query) {
+      event.preventDefault();
+      input.value = '';
+      input.focus();
+      return;
+    }
+    input.value = query;
+  });
 }

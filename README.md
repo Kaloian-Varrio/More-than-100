@@ -15,6 +15,7 @@ The Assessment offers non-medical lifestyle insights and recommendations. It is 
 
 - Responsive Home page with uploaded brand identity and category discovery.
 - Public Articles library with category/subcategory filtering, detail pages and comments.
+- Compact global search for published Articles, Stories and Topics using capped, read-only Supabase queries (no AI or vector search); authenticated users can also find Members.
 - User Article creation, editing, deletion, publication controls and 1 MB cover uploads.
 - Inspirational Stories with public detail pages and Admin management.
 - Authenticated Members directory, read-only member profiles and published Articles by member.

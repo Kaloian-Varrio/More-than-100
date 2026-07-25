@@ -14,6 +14,7 @@ export default defineConfig({
         if (request.url === '/articles' || request.url?.startsWith('/articles?')) request.url = '/articles.html';
         if (request.url?.startsWith('/categories/')) request.url = '/category.html';
         if (request.url === '/members' || request.url?.startsWith('/members?') || request.url?.startsWith('/members/')) request.url = '/members.html';
+        if (request.url === '/search/' || request.url?.startsWith('/search/?')) request.url = '/search.html';
         next();
       });
     },
@@ -36,6 +37,7 @@ export default defineConfig({
         storyEditor: resolve(import.meta.dirname, 'story-editor.html'),
         information: resolve(import.meta.dirname, 'information.html'),
         members: resolve(import.meta.dirname, 'members.html'),
+        search: resolve(import.meta.dirname, 'search.html'),
       },
     },
   },
